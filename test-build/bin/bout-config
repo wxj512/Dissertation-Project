@@ -1,0 +1,274 @@
+#!/bin/sh
+
+# This script returns information on BOUT++ configuration
+#
+# Borrowed idea and some code from NetCDF nc-config
+#
+#
+# Configure sets these variables to the paths as they are
+# at that time. If "make install" is used then the values
+# are replaced with the install paths
+
+
+BOUT_LIB_PATH=/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/test-build/lib
+BOUT_INCLUDE_PATH=/mnt/c/Users/enlan/University/York/Dissertation/Repositories/BOUT-dev/include
+MPARK_VARIANT_INCLUDE_PATH=/mnt/c/Users/enlan/University/York/Dissertation/Repositories/BOUT-dev/externalpackages/mpark.variant/include
+FMT_INCLUDE_PATH=/mnt/c/Users/enlan/University/York/Dissertation/Repositories/BOUT-dev/externalpackages/fmt/include
+BOUT_CONFIG_FILE=/make.config
+
+cc="/usr/bin/mpicxx"
+cxx="/usr/bin/mpicxx"
+ld="/usr/bin/mpicxx"
+checks="2"
+cflags=" -I${BOUT_INCLUDE_PATH} -I/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/test-build/include -fPIC -I${MPARK_VARIANT_INCLUDE_PATH} -I${FMT_INCLUDE_PATH}"
+libs=" -Wl,-rpath,$BOUT_LIB_PATH -L$BOUT_LIB_PATH -lbout++ -lfmt"
+
+version="5.1.2"
+git="eae6e9dea74f55565498ee01cfe135351d22210a"
+idlpath=""
+pythonpath="/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/test-build/tools/pylib:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/BOUT-dev/tools/pylib"
+
+has_netcdf="ON"
+has_legacy_netcdf="OFF"
+has_pnetcdf="OFF"
+has_pvode="ON"
+has_cvode="OFF"
+has_ida="OFF"
+has_lapack="OFF"
+has_petsc="OFF"
+has_hypre="OFF"
+has_slepc="OFF"
+has_arkode="OFF"
+has_openmp="OFF"
+has_nls="OFF"
+has_fftw="ON"
+
+petsc_has_sundials=""
+
+metric_type="2D"
+
+usage()
+{
+    cat <<EOF
+Usage: bout-config [OPTION]
+
+Available values for OPTION include:
+
+  --help      display this help message and exit
+  --all       Print all configuration
+
+  --cc        C compiler
+  --cxx       C++ compiler
+  --ld        Linker
+  --cflags    pre-processor and compiler flags
+  --libs      library linking flags
+  
+  --version      BOUT++ version
+  --git          Git commit
+  --checks       Run-time checking level
+  --config-file  Full path to the configuration file
+  --idl          IDL path
+  --python       Python path
+
+  --has-netcdf  NetCDF file support
+  --has-legacy-netcdf  Legacy NetCDF file support
+  --has-pnetcdf Parallel NetCDF file support
+  --has-pvode   PVODE solver support
+  --has-cvode   SUNDIALS CVODE solver support
+  --has-ida     SUNDIALS IDA solver support
+  --has-lapack  LAPACK support
+  --has-petsc   PETSc support
+  --has-hypre   Hypre support
+  --has-slepc   SLEPc support
+  --has-nls     Natural Language Support
+
+  --petsc-has-sundials 
+
+  --metric-type
+EOF
+
+    exit $1
+}
+
+all()
+{
+        echo
+        echo "This version of BOUT++ has been built with the following features: "
+        echo
+        echo "  --cc          -> $cc"
+        echo "  --cxx         -> $cxx"
+        echo "  --ld          -> $ld"
+        echo "  --cflags      -> $cflags"
+        echo "  --libs        -> $libs"
+        echo
+        echo "  --version     -> $version"
+        echo "  --git         -> $git"
+        echo "  --checks      -> $checks"
+        echo "  --config-file -> $BOUT_CONFIG_FILE"
+        echo "  --idl         -> $idlpath"
+        echo "  --python      -> $pythonpath"
+        echo
+        echo "  --has-netcdf  -> $has_netcdf"
+        echo "  --has-legacy-netcdf  -> $has_legacy_netcdf"
+        echo "  --has-pnetcdf -> $has_pnetcdf"
+        echo "  --has-pvode   -> $has_pvode"
+        echo "  --has-cvode   -> $has_cvode"
+        echo "  --has-ida     -> $has_ida"
+        echo "  --has-lapack  -> $has_lapack"
+        echo "  --has-petsc   -> $has_petsc"
+        echo "  --has-hypre   -> $has_hypre"
+        echo "  --has-slepc   -> $has_slepc"
+        echo "  --has-arkode  -> $has_arkode"
+        echo "  --has-nls     -> $has_nls"
+        echo
+        echo "  --petsc-has-sundials -> $petsc_has_sundials"
+        echo
+        echo "  --metric-type -> $metric_type"        
+}
+
+if test $# -eq 0; then
+    usage 2
+fi
+
+while test $# -gt 0; do
+    case "$1" in
+    # this deals with options in the style
+    # --option=value and extracts the value part
+    # [not currently used]
+    -*=*) value=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) value= ;;
+    esac
+
+    case "$1" in
+
+    --help)
+        usage 0
+        ;;
+
+    --all)
+       all
+       ;;
+
+    --cc)
+        echo $cc
+        ;;
+
+    --cxx)
+        echo $cxx
+        ;;
+
+    --ld)
+	echo $ld
+	;;
+
+    --cflags)
+        echo $cflags
+        ;;
+
+    --libs)
+        echo $libs
+        ;;
+
+    --version)
+        echo $version
+        ;;
+
+    --git)
+        echo $git
+        ;;
+
+    --checks)
+        echo $checks
+        ;;
+
+    --config-file)
+        echo $BOUT_CONFIG_FILE
+        ;;
+
+    --idl)
+        echo $idlpath
+        ;;
+
+    --python)
+        echo $pythonpath
+        ;;
+
+    --has-netcdf)
+        echo $has_netcdf
+        ;;
+
+    --has-legacy-netcdf)
+        echo $has_legacy_netcdf
+        ;;
+
+    --has-pnetcdf)
+        echo $has_pnetcdf
+        ;;
+
+    --has-pvode)
+        echo $has_pvode
+        ;;
+
+    --has-cvode)
+        echo $has_cvode
+        ;;
+
+    --has-ida)
+        echo $has_ida
+        ;;
+
+    --has-lapack)
+        echo $has_lapack
+        ;;
+
+    --has-petsc)
+        echo $has_petsc
+        ;;
+
+    --has-hypre)
+        echo $has_hypre
+        ;;
+
+    --has-slepc)
+        echo $has_slepc
+        ;;
+
+    --has-arkode)
+	    echo $has_arkode
+	    ;;
+
+    --has-openmp)
+	    echo $has_openmp
+	    ;;
+
+    --has-nls)
+	    echo $has_nls
+	    ;;
+
+    --metric-type)
+	    echo $metric_type
+	    ;;
+    
+    --petsc-version)
+        # TODO: Remove in next release
+        # Left in for backwards-compatibility
+        ;;
+
+    --petsc-release)
+        # TODO: Remove in next release
+        # Left in for backwards-compatibility
+        ;;
+
+    --petsc-has-sundials)
+        echo $petsc_has_sundials
+        ;;
+
+    *)
+        echo "unknown option: $1"
+        usage 2
+        ;;
+    esac
+    shift
+done
+
+exit 0
