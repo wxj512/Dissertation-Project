@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -fPIC -O2 -g -DNDEBUG -shared -Wl,-soname,libpvpre.so.1.0.0 -o ../../lib/libpvpre.so.1.0.0 CMakeFiles/pvpre.dir/precon/pvbbdpre.cpp.o CMakeFiles/pvpre.dir/precon/band.cpp.o  -Wl,-rpath,/usr/lib/x86_64-linux-gnu/openmpi/lib::::::::::::::: /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi_cxx.so /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so
