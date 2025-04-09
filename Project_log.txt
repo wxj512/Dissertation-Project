@@ -1,0 +1,41 @@
+Week starting from 02/04/2025
+- Discussed about the project specifics:
+	- Premise of the project
+	- Computational and physics aspects
+		- Computational:
+			- Use of Linux to compile C/C++ programmes
+			- Use of Blob2d from BOUT++ framework
+			- Use python for "gluing" everything together
+		- Physics:
+			- Plasma filament occur in SOL of MCF fusion plasmas
+			- Filaments created due to ExB forces
+			- Blob size with different motions
+	- Goals and objectives
+- Reading materials related to project
+	- Plasma filament
+	- Application of Gaussian process on tearing modes
+
+Week starting from 04/03/2025
+- Discussion on Gaussian processes and specifics on components and methods:
+	- Covariance matrix of multivariate Gaussian functions
+	- Kernels for Gaussian processes
+- Risk assessment reviewed and submitted
+
+Week starting from 14/03/2025
+- Discussion on project specifics
+	- Computational:
+		- Focus on environmental variables not numerical variables
+	- Application of Gaussian process on plasma filament (blobs)
+- Version control training
+
+Week from 27/03/2025
+- Project objectives for the coming weeks
+	- Install gcc on WSL
+	- Compile BOUT++ and build programme
+	- Create local and GitHub repository	
+	- Create project log
+- Lay summary and Literature review
+	- Deadline 08/05/2025
+	- Record literature in Zotero
+
+Week from 15/04/2025
