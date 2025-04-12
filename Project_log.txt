@@ -32,6 +32,7 @@ Week from 27/03/2025
 - Project objectives for the coming weeks
 	- Install gcc on WSL
 	- Compile BOUT++ and build programme
+	  - Blob2d compiled and performed test runs
 	- Create local and GitHub repository	
 	- Create project log
 - Lay summary and Literature review
