@@ -4,5 +4,6 @@ Repository to version control Dissertation Project progress
   - test-blob2d (BOUT++ ver. 5.1.1, default cmake)
 - Project log (text file)
 - Literature review and lay summary (latex file)
+  - References(BibLaTex file)
 
 Created 30/03/2025
