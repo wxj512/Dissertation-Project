@@ -4,8 +4,10 @@
 
 \usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
 
-\usepackage[backend=bibtex, style=numeric, sorting=ynt]{biblatex} %Set bibliography style
-\addbibresource{} %Imports .bib file
+
+\usepackage[backend=bibtex, style=ieeetr, sorting=ynt]{biblatex} %Set bibliography style
+\addbibresource{Lit_rev_bib.bib} %Imports .bib file
+
 
 \renewcommand{\familydefault}{\sfdefault} %Set san sarif as default font 
 
@@ -30,6 +32,8 @@
 
 \subsection*{Gaussian processes}
 
-\printbibliography
+
+\printbibliography[title={References}]
 
 \end{document}
+
