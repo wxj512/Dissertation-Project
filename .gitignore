@@ -1,3 +1,14 @@
 *.*~
 **~$*.*
 *~*.tmp
+
+*.aux
+*.bcf
+*.blg
+*.fls
+*.*.gz
+*.bbl
+*.fdb_latexmk
+*.*.xml
+*.pdf
+*.log
