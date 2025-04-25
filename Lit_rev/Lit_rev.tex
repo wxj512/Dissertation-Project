@@ -11,7 +11,6 @@
 \graphicspath{ {./Fig/} }
 \usepackage[export]{adjustbox} %Used for adjusting image box
 \usepackage{caption} %For caption customizations
-\captionsetup[figure]{hangindent=0pt, singlelinecheck=false}
 
 \renewcommand{\familydefault}{\sfdefault} %Set san sarif as default font 
 
@@ -24,6 +23,7 @@
 \maketitle
 
 \begin{figure}[h]
+    \centering
     \includegraphics[scale=0.6]{Fig1_plasma_filament.png}
     \normalsize{\caption{Example of a plasma filament along a magnetic field line in the SOL \cite{carralero_experimental_2015}}}
     \label{fig:fig1}
