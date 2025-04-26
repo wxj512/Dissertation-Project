@@ -4,7 +4,7 @@
 \usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
 
 \usepackage[utf8]{inputenc}
-\usepackage[url=false, doi=false, isbn=false, style=ieee]{biblatex} %Set bibliography style
+\usepackage[url=false, doi=false, isbn=false, bibstyle=ieee, citestyle=numeric-comp]{biblatex} %Set bibliography style
 \addbibresource{Lit_rev.bib} %Imports .bib file
 
 \usepackage{graphicx} %Required for graphics and figures
@@ -34,11 +34,11 @@
 \begin{itemize}
     \item What are plasma filaments \cite{omotani_effects_2015}
     \begin{itemize}
-        \item Found in both L and H mode \cite{boedo_transport_2003} and ELM mode \cite{ben_ayed_inter-elm_2009}
+        \item Found in various magnetic fusion device, occurring in various regimes such as L and H mode \cite{boedo_transport_2003} and ELM mode \cite{ben_ayed_inter-elm_2009}
+        \item Important as it affects particle transport and heat flux in SOL, and directly impacts durability and lifetime of plasma facing materials \cite{carralero_experimental_2015, krasheninnikov_recent_2008}
         \item Diamagnetic current causes density fluctuations
         \item Plasma current (E field) and poloidal field (B field) creates force
         \item Plasma by E$\times$B force
-        
     \end{itemize}
 \end{itemize}
 
