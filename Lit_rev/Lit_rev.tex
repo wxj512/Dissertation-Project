@@ -24,12 +24,14 @@
 \maketitle
 
 \begin{figure}[h]
-    \begin{subfigure}{0.5\textwidth}
+    \begin{subfigure}[c]{0.45\linewidth}
+    \centering
     \includegraphics[width=0.9\linewidth]{Fig1_plasma_filament.png}
     \normalsize{\caption{Example of a plasma filament along a magnetic field line in the SOL \cite{carralero_experimental_2015}}}
     \label{fig:fig1}
-    \end{subfigure}
-    \begin{subfigure}{0.5\textwidth}
+    \end{subfigure}\hspace{0.05\linewidth}
+    \begin{subfigure}[c]{0.45\linewidth}
+    \centering
     \includegraphics[width=0.9\linewidth]{Fig2_blob_movement.png}
     \normalsize{\caption{Density and movement of a blob with average density on the 4 poloidal planes \cite{nespoli_3d_2019}}}
     \label{fig:fig2}
@@ -46,8 +48,9 @@
         \item Important as it affects particle transport and heat flux in SOL, and directly impacts durability and lifetime of plasma facing materials \cite{carralero_experimental_2015, krasheninnikov_recent_2008}
         \item Blob formation \cite{krasheninnikov_recent_2008}:
         \begin{enumerate}
-            \item Turbulent processes (or MHD instabilities) causes plasma peel off at outmost layer (curvature induces F$\times$B drift)
+            \item Turbulent processes (or MHD instabilities) causes plasma peel off at outmost layer (curvature and $\nabla$B induced F$\times$B drifts)
             \item Plasma polarization due to gravity drift
+            \item Vertical charge separation induces E field ($\perp$ to toroidal B field)
             \item Plasma by E$\times$B force pushes blob towards chamber wall
         \end{enumerate}
         \item Large amount of 2D and 3D simulations \cite{omotani_effects_2015, easy_three_2014, nespoli_3d_2019, garcia_mechanism_2005, shanahan_fluid_2018} done to model blob structure and dynamic of blob to understand filament transport  
