@@ -5,6 +5,12 @@
 
 \usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
 
+\usepackage{bm} %Bold font for math equations
+
+\usepackage{enumitem} %Custom list
+\newlist{arrowlist}{itemize}{1} %Define custom list name
+\setlist[arrowlist]{label=$\rightarrow$} %Define arrow for custom list label
+
 \usepackage[utf8]{inputenc}
 \usepackage[url=false, doi=false, isbn=false, bibstyle=ieee, citestyle=numeric-comp]{biblatex} %Set bibliography style
 \addbibresource{Lit_rev.bib} %Imports .bib file
@@ -57,10 +63,14 @@
         \end{enumerate}
         \item Large amount of 2D and 3D simulations \cite{omotani_effects_2015, easy_three_2014, nespoli_3d_2019, garcia_mechanism_2005, shanahan_fluid_2018} done to model blob structure and dynamic of blob to understand filament transport  
     \end{itemize}
-    \item Blob equation
+    \item Blob equations
     \begin{itemize}
-        \item No net current generation due to quasi neutrality (divergence free current density) \cite{krasheninnikov_recent_2008}
-    \ene{itemize}
+        \item No net current generation due to quasi neutrality (divergence free current density) \cite{krasheninnikov_recent_2008, krasheninnikov_scrape_2001, walkden_properties_2014} 
+        \item $\bm{J}$ is total plasma density, $\bm{J_{\perp}}$ and $\bm{J_{\parallel}b}$ the perpendicular and parallel components to vector b
+        \begin{arrowlist}
+            \item $\nabla\cdot \bm{J}=\nabla\cdot \bm{J_{\perp}}+\nabla\cdot\left(b\bm{J_{\parallel}}\right)=0$
+        \end{arrowlist}
+    \end{itemize}
     \item Blob closures
 \end{itemize}
 
