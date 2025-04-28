@@ -1,5 +1,7 @@
 \documentclass{article}
 
+\usepackage{helvet} %Set default font
+\renewcommand{\familydefault}{\sfdefault}
 
 \usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
 
@@ -13,8 +15,6 @@
 \usepackage{caption} %For caption customizations
 \usepackage{subcaption}
 
-\renewcommand{\familydefault}{\sfdefault} %Set san sarif as default font 
-
 \title{\textbf{Literature Review \\and \\Lay Summary}}
 \author{Jasper Ng}
 \date{May 2025}
@@ -24,17 +24,19 @@
 \maketitle
 
 \begin{figure}[h]
-    \begin{subfigure}[c]{0.45\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{Fig1_plasma_filament.png}
-    \normalsize{\caption{Example of a plasma filament along a magnetic field line in the SOL \cite{carralero_experimental_2015}}}
-    \label{fig:fig1}
-    \end{subfigure}\hspace{0.05\linewidth}
     \begin{subfigure}[c]{0.45\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{Fig2_blob_movement.png}
-    \normalsize{\caption{Density and movement of a blob with average density on the 4 poloidal planes \cite{nespoli_3d_2019}}}
-    \label{fig:fig2}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Fig1_plasma_filament.png}
+        \normalsize{\caption{Example of a plasma filament along a magnetic field line in the SOL \cite{carralero_experimental_2015}}}
+        \label{fig:fig1}
+    \end{subfigure}
+    \hspace{0.05\linewidth}
+    \begin{subfigure}[c]{0.45\linewidth}
+        \centering
+        \includegraphics[width=0.9\linewidth]{Fig2_blob_movement.png}
+        \normalsize{\caption{Density and movement of a blob with average density on the 4 poloidal planes \cite{nespoli_3d_2019}}}
+        \label{fig:fig2}
     \end{subfigure}
     \normalsize{\caption{Simulations of a blob in tokamak plasmas}}
 \end{figure}
