@@ -110,7 +110,6 @@
 \end{itemize}
 
 \subsection*{Uncertainty Quantification}
-    \subsubsection*{Uncertainty Propagation}
     \subsubsection*{Surrogate Model}
     \begin{itemize}
         \item Used to approximate mathematical models and maps inputs to outputs without knowing the relationship between design and output variables \cite{williams_novel_2021}
@@ -126,9 +125,17 @@
             \end{itemize}
         \end{itemize}
     \end{itemize}
-    \subsubsection*{Sensitivity Analysis}  
+    \subsubsection*{Sensitivity Analysis \cite{wirthl_global_2023} } 
     \begin{itemize}
-        \item Used to 
+        \item Uncertainty of model output found using model inputs, including input parameters, boundary and initial conditions etc.
+        \item Can help to identify the significance of input parameters
+        \item Sobol Method
+        \begin{itemize}
+            \item Variance based method
+            \item Requires large amount of model evaluations
+            \item Sobol indices are calculated for each variable, with higher value being more influential
+            \item Total-order Sobol indexis then calculated to determine if a parameter is non-influential and can be fixed if determined non-influential
+        \end{itemize}
     \end{itemize}
 
 \nocite{*}
