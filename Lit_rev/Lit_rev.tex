@@ -29,6 +29,8 @@
 
 \maketitle
 
+\noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
+
 \begin{figure}[h]
     \centering
     \begin{subfigure}[c]{0.45\linewidth}
@@ -59,19 +61,52 @@
             \item Turbulent processes (or MHD instabilities) causes plasma peel off at outmost layer (curvature and $\nabla$B induced F$\times$B drifts)
             \item Plasma polarization due to gravity drift
             \item Vertical charge separation induces E field ($\perp$ to toroidal B field)
-            \item Plasma by E$\times$B force pushes blob towards chamber wall
+            \item Diamagnetic divergence gives current source in direction $\perp$ to drifts and hence circuit must be closed (through parallel or polarization current) \cite{omotani_effects_2015}
+            \begin{itemize}
+                \item Polarisation current: leads to inertial evolution and blob pushed by $J\times B$ force
+                \item Parallel current: leads to sheath dissipation and current induces potential due to sheath resistivity, blob pushed by $E\times B$ force from potential
+            \end{itemize}
         \end{enumerate}
         \item Large amount of 2D and 3D simulations \cite{omotani_effects_2015, easy_three_2014, nespoli_3d_2019, garcia_mechanism_2005, shanahan_fluid_2018} done to model blob structure and dynamic of blob to understand filament transport  
     \end{itemize}
-    \item Blob equations
+    \item Blob parameters and equations for 2D simulation (specifically blob2d in BOUT++) \cite{omotani_effects_2015}
     \begin{itemize}
-        \item No net current generation due to quasi neutrality (divergence free current density) \cite{krasheninnikov_recent_2008, krasheninnikov_scrape_2001, walkden_properties_2014} 
-        \item $\bm{J}$ is total plasma density, $\bm{J_{\perp}}$ and $\bm{J_{\parallel}b}$ the perpendicular and parallel components to vector b
+        \item Density n
+         \begin{itemize}
+            \item $L_{\parallel}$ is magnitude, $\phi$ is elctrostatic potential, $\bm{\hat{b}}$ is the unit vector in direction of magnetic field ($\bm{\hat{b}}=\bm{B}/B$), A is amplitude of filament, $\epsilon$ is the ratio of length of axes of the ellipse, $\alpha$ is tilted angle to x direction
+        \end{itemize}
         \begin{arrowlist}
-            \item $\nabla\cdot \bm{J}=\nabla\cdot \bm{J_{\perp}}+\nabla\cdot\left(b\bm{J_{\parallel}}\right)=0$
+            \item $\frac{dn}{dt}=\bm{\hat{b}\cdot g}\times \left(n\nabla\phi-\nabla n\right)+\frac{n\left(1-e^{-\phi}\right)}{L_{\parallel}}+\mu_n\nabla^2_{\perp}n$
+            \item $n\left(t=0\right)=n_0\left(1+A\exp{\left(-\frac{{{x'}^2/\epsilon}\,+\,{\epsilon {z'}^2}}{\delta^2}\right)}\right)$
+            \item $x'=x\,cos\,\alpha\,+\,z\,sin\,\alpha$
+            \item $z'=z\,cos\,\alpha\,-\,x\,sin\,\alpha$
+        \end{arrowlist}
+        \item Vorticity $\Omega$
+            \begin{itemize}
+            \item $V_{E\times B}$ is the $E\times B$ velocity
+            \end{itemize}
+        \begin{arrowlist}
+            \item $\frac{d\Omega}{dt}=-\frac{1}{2}\bm{\hat{b}\cdot}\nabla V^2_{E\times B}\times \nabla n-\bm{\hat{b}\cdot g}\times\nabla n+\frac{n\left(1-e^{-\phi}\right)}{L_{\parallel}}+\mu_i\nabla^2_{\perp}\Omega$
+            \item $\Omega=\nabla\cdot\left(n\nabla_{\perp}\phi\right)$
+        \end{arrowlist}
+        \item Filament size $\delta_x$,$\delta_z$
+            \begin{itemize}
+            \item $\delta$ is the geometric mean of the lengths of the axes
+            \end{itemize}
+            \begin{arrowlist}
+            \item $\delta_x=\delta\sqrt{\frac{\epsilon}{\left(cos^2\alpha\,+\,\epsilon^2sin^2\alpha\right)}}$
+            \item $\delta_z=\delta\sqrt{\frac{\epsilon}{\left(\epsilon^2cos^2\alpha\,+\,sin^2\alpha\right)}}$
+        \end{arrowlist}
+        \item Maximum velocity $V_f$
+        \begin{itemize}
+            \item Velocity scales with filament size and depends on regime
+            \item $\delta_x$ is lengthscale in x-direction. $R_c$ is radius of curvature of magnetic field (major radius), $\beta$ is constant
+        \end{itemize}
+        \begin{arrowlist}
+            \item Polarisation current (narrow filament): $V_f\sim\sqrt{gA\delta_x}$ ($g=\frac{1}{R_c}$)
+            \item Parallel current (wide filament): $V_f\sim \frac{L_{\parallel}g}{\delta^2_z}\frac{A}{1+\beta A}$
         \end{arrowlist}
     \end{itemize}
-    \item Blob closures
 \end{itemize}
 
 \subsection*{Gaussian processes} 
