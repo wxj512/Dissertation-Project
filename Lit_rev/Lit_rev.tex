@@ -1,5 +1,9 @@
 \documentclass{article}
 
+\usepackage{verbatim} %For word count
+
+\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
+
 \usepackage{helvet} %Set font type (helvetica)
 \renewcommand{\familydefault}{phv} %Set helvetica as default font
 
@@ -140,6 +144,10 @@
 
 \nocite{*}
 \printbibliography[title={References}]
+
+%TC:ignore
+\detailtexcount{Lit_rev}
+%TC:endignore
 
 \end{document}
 
