@@ -113,19 +113,21 @@
     \subsubsection*{Uncertainty Propagation}
     \subsubsection*{Surrogate Model}
     \begin{itemize}
-        \item Used to approximate mathematical models
-        \items Maps inputs to outputs without knowing the relationship between design and output variables
+        \item Used to approximate mathematical models and maps inputs to outputs without knowing the relationship between design and output variables \cite{williams_novel_2021}
         \item Gaussian Processes
         \begin{itemize}
             \item What are Gaussian processes \cite{hornsby_gaussian_2024}
             \begin{itemize}    
-                \item Machine learning method
-                \item Reduced 'model' to predict results
+                \item Machine learning method based on gaussian distributions
+                \item For each pairs of variables, compares the correlation between the variables (covariance)
+                \item Kernels are functions chosen to assume the distribution, used to generate a covariance matrix and that test points (variables) that are close should yield similar results (small covariance)
+                \item Training data are then added to covariance matrix for evaluation, and are points kernl functions must pass through
+                \item Kernels can be combined to yield better approximations
             \end{itemize}
         \end{itemize}
         \item Calibration
     \end{itemize}
-    \subsubsection*{Sensitivity Ana lysis}     
+    \subsubsection*{Sensitivity Analysis}     
 
 \nocite{*}
 \printbibliography[title={References}]
