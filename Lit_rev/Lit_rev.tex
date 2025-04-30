@@ -2,7 +2,7 @@
 
 \usepackage{verbatim} %For word count
 
-\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
+\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
 
 \usepackage{helvet} %Set font type (helvetica)
 \renewcommand{\familydefault}{phv} %Set helvetica as default font
@@ -33,6 +33,7 @@
 
 \maketitle
 
+%TC:ignore
 \noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
 
 \begin{figure}[h]
@@ -141,6 +142,15 @@
             \item Total-order Sobol indexis then calculated to determine if a parameter is non-influential and can be fixed if determined non-influential
         \end{itemize}
     \end{itemize}
+\pagebreak
+%TC:endignore
+
+%TC:ignore
+\noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
+%TC:endignore
+\section*{Literature Review}
+Plasma filaments are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) and transports heat material along the 
+\subsection*{Plasma Filament}
 
 \nocite{*}
 \printbibliography[title={References}]
