@@ -1,6 +1,6 @@
 \documentclass{article}
 
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc} %Only required if not using XeLatex
 \usepackage[T1]{fontenc}
 \usepackage[final]{microtype}
 \usepackage{bm} %Bold font for math equations
@@ -157,7 +157,9 @@ Uncertainty quantification is a framework that could model the uncertainties of 
 
 Through the use of uncertainty quantification, the parameters of the equations that govern plasma filament property could be analysed whilst avoiding being computationally expensive. 
 \subsection*{Plasma Filament}
-Plasma filaments are a common feature among magnetic fusion devices in different operating modes, appearing in devices such as tokamaks and stellarators and in operating modes including L-mode, H-mode and edge localised modes (ELMs) \cite{ben_ayed_inter-elm_2009, killer_plasma_2020, boedo_transport_2003}. The importance of this feature was due to the discovery of plasma recycling within the main chamber of the reactor, and instead of the fusion plasma flowing to the divertor as designed it was flowing into the chamber walls \cite{krasheninnikov_recent_2008,dippolito_convective_2011}. 
+Plasma filaments are a common feature among magnetic fusion devices in different operating modes, appearing in devices such as tokamaks and stellarators and in operating modes including L-mode, H-mode and edge localised modes (ELMs) \cite{ben_ayed_inter-elm_2009, killer_plasma_2020, boedo_transport_2003}. The importance of this feature was due to the discovery of plasma recycling within the main chamber of the reactor, and instead of the fusion plasma flowing to the divertor it was flowing into the chamber walls \cite{krasheninnikov_recent_2008,dippolito_convective_2011}.
+
+The mechanism for blob formation was proposed by Krashennikov in \cite{krasheninnikov_recent_2008, krasheninnikov_scrape_2001}. At first, the plasma would be separated and formed at the outmost layer of the SOL due to turbulent processes. Plasma polarization of the separated plasma would then occur due to drift effects within the vessel, such as the curvature drift and the $\bm{\nabla B}$ drift. The vertical charge separation then induces an $\bm{E}$ field in the perpendicular direction to the toroidal direction, leading to an $\bm{E}\times\bm{B}$ force on the plasma radially outward.                      
 
 \nocite{*}
 \printbibliography[title={References}]
