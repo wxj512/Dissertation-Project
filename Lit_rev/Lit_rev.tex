@@ -150,8 +150,14 @@
 \noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
 %TC:endignore
 \section*{Literature Review}
-Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is therefore important to quantify the properties of the blob as it has important implications of particle and heat transport of the plasma at the SOL, as well as directly impacting the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. 
+\subsection*{Overview}
+Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is useful to perform simulations on the filament as it could help to review particle and heat transport of the plasma at the SOL, as well as the impact on the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. In order to aid simulation, it would be useful to quantify the importance of each of the parameters that govern the properties of the blob.
+
+Uncertainty quantification is a framework that could model the uncertainties of the governing model parameters and the effect it has on the overall system \cite{sudret_surrogate_2017}. Using a surrogate model such as Gaussian processes, a sensitivity analysis can be performed on the parameters of the governing equations relating to the properties of the plasma filaments.
+
+Through the use of uncertainty quantification, the parameters of the equations that govern plasma filament property could be analysed whilst avoiding being computationally expensive. 
 \subsection*{Plasma Filament}
+Plasma filaments are a common feature among magnetic fusion devices in different operating modes, appearing in devices such as tokamaks and stellarators and in operating modes including L-mode, H-mode and edge localised modes (ELMs) \cite{ben_ayed_inter-elm_2009, killer_plasma_2020, boedo_transport_2003}. The importance of this feature was due to the discovery of plasma recycling within the main chamber of the reactor, and instead of the fusion plasma flowing to the divertor as designed it was flowing into the chamber walls \cite{krasheninnikov_recent_2008,dippolito_convective_2011}. 
 
 \nocite{*}
 \printbibliography[title={References}]
