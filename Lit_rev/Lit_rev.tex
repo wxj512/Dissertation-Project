@@ -1,7 +1,11 @@
 \documentclass{article}
 
-\usepackage{verbatim} %For word count
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[final]{microtype}
+\usepackage{bm} %Bold font for math equations
 
+\usepackage{verbatim} %For word count
 \newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
 
 \usepackage{helvet} %Set font type (helvetica)
@@ -9,13 +13,9 @@
 
 \usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
 
-\usepackage{bm} %Bold font for math equations
-
 \usepackage{enumitem} %Custom list
 \newlist{arrowlist}{itemize}{1} %Define custom list name
 \setlist[arrowlist]{label=$\rightarrow$} %Define arrow for custom list label
-
-\usepackage[utf8]{inputenc}
 
 \usepackage[url=false, doi=false, isbn=false, bibstyle=ieee, citestyle=numeric-comp]{biblatex} %Set bibliography style
 \addbibresource{Lit_rev.bib} %Imports .bib file
@@ -150,7 +150,7 @@
 \noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
 %TC:endignore
 \section*{Literature Review}
-Plasma filaments are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}
+Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is therefore important to quantify the properties of the blob as it has important implications of particle and heat transport of the plasma at the SOL, as well as directly impacting the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. 
 \subsection*{Plasma Filament}
 
 \nocite{*}
