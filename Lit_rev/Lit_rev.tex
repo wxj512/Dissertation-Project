@@ -156,14 +156,27 @@ Plasma filaments or blobs are coherent plasma structures that form from perturba
 Uncertainty quantification is a framework that could model the uncertainties of the governing model parameters and the effect it has on the overall system \cite{sudret_surrogate_2017}. Using a surrogate model such as Gaussian processes, a sensitivity analysis can be performed on the parameters of the governing equations relating to the properties of the plasma filaments.
 
 Through the use of uncertainty quantification, the parameters of the equations that govern plasma filament property could be analysed whilst avoiding being computationally expensive. 
+
 \subsection*{Plasma Filament}
 Plasma filaments are a common feature among magnetic fusion devices in different operating modes, appearing in devices such as tokamaks and stellarators and in operating modes including L-mode, H-mode and edge localised modes (ELMs) \cite{ben_ayed_inter-elm_2009, killer_plasma_2020, boedo_transport_2003}. The importance of this feature was due to the discovery of plasma recycling within the main chamber of the reactor, and instead of the fusion plasma flowing to the divertor it was flowing into the chamber walls \cite{krasheninnikov_recent_2008,dippolito_convective_2011}.
 
 The mechanism for blob formation was proposed by Krashennikov \textit{et al.} \cite{krasheninnikov_recent_2008, krasheninnikov_scrape_2001}. At first, the plasma would be separated and formed at the outmost layer of the SOL due to turbulent processes. Plasma polarization of the separated plasma would then occur due to particle drift effects within the vessel, such as the curvature drift and the $\bm{\nabla B}$ drift. The vertical charge separation then induces an $\bm{E}$ field in the perpendicular direction to the toroidal direction, leading to an $\bm{E}\times\bm{B}$ force on the plasma radially outward. An alternative mechanism of the current source was proposed by Omotani \textit{et al.} that a current source was due to the diamagnetic current drift in the plasma instead of the particle drifts. To maintain quasineutrality in the plasma, the circuit would be closed through polarisation current or parallel current configuration.
 
-As reviewed by \cite{dippolito_convective_2011} there are a large amount of simulations in 2D and 3D simulations done to understand blob dynamics with different closure schemes for the 2D model that explains the motion and properties of the blob. The most common closure scheme is sheath limited, assuming the filament is in the far SOL and parallel current limited by sheath resistivity. Other examples of closure schemes focus on the effects of enhanced polarization at X-points and magnetic field line bending due to high $\beta$ plasmas\cite{angus_effects_2012,krasheninnikov_recent_2008}.
+As reviewed by \cite{dippolito_convective_2011} there are a large amount of simulations in 2D and 3D simulations done to understand blob dynamics with different closure schemes for the 2D model that explains the motion and properties of the blob. The most common closure scheme is sheath limited, assuming the filament is in the far SOL and parallel current limited by sheath resistivity. Other examples of closure schemes focus on the effects of enhanced polarization at X-points and magnetic field line bending due to high $\beta$ plasmas\cite{krasheninnikov_recent_2008}. Work has been done to expand the blob models to include other physical phenomenons such as drift wave instabilities \cite {angus_effect_2012} and the cause of "Boltzman-like" potential due to blob spinning \cite{angus_effects_2012} to describe 3D effects on blob dynamics that affects the evolution of the 2D blob simulations.
 
+\begin{itemize}
+    \item 2D-3D simulation comparison
+    \item Governing equations and parameters
+\end{itemize}
 
+\subsection*{Uncertainty Quantification}
+\begin{itemize}
+    \item What is Uncertainty Quantification
+    \item Surrogate model and gaussian model $\rightarrow$ why gaussian and development of gaussian models
+    \item Sobol method
+    \item Examples and evolution of applications of surrogate models in high fidelity models
+    \item Application of surrogate model in Sobol methods
+\end{itemize}
 
 \nocite{*}
 \printbibliography[title={References}]
