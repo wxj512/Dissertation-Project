@@ -26,9 +26,11 @@
 \usepackage{caption} %For caption customizations
 \usepackage{subcaption}
 
+%TC:ignore
 \title{\textbf{Literature Review \\and \\Lay Summary}}
 \author{Jasper Ng}
 \date{May 2025}
+%TC:endignore
 
 \begin{document}
 
@@ -151,9 +153,9 @@
 %TC:endignore
 \section*{Literature Review}
 \subsection*{Overview}
-Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is useful to perform simulations on the filament as it could help to review particle and heat transport of the plasma at the SOL, as well as the impact on the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. In order to aid simulation, it would be useful to quantify the importance of each of the parameters that govern the properties of the blob.
+Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is useful to perform simulations on the evolution of plasma filaments as it could help to review particle and heat transport of the plasma at the SOL, as well as the impact on the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. In order to aid simulation, it would be useful to quantify the importance of each of the parameters that govern the properties of the blob.
 
-Uncertainty quantification is a framework that could model the uncertainties of the governing model parameters and the effect it has on the overall system \cite{sudret_surrogate_2017}. Using a surrogate model such as Gaussian processes, a sensitivity analysis can be performed on the parameters of the governing equations relating to the properties of the plasma filaments.
+Uncertainty quantification is a framework that could model the uncertainties of the governing model parameters and the effect it has on the overall system \cite{sudret_surrogate_2017}. Using surrogate models such as Gaussian processes, sensitivity analysis could be performed on the parameters of the governing equations relating to the properties of the plasma filaments.
 
 Through the use of uncertainty quantification, the parameters of the equations that govern plasma filament property could be analysed whilst avoiding being computationally expensive. 
 
@@ -164,12 +166,12 @@ The mechanism for blob formation was proposed by Krashennikov \textit{et al.} \c
 
 As reviewed by \cite{dippolito_convective_2011} there are a large amount of simulations in 2D and 3D simulations done to understand blob dynamics with different closure schemes for the 2D model that explains the motion and properties of the blob. The most common closure scheme is sheath limited, assuming the filament is in the far SOL and parallel current limited by sheath resistivity. Other examples of closure schemes focus on the effects of enhanced polarization at X-points and magnetic field line bending due to high $\beta$ plasmas\cite{krasheninnikov_recent_2008}. Work has been done to expand the blob models to include other physical phenomenons such as drift wave instabilities \cite {angus_effect_2012} and the cause of "Boltzman-like" potential due to blob spinning \cite{angus_effects_2012} to describe 3D effects on blob dynamics that affects the evolution of the 2D blob simulations.
 
-\begin{itemize}
-    \item 2D-3D simulation comparison
-    \item Governing equations and parameters
-\end{itemize}
+2D and 3D simulations were subsequently compared to review the accuracy of the 2D simulations to the 3D simulations as 3D simulations incorporate effects such as drift wave turbulence and blob spinning. It was concluded in \cite{angus_3d_2012}that the 2D simulation with sheath limited closure is only valid on time scales that were short compared to the time for the drift wave development. More agreeable results between 2D and 3D simulations were found in \cite{easy_three_2014} for sheath dissipation closure and in some cases for vorticity advection closure, but both articles concluded that 2D simulations could not replicate 3D simulation dynamics when drift wave turbulence and blob spinning effects become dominant.
+
+Since this project would be using the BOUT++ framework \cite{dudson_bout_2009} for blob simulation, the governing equations and relevant parameters for blob dynamics were referenced from the work by \cite{omotani_effects_2015}. The variables that describe blob properties include density (n), vorticity ($\Omega$), plasma length scales (in x and z directions, $\delta_x$ and $\delta_z$) and maximum filament velocity ($V_f$), with $V_f$ being the output variable scaling with plasma filament amplitude compared with the background (A), and $\delta_x$ or $\delta_z$, depending on the regime.  
 
 \subsection*{Uncertainty Quantification}
+
 \begin{itemize}
     \item What is Uncertainty Quantification
     \item Surrogate model and gaussian model $\rightarrow$ why gaussian and development of gaussian models
