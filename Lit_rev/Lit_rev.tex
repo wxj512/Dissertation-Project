@@ -171,8 +171,10 @@ As reviewed by \cite{dippolito_convective_2011} there are a large amount of  2D 
 Since this project would be using the BOUT++ framework \cite{dudson_bout_2009} for blob simulation, the governing equations and relevant parameters for blob dynamics were referenced from the work by \cite{omotani_effects_2015}. The mathematical model used in this work considered the filament velocity would be limited by inertial and sheath currents, with the assumption that parallel resistivity would be insignificant for parallel currents to reach the sheath. The variables that describe blob properties include density (n), vorticity ($\Omega$), plasma length scales (in x and z directions, $\delta_x$ and $\delta_z$) and maximum filament velocity ($V_f$), with $V_f$ being the output variable scaling with plasma filament amplitude compared with the background (A), and $\delta_x$ or $\delta_z$, depending on the regime.  
 
 \subsection*{Uncertainty Quantification}
-Uncertainty quantification is the process that quantifies the uncertainties in the output by evaluating the uncertainties of the input of a mathematical model, that "deals with assessing, characterising
-and managing uncertainty in computer models and simulations" \cite{wu_chapter_2024,li }. 
+Uncertainty quantification is the process that quantifies the uncertainties in the output by evaluating the uncertainties of the input of a mathematical model, that "deals with assessing, characterising and managing uncertainty in computer models and simulations" \cite{wu_chapter_2024,li_gaussian_2025}. The uncertainty assessed could then be used for functions such as optimisation, sensitivity analysis and parameter estimations for the model. In the context of this project, uncertainty quantification would be used to perform sensitivity analysis on the input parameters for the model under the BOUT++ framework to assess the importance and influence of each parameter on the dynamics of blob simulation.
+
+Sobol method is a common method for performing sensitivity analysis of the model parameter, and has been applied models in other fields including biomechanics \cite{wirthl_global_2023} and pharmacology \cite{zhang}
+%TC:ignore
 \begin{itemize}
     \item What is Uncertainty Quantification
     \item Surrogate model and gaussian model $\rightarrow$ why gaussian and development of gaussian models
@@ -180,6 +182,7 @@ and managing uncertainty in computer models and simulations" \cite{wu_chapter_20
     \item Examples and evolution of applications of surrogate models in high fidelity models
     \item Application of surrogate model in Sobol methods
 \end{itemize}
+%TC:endignore
 
 \nocite{*}
 \printbibliography[title={References}]
