@@ -1,0 +1,102 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} %Only required if not using XeLatex
+\usepackage[T1]{fontenc}
+\usepackage[final]{microtype}
+\usepackage{bm} %Bold font for math equations
+
+\usepackage{verbatim} %For word count
+\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
+
+\usepackage{helvet} %Set font type (helvetica)
+\renewcommand{\familydefault}{phv} %Set helvetica as default font
+
+\usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
+
+\usepackage{enumitem} %Custom list
+\newlist{arrowlist}{itemize}{1} %Define custom list name
+\setlist[arrowlist]{label=$\Rightarrow$} %Define arrow for custom list label
+
+\usepackage{graphicx} %Required for graphics and figures
+\graphicspath{ {./Fig/} }
+\usepackage[export]{adjustbox} %Used for adjusting image box
+\usepackage{caption} %For caption customizations
+\usepackage{subcaption}
+
+\title{\textbf{Uncertainty Quantification of Plasma Filament in the Tokamak Scrape-off Layer}}
+\author{Jasper Ng}
+\date{May 2025}
+
+\begin{document}
+
+\maketitle
+
+\noindent{\textbf{\Large Project Log}}
+
+\begin{arrowlist}
+    \item Week starting from 02/04/2025
+    \begin{itemize}
+        \item Discussed about the project specifics:
+        \begin{itemize}
+        	\item Premise of the project
+        	\item Computational and physics aspects
+            \begin{itemize}
+        		\item[] Computational:
+                \begin{itemize}
+        			\item Use of Linux to compile C/C++ programmes
+        			\item Use of Blob2d from BOUT++ framework
+        			\item Use python for "gluing" everything together
+                \end{itemize}
+        		\item[] Physics:
+                \begin{itemize}
+        			\item Plasma filament occur in SOL of MCF fusion plasmas
+        			\item Filaments created due to ExB forces
+        			\item Blob size with different motions
+                \end{itemize}
+            \end{itemize}
+        	\item Goals and objectives
+        \end{itemize}
+        \item Reading materials related to project
+        \begin{itemize}
+        	\item Plasma filament
+        	\item Application of Gaussian process on tearing modes
+        \end{itemize}
+    \end{itemize}
+    
+    \item Week starting from 04/03/2025
+    \begin{itemize}
+        \item Discussion on Gaussian processes and specifics on components and methods:
+        \begin{itemize}
+        	\item Covariance matrix of multivariate Gaussian functions
+        	\item Kernels for Gaussian processes
+        \end{itemize}
+        \item Risk assessment reviewed and submitted
+    \end{itemize}
+    
+    \item Week starting from 14/03/2025
+    \begin{itemize}
+        \item Discussion on project specifics
+        \begin{itemize}
+        	\item Computational: Focus on environmental variables not numerical variables
+        	\item Application of Gaussian process on plasma filament (blobs)
+        \end{itemize}
+        \item Version control training
+    \end{itemize}
+    
+    \item Week from 27/03/2025
+    - Project objectives for the coming weeks
+    	- Install gcc on WSL
+    	- Compile BOUT++ and build programme
+    	  - Blob2d compiled and performed test runs
+    	- Create local and GitHub repository	
+    	- Create project log
+    - Lay summary and Literature review
+    	- Deadline 08/05/2025
+    	- Record literature in Zotero
+    
+    \item Week from 15/04/2025
+    
+    \item Week from 29/04/2025
+\end{arrowlist}
+
+\end{document}
