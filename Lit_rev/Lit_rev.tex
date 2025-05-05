@@ -23,7 +23,7 @@
 \usepackage{subcaption}
 
 %TC:ignore
-\title{\textbf{Literature Review \\and \\Lay Summary}}
+\title{\textbf{Uncertainty Quantification of Plasma Filament in the Tokamak Scrape-off Layer}}
 \author{Jasper Ng}
 \date{May 2025}
 %TC:endignore
@@ -32,11 +32,18 @@
 
 \maketitle
 
-%TC:ignore
-\begin{center}
-    \noindent{\textbf{\Large Uncertainty Quantification of Plasma Filament in the Tokamak \\Scrape-off Layer}}
-\end{center}
-%TC:endignore
+\section*{Lay Summary}
+Fusion is the process of fusing two atoms together, releasing energy in the process. Due to the conditions required for fusion to occur, all contents that undergo fusion would become a charged gas, which is a state called plasma. In a magnetic fusion device that is usually a doughnut-shaped torus, fusion would occur within the device, and the drive to fuse two atoms together would be provided by strong magnetic fields. Due to the influence of strong magnetic fields and instabilities at the edge of this plasma, blobs of plasma called plasma filaments or blobs would be ejected from the edge and travel in a circular motion, following the magnetic field lines until it hits the sidewall of the vessel and damaging it. Hence, increasing amounts of research in recent years has focused on investigating the dynamics of how this blob evolves as it travels in the vessel. To describe the dynamics of the evolution of a blob, mathematical models were developed and computational simulations were performed and compared with experimental data to test the models.
+
+Mathematical models are a framework of equations that are used to describe the properties of the subject of interest that varies in time. In the context of plasma filaments, the model could be used to find properties such as density, size and velocity of the blob. Models require inputs to produce outputs, and each input individually and through the interaction with other inputs will have varying impact on the output. The impact of each parameter would be ranked to review how much impact it would have on the output result when changing the particular input result.
+
+In order to determine the impact of the inputs have on the model output, each inputs would be changed fed into the model to compute the output, and this process would be repeated a large number of times to determine the impact for each input parameter. This would require a lot of resources or time in terms of computation to evaluate if the full model were used. Therefore, a faster, lighter surrogate model that could compute similarly as the full model that requires less resource to compute would be used to perform the task.
+
+In this work, models that output the properties of plasma filaments would be investigated and to determine the impact each input has on the model output. To reduce the resources required for the large amount of model evaluations, a surrogate model would be used.    
+
+\section*{Abstract}
+Plasma filaments or blobs evolution dynamics have been the focus of recent studies for magnetic fusion devices, and an increasing amount of interest have been given to simulation of the blobs. A common model used in 2D simulations is the sheath limited model and requires input of parameters such as density (n), vorticity ($\Omega$) and plasma length scales ($\delta$). In this work, the importance of each model parameter and interactions between the model parameters were determined and ranked through the application of uncertainty quantification using the Sobol method and a surrogate model such as Gaussian Processes (GP).
+
 \section*{Literature Review}
 \subsection*{Overview}
 Plasma filaments or blobs are coherent plasma structures that form from perturbations in the Scrape-off Layer (SOL) that transport heat and material across the magnetic field lines \cite{dippolito_convective_2011, hoare_dynamics_2019}. It is useful to perform simulations on the evolution of plasma filaments as it could help to review particle and heat transport of the plasma at the SOL, as well as the impact on the durability and lifetime of plasma facing materials and vessel walls \cite{carralero_experimental_2015, krasheninnikov_recent_2008}. In order to aid simulation, it would be useful to quantify the importance of each of the parameters that govern the properties of the blob.
@@ -64,6 +71,9 @@ Sensitivity analysis (SA) is a process that evaluates the contribution of a mode
 Sobol method is a common GSA method for performing SA on the model parameters and has been applied to models in other fields, including biomechanics \cite{wirthl_global_2023} and pharmacology \cite{zhang_sobol_2015}. It is a variance-based method and divides the output variance to the contributing parameters of the model. As stated in \cite{wirthl_global_2023} and \cite{zhang_sobol_2015}, a sizeable sample is required for a reliable Sobol SA, and even smaller samples requiring ~1000 evaluations. This would be computationally expensive for high-fidelity models such as BOUT++, hence a less computationally expensive surrogate model would be desirable.
 
 Common surrogate models include functions such as polynomial chaos expansion, gaussian processes and low-rank tensor approximations that emulate the high-fidelity model with low computational cost \cite{sudret_surrogate_2017}. Gaussian processes (GP) are chosen for this project as it exhibits smaller prediction error at lower dimensions \cite{gammel_gaussian_2024}, and that it has been applied in a similar topic of the same field \cite{hornsby_gaussian_2024}. 
+
+\subsection*{Conclusion}
+In conclusion, plasma filaments are an important and active area of study due to the damage that could be inflicted on vessel walls, and 2D simulations of plasma filaments could help to investigate the evolution of the blobs. In order to determine the importance of different parameters of the model used in the 2D simulation, uncertainty quantification through the application of Sobol method and a surrogate model such as Gaussian processes would be utilised in this work to rank the impact of the model parameters individually and in relation to other parameters whilst keeping the computational cost low.
 
 \nocite{*}
 \printbibliography[title={References}]
