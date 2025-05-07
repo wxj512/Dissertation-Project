@@ -5,23 +5,16 @@
 \usepackage[final]{microtype}
 \usepackage{bm} %Bold font for math equations
 
-\usepackage{verbatim} %For word count
-\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
-
 \usepackage{helvet} %Set font type (helvetica)
 \renewcommand{\familydefault}{phv} %Set helvetica as default font
 
-\usepackage[a4paper, margin=25mm]{geometry} %Setting document size and margin width
+\usepackage[a4paper]{geometry} %Setting document size and margin width
 
 \usepackage{enumitem} %Custom list
 \newlist{arrowlist}{itemize}{1} %Define custom list name
 \setlist[arrowlist]{label=$\Rightarrow$} %Define arrow for custom list label
 
-\usepackage{graphicx} %Required for graphics and figures
-\graphicspath{ {./Fig/} }
-\usepackage[export]{adjustbox} %Used for adjusting image box
-\usepackage{caption} %For caption customizations
-\usepackage{subcaption}
+\usepackage{hyperref} %For url
 
 \title{\textbf{Uncertainty Quantification of Plasma Filament in the Tokamak Scrape-off Layer}}
 \author{Jasper Ng}
@@ -101,7 +94,22 @@
     \end{itemize}
     
     \item Week from 15/04/2025
-    
+    \begin{itemize}
+        \item Discussion on coding specifics, and flags for compiling BOUT++ as well as running blob2d
+        \begin{itemize}
+            \item Record method of compilation such as use of cmake, and any flags/checks used
+            \item Generally, less checks = faster runs, and checks include (refer to bout-dev build guide for checks):
+            \begin{itemize}
+                \item check
+                \item DCMAKE\_CXX\_FLAGS="-O3"
+                \item DBUILD\_TYPE=Debug
+                \item DCHECK=0
+            \end{itemize}
+            \item Documentation for bout-dev: \url{https://bout-dev.readthedocs.io/en/latest/user_docs/quickstart.html#running-bout}
+            \item Documentation for xbout module: \url{https://xbout.readthedocs.io/en/latest/index.html}, used for analysing results from BOUT++ runs
+            \item For applying more cores for application run, use command "mpirun -n x" with x for amount of cores
+        \end{itemize}
+    \end{itemize}
     \item Week from 29/04/2025
 \end{arrowlist}
 
