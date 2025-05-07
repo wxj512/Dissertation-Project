@@ -14,6 +14,12 @@
 \newlist{arrowlist}{itemize}{1} %Define custom list name
 \setlist[arrowlist]{label=$\Rightarrow$} %Define arrow for custom list label
 
+\usepackage{graphicx} %Required for graphics and figures
+\graphicspath{ {./Fig/} }
+\usepackage[export]{adjustbox} %Used for adjusting image box
+\usepackage{caption} %For caption customizations
+\usepackage{subcaption}
+
 \usepackage{hyperref} %For url
 
 \title{\textbf{Uncertainty Quantification of Plasma Filament in the Tokamak Scrape-off Layer}}
@@ -110,6 +116,24 @@
             \item Github repository created to track project progress: \url{https://github.com/wxj512/Dissertation-Project.git}
         \end{itemize}
     \end{itemize}
+    
+    \begin{figure}[h]
+        \centering
+        \begin{subfigure}[c]{0.45\linewidth}
+            \centering
+            \includegraphics[width=0.9\linewidth]{Project_log/Fig/Fig1 blob2d example run.png}
+            \normalsize{\caption{Console view of blob2d run}}
+            \label{fig:fig1}
+        \end{subfigure}
+        \hspace{0.05\linewidth}
+        \begin{subfigure}[c]{0.45\linewidth}
+            \centering
+            \includegraphics[width=0.9\linewidth]{Project_log/Fig/Fig2 blob at t 400.png}
+            \normalsize{\caption{Density of blob at t=400s}}
+            \label{fig:fig2}
+        \end{subfigure}
+        \normalsize{\caption{Blob simulation using blob2d in built with BOUT++ using delta\_1 example}}
+    \end{figure}
     
     \item \textbf{Week from 29/04/2025}
        \begin{itemize}
