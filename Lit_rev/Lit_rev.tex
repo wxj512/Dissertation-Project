@@ -6,7 +6,7 @@
 \usepackage{bm} %Bold font for math equations
 
 \usepackage{verbatim} %For word count
-\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex output.bbl > #1.wcdetail}\verbatiminput{#1.wcdetail}}
+\newcommand{\detailtexcount}[1]{\immediate\write18{texcount -merge -sum -nobib  #1.tex > #1.wcdetail}\verbatiminput{#1.wcdetail}}
 
 \usepackage{helvet} %Set font type (helvetica)
 \renewcommand{\familydefault}{phv} %Set helvetica as default font
