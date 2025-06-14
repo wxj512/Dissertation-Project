@@ -3,6 +3,7 @@
 *~*.tmp
 *.out
 
+For Latex:
 *.aux
 *.bcf
 *.blg
@@ -13,3 +14,7 @@
 *.*.xml
 *.pdf
 *.log
+
+For data:
+*.*.pid.*
+*.log.*
