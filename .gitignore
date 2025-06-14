@@ -18,3 +18,4 @@ For Latex:
 For data:
 *.*.pid.*
 *.log.*
+*.restart.*.nc
