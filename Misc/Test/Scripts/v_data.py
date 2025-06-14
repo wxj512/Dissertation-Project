@@ -58,7 +58,6 @@ if __name__ == "__main__":
 
     dist_array, vel_array = vel_calc(CoM_array)
 
-    print(vel_array)
     plt.plot(ds["t"].values, dist_array, ds["t"].values, vel_array)
 
     plt.show()
