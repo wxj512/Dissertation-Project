@@ -2,6 +2,7 @@ import numpy as np
 from xbout import open_boutdataset
 import matplotlib.pyplot as plt
 from scipy import ndimage
+from boututils import calculus as calc
 
 def data_import(_):
     folder = "delta_1"
@@ -32,32 +33,38 @@ def vel_calc(array):
         p1 = array[i,:]
         p2 = array[i+1,:]
         dist = np.linalg.norm(p2 - p1)
-
+        
         if i == 0:
             dist_array = np.zeros(1)
         
         dist_array = np.append(dist_array,dist)
-
+        
     vel_array = np.gradient(dist_array)
         
     return dist_array, vel_array
 
+def v_plot(time_array, dist_array, vel_array):
+    f1 = plt.figure(1)
+    ax1 = f1.gca()
+    ax1.set_title("Distance and velocity of blob")
+    ax1.plot(time_array, dist_array, label="Distance")
+    ax1.plot(time_array, vel_array, label="Velocity")
+    ax1.legend()
+    ax1.set_xlabel("Time")
+    plt.show()
+
 if __name__ == "__main__":
     filepath = data_import("")
 
-    ds = open_boutdataset(filepath + "BOUT.dmp.*.nc")
+    ds = open_boutdataset(filepath + "BOUT.dmp.*.nc", info=False)
     ds = ds.squeeze(drop=True)
 
     dx = ds["dx"].isel(x=0).values
     ds = ds.drop_vars("x")
     ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
-    #ds_data["n"].plot(x="x", y="z")
-
     CoM_array = CoM_calc(ds)
 
     dist_array, vel_array = vel_calc(CoM_array)
 
-    plt.plot(ds["t"].values, dist_array, ds["t"].values, vel_array)
-
-    plt.show()
+    v_plot(ds["t"].values, dist_array, vel_array)
