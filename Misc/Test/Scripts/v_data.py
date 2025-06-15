@@ -24,7 +24,7 @@ def CoM_calc(ds):
 
         return CoM_array
 
-def vel_calc(array):
+def vel_calc(array, mode):
     for i,vals in enumerate(array):
     
         if i == np.shape(array)[0] - 1:
@@ -41,7 +41,14 @@ def vel_calc(array):
         
     vel_array = np.gradient(dist_array)
         
-    return dist_array, vel_array
+    if mode == "vx" or "full":
+        vx = np.gradient(np.gradient(array[:,0]))
+        vz = np.gradient(np.gradient(array[:,1]))
+        return dist_array, vel_array, vx, vz
+    else:
+        return dist_array, vel_array
+
+    
 
 def v_plot(time_array, dist_array, vel_array):
     f1 = plt.figure(1)
@@ -65,6 +72,8 @@ if __name__ == "__main__":
 
     CoM_array = CoM_calc(ds)
 
-    dist_array, vel_array = vel_calc(CoM_array)
+    dist_array, vel_array, vx, vz = vel_calc(CoM_array, "full")
+
+    print(CoM_array)
 
     v_plot(ds["t"].values, dist_array, vel_array)
