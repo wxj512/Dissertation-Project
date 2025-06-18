@@ -9,18 +9,18 @@ def data_import(_):
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
-def CoM_calc(ds):
+def CoM_calc(ds, Gridsize=0.3):
         for i,vals in enumerate(ds["t"].values):
 
             ds_data = ds.isel(t=i)
-            CoM = np.array([ndimage.center_of_mass(ds_data["n"].values-1)])*0.3
+            CoM = np.array([ndimage.center_of_mass(ds_data["n"].values-1)])*Gridsize
 
             if i == 0:
                 CoM_array = np.empty(CoM.size)
                 CoM_array = CoM
-                continue
+            else:
+                CoM_array = np.append(CoM_array, CoM, axis=0)
             
-            CoM_array = np.append(CoM_array, CoM, axis=0)
 
         return CoM_array
 
@@ -73,7 +73,5 @@ if __name__ == "__main__":
     CoM_array = CoM_calc(ds)
 
     dist_array, vel_array, vx, vz = vel_calc(CoM_array, "full")
-
-    print(CoM_array)
 
     v_plot(ds["t"].values, dist_array, vel_array)
