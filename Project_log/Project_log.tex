@@ -174,15 +174,15 @@
                 \item The CoM at each time interval of the simulation is found and using the known time difference at each time interval, the velocity is found by using (\ref{V_f_eqn}) and dividing the change in CoM by the time difference (or the gradient of the CoM array)
                 \item Distance/velocity could be calculated for each individual coordinate, or as an euclidean distance between 2 points of CoM for each pair of time intervals
                 \item For the delta\_1 example case (Found in BOUT++ repository: \url {https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}), the time difference for each interval is 50, and the grid size for both coordinates (dx or dz) is 0.3
-                \item The CoM is found using the center\_of\_mass module from scipy and the gradient and linalg.norm module from numpy
+                \item The CoM is found using the center\_of\_mass module from scipy and the gradient and linalg.norm module from numpy and the full python file for processing could be found in the github repository of the project (\url{https://github.com/wxj512/Dissertation-Project.git} in Misc/Test/Scripts/v\_data.py)
             \end{itemize}  
        \end{itemize}
 
     \begin{figure}[H]
     \centering
-        \includegraphics[height=0.3\textheight]{./Fig/Fig1 blob2d example run.png}
-        \normalsize{\caption{Console view of blob2d run}}
-        \label{fig:fig1}
+        \includegraphics[height=0.5\textheight]{./Fig/Fig3 vel plot.png}
+        \normalsize{\caption{Velocity and Distance plot for delta\_1 example}}
+        \label{fig:fig3}
     \end{figure}   
     
 \end{arrowlist}
