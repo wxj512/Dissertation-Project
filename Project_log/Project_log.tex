@@ -15,13 +15,16 @@
 \setlist[arrowlist]{label=$\Rightarrow$} %Define arrow for custom list label
 
 \usepackage{graphicx} %Required for graphics and figures
-\graphicspath{ {./Fig/} }
+\graphicspath{./Fig/}
 \usepackage[export]{adjustbox} %Used for adjusting image box
 \usepackage{caption} %For caption customizations
 \usepackage{subcaption}
 \usepackage{float} %For [H] options of inserting figure
 
-\usepackage{hyperref} %For url
+\usepackage[url=false, doi=false, isbn=false, bibstyle=ieee, citestyle=numeric-comp]{biblatex} %Set bibliography style (also error on compilation if not used)
+\addbibresource{ref.bib} %Imports .bib file
+
+\usepackage[breaklinks]{hyperref} %For url
 
 \title{\textbf{Uncertainty Quantification of Plasma Filament in the Tokamak Scrape-off Layer}}
 \author{Jasper Ng}
@@ -132,12 +135,59 @@
         \label{fig:fig2}
     \end{figure}   
     
-    
     \item \textbf{Week from 29/04/2025}
        \begin{itemize}
             \item Drafted and finished literature review
             \item Refer to Lit\_rev\_plan.tex for details (could be found on Github repository)
        \end{itemize}
+
+    \item \textbf{Week from 12/06/2025}
+        \begin{itemize}
+            \item Equations used in the blob2d simulation could be checked in the source file from BOUT-dev repository in BOUT-dev/examples/blob2d/blob2d.cxx
+            \begin{itemize}
+                \item Model (equations) solves and output density (n) and vorticity ($\Omega$) (equation taken from source file based on \cite{dudson_bout_2009}:
+                \begin{itemize}
+                    \item Base Equations:
+                    \item[] $\frac{\partial n}{\partial t}=-\left[\phi,n\right]+2\frac{\rho_s}{R_c}\frac{\partial n}{\partial z}+D_n{\nabla^2_{\perp}}n$
+                    \item[] $\frac{\partial \Omega}{\partial t}=-\left[\phi,\Omega\right]+\frac{2}{n}\frac{\rho_s}{R_c}\frac{\partial n}{\partial z}+\frac{1}{n}D_{\Omega}{\nabla^2_{\perp}}{\Omega}$
+                    \item Compressible $E\times B$ term option:
+                    \item [] (For $\frac{\partial n}{\partial t}$) Add $-2n\frac{\partial \phi}{\partial z}\frac{\rho_s}{R_c}$
+                    \item Sheath closure option:
+                    \item [] (For $\frac{\partial n}{\partial t}$) Add $n\phi\frac{\rho_s}{L_{\parallel}}$
+                    \item [] (For $\frac{\partial \Omega}{\partial t}$) Add $\phi\frac{\rho_s}{L_{\parallel}}$
+                \end{itemize}
+                \item Output variables are normalised and scaled to $1\times 10^{-19}$
+            \end{itemize}
+            \item With reference to \cite{omotani_effects_2015} input parameters could change velocity of blob. Since this project is revolved around uncertainty quantification of plasma filament, input parameters that would affect the output would have to be defined. However, as shown above, model only outputs n and $\Omega$, hence velocity would have to be calculated.
+            \begin{itemize}
+                \item Velocity of the 'blob' could be defined by the distance moved within the time frame of simulation: 
+                \begin{equation}\label{V_f_eqn}
+                    V_f=\frac{dx}{dt}
+                \end{equation}
+                \item To define the distance (x) moved for the blob, the centre of mass (CoM) of the blob would have to be defined in order to calculate the overall movement of the blob within the grid
+                \item Since the model uses a coordinated grid to solve for n and $\Omega$ the CoM is the weighted average of the density distribution of the grid:
+                \item[] \[ \sum_{i=1}^{N} \left(c_{i(x,z)}-c_{CoM(x,z)}\right)\times n_i \]
+                \begin{equation}
+                    c_{CoM(x,z)}=\frac{\sum_{i=1}^{N} n_ic_{i(x,z)}}{\sum_{i=1}^{N} ni}
+                \end{equation} 
+                \item where N is the number of points of the grid, c represents the coordinate (x or z for the blob2d model) and n is the density of the blob at each time interval of the simulation
+                \item The CoM at each time interval of the simulation is found and using the known time difference at each time interval, the velocity is found by using (\ref{V_f_eqn}) and dividing the change in CoM by the time difference (or the gradient of the CoM array)
+                \item Distance/velocity could be calculated for each individual coordinate, or as an euclidean distance between 2 points of CoM for each pair of time intervals
+                \item For the delta\_1 example case (Found in BOUT++ repository: \url {https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}), the time difference for each interval is 50, and the grid size for both coordinates (dx or dz) is 0.3
+                \item The CoM is found using the center\_of\_mass module from scipy and the gradient and linalg.norm module from numpy
+            \end{itemize}  
+       \end{itemize}
+
+    \begin{figure}[H]
+    \centering
+        \includegraphics[height=0.3\textheight]{./Fig/Fig1 blob2d example run.png}
+        \normalsize{\caption{Console view of blob2d run}}
+        \label{fig:fig1}
+    \end{figure}   
+    
 \end{arrowlist}
+
+\nocite{*}
+\printbibliography[title={References}]
 
 \end{document}
