@@ -76,7 +76,7 @@ def vel_calc(array):
 
 
 def v_plot(time_array, dist_array, vel_array):
-    f1 = plt.figure(1)
+    f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()
     ax2 = ax1.twinx()
     col = plt.cm.plasma([0.1, 0.7])
