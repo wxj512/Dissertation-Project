@@ -124,15 +124,15 @@
     \begin{figure}[H]
     \centering
         \includegraphics[height=0.3\textheight]{./Fig/Fig1 blob2d example run.png}
-        \normalsize{\caption{Console view of blob2d run}}
-        \label{fig:fig1}
+        \normalsize{\caption{Console view of blob2d run}
+        \label{fig:fig1}}
     \end{figure}   
 
     \begin{figure}[H]
     \centering
         \includegraphics[height=0.5\textheight]{./Fig/Fig2 blob at t 400.png}
-        \normalsize{\caption{Density (n) of blob at t=400s using input conditions from delta\_1 example}}
-        \label{fig:fig2}
+        \normalsize{\caption{Density (n) of blob at t=400s using input conditions from delta\_1 example}
+        \label{fig:fig2}}
     \end{figure}   
     
     \item \textbf{Week from 29/04/2025}
@@ -181,9 +181,16 @@
     \begin{figure}[H]
     \centering
         \includegraphics[height=0.5\textheight]{./Fig/Fig3 vel plot.png}
-        \normalsize{\caption{Velocity and Distance plot for delta\_1 example}}
-        \label{fig:fig3}
+        \normalsize{\caption{Velocity and Distance plot for delta\_1 example}
+        \label{fig:fig3}}
     \end{figure}   
+
+    \item \textbf{Correction and Supplement to Week from 12/06/2025}
+    \begin{itemize}
+        \item For reference of the python file for processing, in addition to the file location provided, the commit hash of the file is 628ecbf
+        \item For \ref{fig:fig3}: Figure is updated to below to give proper labels for axis. Time is normalised to the inverse of cyclotron frquency ($1/\Omega_i$), distance is normalised to Bohm gyro radius ($\rho_s$) and velocity is normalised to Bohm sound speed ($c_s$). Default units were taken from blob2d.cxx source file (Found in BOUT++ repository: \url{https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}) 
+    \end{itemize}
+    
     
 \end{arrowlist}
 
