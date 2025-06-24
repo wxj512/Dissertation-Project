@@ -83,7 +83,7 @@ def v_plot(time_array, dist_array, vel_array):
     ax1.set_title("Distance and velocity of blob")
     ax1.plot(time_array, dist_array, label = "Distance", color = col[0])
     ax2.plot(time_array, vel_array, label = "Velocity", color = col[1])
-    ax1.set_xlabel("Time/$\\Omega_i$")
+    ax1.set_xlabel("Time/(1/$\\Omega_i$)")
     ax1.set_ylabel("Distance/$\\rho_s$")
     ax2.set_ylabel("Velocity/$c_s$")
     f1.tight_layout()
