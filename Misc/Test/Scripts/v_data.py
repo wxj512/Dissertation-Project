@@ -33,7 +33,7 @@ class consts:
             self.Te0 = 30            # Isothermal temperature [eV]
             self.n0 = 1e19           # Background density [m^-3]
 
-def CoM_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = ""):
+def n_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = "", method = "CoM"):
         if not(BOUT_inp == ""):
             n0_scale = consts(BOUT_inp).n0_scale
             Gridsize = consts(BOUT_inp).Gridsize
@@ -41,15 +41,17 @@ def CoM_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = ""):
         for i,vals in enumerate(ds["t"].values):
 
             ds_data = ds.isel(t = i)
-            CoM = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
+
+            if method == "CoM":
+                n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
 
             if i == 0:
-                CoM_array = np.empty(CoM.size)
-                CoM_array = CoM
+                n_array = np.empty(n_point.size)
+                n_array = n_point
             else:
-                CoM_array = np.append(CoM_array, CoM, axis = 0)
+                n_array = np.append(n_array, n_point, axis = 0)
             
-        return CoM_array
+        return n_array
 
 def vel_calc(array):
     for i,vals in enumerate(array):
@@ -103,8 +105,8 @@ if __name__ == "__main__":
     ds = ds.drop_vars("x")
     ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
-    CoM_array = CoM_calc(ds, BOUT_inp=BOUT_inp)
+    n_array = n_calc(ds, BOUT_inp=BOUT_inp)
 
-    dist_x, dist_z, vx, vz = vel_calc(CoM_array)
+    dist_x, dist_z, vx, vz = vel_calc(n_array)
 
     v_plot(ds["t"].values, dist_x, vx)
