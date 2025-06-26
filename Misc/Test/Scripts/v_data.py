@@ -59,38 +59,57 @@ def vel_calc(array):
         if i == np.shape(array)[0] - 1:
             break
 
-        p1 = array[i,:]
-        p2 = array[i+1,:]
+        # p1 = array[i,:]
+        # p2 = array[i+1,:]
 
-        dist = p2 - p1
+        # dist = p2 - p1
         
-        if i == 0:
-            dist_x = np.zeros(1)
-            dist_z = np.zeros(1)
+        # if i == 0:
+        #     dist_x = np.zeros(1)
+        #     dist_z = np.zeros(1)
         
-        dist_x = np.append(dist_x,dist[0])
-        dist_z = np.append(dist_x,dist[1])
+        dist_x = array[:,0] - array[0,0]
+        dist_z = array[:,1] - array[0,1]
         
-        vx = np.gradient(np.gradient(array[:,0]))
-        vz = np.gradient(np.gradient(array[:,1]))
+        vx = np.gradient(dist_x)
+        vz = np.gradient(dist_z)
 
     return dist_x, dist_z, vx, vz
 
 
-def v_plot(time_array, dist_array, vel_array):
+def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
+
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()
     ax2 = ax1.twinx()
-    col = plt.cm.plasma([0.1, 0.7])
-    ax1.set_title("Distance and velocity of blob")
-    ax1.plot(time_array, dist_array, label = "Distance", color = col[0])
-    ax2.plot(time_array, vel_array, label = "Velocity", color = col[1])
+    if not(title == ""):
+        ax1.set_title("Distance and velocity of blob " + title)
+    else:
+        ax1.set_title("Distance and velocity of blob")
+    box = ax1.get_position()
+    ax1.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    ax2.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+    plots = np.shape(dist_array)[0]
+    cmap = plt.cm.tab10.colors[:]
+
+    for no,val in enumerate(np.linspace(0, plots -1, plots)):
+        
+        if not(plot_label == ""):
+            ax1.plot(time_array, dist_array[no], label = "Distance " + plot_label[no], color = cmap[2 * no])
+            ax2.plot(time_array, vel_array[no], label = "Velocity " + plot_label[no], color = cmap[2 * no + 1])
+        else:
+            ax1.plot(time_array, dist_array[no], label = "Distance", color = cmap[2 * no])
+            ax2.plot(time_array, vel_array[no], label = "Velocity", color = cmap[2 * no + 1])
+
     ax1.set_xlabel("Time/(1/$\\Omega_i$)")
     ax1.set_ylabel("Distance/$\\rho_s$")
     ax2.set_ylabel("Velocity/$c_s$")
-    f1.tight_layout()
-    f1.legend(loc='upper right', bbox_to_anchor=(0.85, 0.9))
+    f1.legend(bbox_to_anchor = (1, 0.9), fontsize = "small")
     plt.show()
+
+    return f1
+    
 
 if __name__ == "__main__":
     filepath = data_import("")
@@ -109,4 +128,7 @@ if __name__ == "__main__":
 
     dist_x, dist_z, vx, vz = vel_calc(n_array)
 
-    v_plot(ds["t"].values, dist_x, vx)
+    dist_array = [dist_x]
+    vel_array = [vx]
+
+    v_plot(ds["t"].values, dist_array, vel_array)
