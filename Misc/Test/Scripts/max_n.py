@@ -3,44 +3,81 @@ from xbout import open_boutdataset
 import matplotlib.pyplot as plt
 from scipy import ndimage
 from boututils import calculus as calc
+from tqdm import tqdm
+import v_data
 
 def data_import(_):
     folder = "delta_1"
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
-def n_calc(ds, Gridsize = 0.3, n0_scale = 1):
-    # Time value set for every 10 t
-    for i,vals in enumerate(np.linspace(0,ds["t"].values.size-1,int(ds["t"].values.size/10)+1)):
+def n_calc(ds, n0_scale = 1, row_calc = "midplane"):
+    
+    # Find max n value of grid and return position (x,z) of max n
+    def n_max(n, n0_scale, row = ""):
+        n_max_pos = np.where((n - n0_scale) == np.max(n - n0_scale))
 
-        ds_data = ds.isel(t = int(vals))
+        if row == "":
+            n_max_pos = [int(n_max_pos[0][0]), int(n_max_pos[1][0])]
+        else:
+            n_max_pos = [int(n_max_pos[0][0]), int(row)]
+        
+        return n_max_pos
 
-        # Find max n value of grid and return row of max n
-        row = np.where(ds_data["n"].values==np.max(ds_data["n"].values))[1]
+    for i,vals in enumerate(tqdm(ds["t"].values)):
+        
+        ds_data = ds.isel(t = i)
+        
+        if row_calc == "midplane":
+            row = int(ds_data["z"].size/2)
+            n = ds_data["n"].values[:, row]
+            n_max_pos = n_max(n, n0_scale, row)
+        elif row_calc == "all_row":
+            n = ds_data["n"].values
+            n_max_pos = n_max(n, n0_scale)
 
-        n = ds_data["n"].values[:,int(row[0])]-n0_scale
+        # n = ds_data["n"].values[:,int(row[0])]-n0_scale
 
         if i == 0:
-            f1 = plt.figure(1)
-            ax1 = f1.gca()
-            col = plt.cm.plasma(np.linspace(0,1,ds["t"].values.size))
+            n_array = [n_max_pos]
+        else:
+            n_array = np.append(n_array, [n_max_pos], axis = 0)
+    #         f1 = plt.figure(1)
+    #         ax1 = f1.gca()
         
-        ax1.plot(n, label = "t="+str(vals), linewidth=0.5)
-    ax1.legend()
+    #     ax1.plot(n, label = "t="+str(vals), linewidth=0.5)
+    # ax1.legend()
+    return n_array
 
-filepath = data_import("")
+# filepath = data_import("")
 
-BOUT_inp = filepath + "BOUT.inp"
-BOUT_res = filepath + "BOUT.dmp.*.nc"
+# BOUT_inp = filepath + "BOUT.inp"
+# BOUT_res = filepath + "BOUT.dmp.*.nc"
 
-ds = open_boutdataset(BOUT_res, info=False)
-ds = ds.squeeze(drop=True)
+# ds = open_boutdataset(BOUT_res, info=False)
+# ds = ds.squeeze(drop=True)
 
-nplot = n_calc(ds)
+# n_array_all = n_calc(ds, row_calc = "all_row")
+# n_array = n_calc(ds)
+# dist_x_all, dist_z_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+# dx, dz, vx, vz = v_data.vel_calc(n_array)
 
-f2 = plt.figure(2)
-ds_data = ds.isel(t=0)
-ds_data["n"].plot(x="x",y="z")
+# title = "for max n method"
+# dist_array = [dx, dist_z_all]
+# vel_array = [vx, vx_all]
+# plot_label = ["for \nmidplane", "for \nall rows"]
+
+# f1 = v_data.v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
+
+# t = 30
+
+# f1 = plt.figure(1)
+# ax1 = f1.gca()
+# ds_data = ds.isel(t=t)
+# ds_data["n"].plot(x="x",y="z")
+# ax1.scatter(n_array[t,0], n_array[t,1], marker = "x", color = "orange")
+
+# plt.show()
 
 
-plt.show()
+
