@@ -212,6 +212,21 @@
 
     \item \textbf{Week from 19/06/2025}
         \begin{itemize}
+            \item 2 other methods for velocity calculation were proposed, which calculates velocity by evaluating the position of maximum density (max n) for the blob, and the position of the density front (n front) of the blob
+            \item Some errors still remain for distance and velocity for the CoM method from previous week, therefore CoM method would be corrected and supplemented below
+            \item All method comparisons were done using the delta\_1 example mentioned previously (Found in BOUT++ repository: \url{https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}) and Figure 6 below shows the density evolution of the blob for 0 to 2500 (1/$\Omega_i$) in intervals of 500 (1/$\Omega_i$)
+
+    \begin{figure}[H]
+    \centering
+        \includegraphics[height=0.5\textheight]{./Fig/Fig3 vel plot_v2.png}
+        \normalsize{\caption{Velocity and Distance plot for delta\_1 example}
+        \label{fig:fig4}}
+    \end{figure}   
+            
+            \item \textbf{CoM method}
+            \begin{itemize}
+                \item As mentioned previously CoM method computes the CoM for the density of the grid for each time slice to evaluate the distance travelled and velocity of the blob
+            \end{itemize}
             \item CoM method displayed the wrong distance, replotted here
             \item n\_calc methods: n front and max n
             \item max n no feasible as blob disperses and max n does not track the "front" and distance move backwards due to dispersed blob (both mid-plane row and all rows)
