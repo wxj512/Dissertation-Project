@@ -218,14 +218,23 @@
 
     \begin{figure}[H]
     \centering
-        \includegraphics[height=0.5\textheight]{./Fig/Fig3 vel plot_v2.png}
-        \normalsize{\caption{Velocity and Distance plot for delta\_1 example}
-        \label{fig:fig4}}
+        \includegraphics[width=\textwidth]{./Fig/Fig6 n hmap t0_t50}
+        \normalsize{\caption{Density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. By d) it could be shown that the blob has lost symmetry and the density of the blob is dispersed. The colour of the blob (such as the yellow dot at a), showing regions of high density compared to the background density $n_0$) becomes very similar to the background, showing the blob density (n) is much closer to the background density ($n_0$) and the value of n/$n_0$ is close to 1 as time evolves}
+        \label{fig:fig6}}
     \end{figure}   
             
             \item \textbf{CoM method}
             \begin{itemize}
                 \item As mentioned previously CoM method computes the CoM for the density of the grid for each time slice to evaluate the distance travelled and velocity of the blob
+                \item The point of CoM are overlaid onto the density plot of the blob for different times to show the CoM evolution of the blob that were used to evaluate the distance and velocity, shown below in Figure 7
+
+    \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{./Fig/Fig6 n hmap t0_t50}
+            \normalsize{\caption{Density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. By d) it could be shown that the blob has lost symmetry and the density of the blob is dispersed. The colour of the blob (such as the yellow dot at a), showing regions of high density compared to the background density $n_0$) becomes very similar to the background, showing the blob density (n) is much closer to the background density ($n_0$) and the value of n/$n_0$ is close to 1 as time evolves}
+            \label{fig:fig6}}
+        \end{figure}   
+                
             \end{itemize}
             \item CoM method displayed the wrong distance, replotted here
             \item n\_calc methods: n front and max n
