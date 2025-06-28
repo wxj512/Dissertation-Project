@@ -3,6 +3,7 @@ from xbout import open_boutdataset
 import matplotlib.pyplot as plt
 from scipy import ndimage
 from boututils import calculus as calc
+from tqdm import tqdm
 
 
 def data_import(_):
@@ -33,14 +34,19 @@ class consts:
             self.Te0 = 30            # Isothermal temperature [eV]
             self.n0 = 1e19           # Background density [m^-3]
 
-def n_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = "", method = "CoM"):
+def n_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = "", method = "CoM", t=""):
         if not(BOUT_inp == ""):
             n0_scale = consts(BOUT_inp).n0_scale
             Gridsize = consts(BOUT_inp).Gridsize
 
-        for i,vals in enumerate(ds["t"].values):
+        if t == "":
+            tvals = np.linspace(0, ds["t"].shape[0]-1, ds["t"].shape[0], dtype = int)
+        else:
+            tvals = t
 
-            ds_data = ds.isel(t = i)
+        for i,vals in enumerate(tqdm(tvals)):
+
+            ds_data = ds.isel(t = vals)
 
             if method == "CoM":
                 n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
