@@ -11,7 +11,7 @@ def data_import(_):
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
-def n_calc(ds, n0_scale = 1, row_calc = "midplane"):
+def n_calc(ds, n0_scale = 1, row_calc = "midplane", t = ""):
     
     # Find max n value of grid and return position (x,z) of max n
     def n_max(n, n0_scale, row = ""):
@@ -24,9 +24,14 @@ def n_calc(ds, n0_scale = 1, row_calc = "midplane"):
         
         return n_max_pos
 
-    for i,vals in enumerate(tqdm(ds["t"].values)):
+    if t == "":
+        tvals = np.linspace(0, ds["t"].shape[0]-1, ds["t"].shape[0], dtype = int)
+    else:
+        tvals = t
+
+    for i,vals in enumerate(tqdm(tvals)):
         
-        ds_data = ds.isel(t = i)
+        ds_data = ds.isel(t = vals)
         
         if row_calc == "midplane":
             row = int(ds_data["z"].size/2)
@@ -49,35 +54,37 @@ def n_calc(ds, n0_scale = 1, row_calc = "midplane"):
     # ax1.legend()
     return n_array
 
-# filepath = data_import("")
+if __name__ == "__main__":
 
-# BOUT_inp = filepath + "BOUT.inp"
-# BOUT_res = filepath + "BOUT.dmp.*.nc"
+    filepath = data_import("")
 
-# ds = open_boutdataset(BOUT_res, info=False)
-# ds = ds.squeeze(drop=True)
+    BOUT_inp = filepath + "BOUT.inp"
+    BOUT_res = filepath + "BOUT.dmp.*.nc"
 
-# n_array_all = n_calc(ds, row_calc = "all_row")
-# n_array = n_calc(ds)
-# dist_x_all, dist_z_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
-# dx, dz, vx, vz = v_data.vel_calc(n_array)
+    ds = open_boutdataset(BOUT_res, info=False)
+    ds = ds.squeeze(drop=True)
 
-# title = "for max n method"
-# dist_array = [dx, dist_z_all]
-# vel_array = [vx, vx_all]
-# plot_label = ["for \nmidplane", "for \nall rows"]
+    n_array_all = n_calc(ds, row_calc = "all_row")
+    n_array = n_calc(ds)
+    dist_x_all, dist_z_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+    dx, dz, vx, vz = v_data.vel_calc(n_array)
 
-# f1 = v_data.v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
+    title = "for max n method"
+    dist_array = [dx, dist_z_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["for \nmid row", "for \nall rows"]
 
-# t = 30
+    f1 = v_data.v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
 
-# f1 = plt.figure(1)
-# ax1 = f1.gca()
-# ds_data = ds.isel(t=t)
-# ds_data["n"].plot(x="x",y="z")
-# ax1.scatter(n_array[t,0], n_array[t,1], marker = "x", color = "orange")
+    # t = 30
 
-# plt.show()
+    # f1 = plt.figure(1)
+    # ax1 = f1.gca()
+    # ds_data = ds.isel(t=t)
+    # ds_data["n"].plot(x="x",y="z")
+    # ax1.scatter(n_array[t,0], n_array[t,1], marker = "x", color = "orange")
+
+    # plt.show()
 
 
 

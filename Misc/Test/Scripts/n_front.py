@@ -22,7 +22,7 @@ BOUT_res = filepath + "BOUT.dmp.*.nc"
 ds = open_boutdataset(BOUT_res, info=False)
 ds = ds.squeeze(drop=True)
 
-def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane"):
+def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
     
     def n_peak(n, height=0.02):
             peaks = find_peaks(n, height=height)
@@ -34,9 +34,14 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane"):
 
             return max_peak
     
-    for i,vals in enumerate(tqdm(ds["t"].values)):
+    if t == "":
+        tvals = np.linspace(0, ds["t"].shape[0]-1, ds["t"].shape[0], dtype = int)
+    else:
+        tvals = t
 
-        ds_data = ds.isel(t = i)
+    for i,vals in enumerate(tqdm(tvals)):
+
+        ds_data = ds.isel(t = vals)
         
         if row_calc == "midplane":
             row_j = int(ds_data["z"].shape[0]/2)
@@ -117,26 +122,26 @@ if __name__ == "__main__":
     # max_peak = np.max(peaks[0])
     # print(peaks[0])
 
-    f1 = plt.figure(1)
-    ax1 = f1.gca()
-    ax1.plot(n,linewidth=0.5)
-    ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange")
+    # f1 = plt.figure(1)
+    # ax1 = f1.gca()
+    # ax1.plot(n,linewidth=0.5)
+    # ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange")
 
 
     # f2 = plt.figure(2)
     # ds_data["n"].plot(x="x",y="z")
 
-    # n_array = n_calc(ds)
-    # n_array_all = n_calc(ds, row_calc = "all_row")
+    n_array = n_calc(ds)
+    n_array_all = n_calc(ds, row_calc = "all_row")
 
-    # dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
-    # dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+    dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
+    dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
 
-    # title = "for n front method"
-    # dist_array = [dist_x, dx_all]
-    # vel_array = [vx, vx_all]
-    # plot_label = ["for \nmidplane", "for \nall rows"]
+    title = "for n front method"
+    dist_array = [dist_x, dx_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["for \nmid row", "for \nall rows"]
 
-    # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
-    # f1 = v_data.v_plot(ds["t"],dist_x,vx)
-    plt.show()
+    f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
+ 
+    # plt.show()
