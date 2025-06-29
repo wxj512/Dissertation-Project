@@ -214,7 +214,7 @@
         \begin{itemize}
             \item 2 other methods for velocity calculation were proposed, which calculates velocity by evaluating the position of maximum density (max n) for the blob, and the position of the density front (n front) of the blob
             \item Some errors still remain for distance and velocity for the CoM method from previous week, therefore CoM method would be corrected and supplemented below
-            \item All method comparisons were done using the delta\_1 example mentioned previously (Found in BOUT++ repository: \url{https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}) and Figure 6 below shows the density evolution of the blob for 0 to 2500 (1/$\Omega_i$) in intervals of 500 (1/$\Omega_i$)
+            \item All method comparisons were done using the delta\_1 example mentioned previously (Found in BOUT++ repository: \url{https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}) and Figure \ref{fig:fig6} below shows the density evolution of the blob for 0 to 2500 (1/$\Omega_i$) in intervals of 500 (1/$\Omega_i$)
 
     \begin{figure}[H]
     \centering
@@ -226,14 +226,23 @@
             \item \textbf{CoM method}
             \begin{itemize}
                 \item As mentioned previously CoM method computes the CoM for the density of the grid for each time slice to evaluate the distance travelled and velocity of the blob
-                \item The point of CoM are overlaid onto the density plot of the blob for different times to show the CoM evolution of the blob that were used to evaluate the distance and velocity, shown below in Figure 7
+                \item The point of CoM are overlaid onto the density plot of the blob for different times to show the CoM evolution of the blob that were used to evaluate the distance and velocity, shown below in Figure \ref{fig:fig7}
 
     \begin{figure}[H]
         \centering
-            \includegraphics[width=\textwidth]{./Fig/Fig6 n hmap t0_t50}
-            \normalsize{\caption{Density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. By d) it could be shown that the blob has lost symmetry and the density of the blob is dispersed. The colour of the blob (such as the yellow dot at a), showing regions of high density compared to the background density $n_0$) becomes very similar to the background, showing the blob density (n) is much closer to the background density ($n_0$) and the value of n/$n_0$ is close to 1 as time evolves}
-            \label{fig:fig6}}
+            \includegraphics[width=\textwidth]{./Fig/Fig7 vel n CoM hmap t0_t50}
+            \normalsize{\caption{CoM for blob density at different t/(1/$\Omega_i$) depicted as "x" overlaid on density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. As the blob starts to disperse after a) the CoM point is further away from the density front of the blob and closer to the centre of the blob area in d) to f) as the density is evenly dispersed into nearby space}
+            \label{fig:fig7}}
         \end{figure}   
+        
+                \item The CoM method of calculation for distance and velocity as shown in Figures \ref{fig:fig3}, \ref{fig:fig4} and \ref{fig:fig5} were actually the velocity and acceleration instead, hence the figure is replotted and shown below in Figure \ref{fig:fig8} below
+
+   \begin{figure}[H]
+        \centering
+            \includegraphics[width=\textwidth]{./Fig/Fig8 vel n CoM hmap t0_t50}
+            \normalsize{\caption{CoM for blob density at different t/(1/$\Omega_i$) depicted as "x" overlaid on density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. As the blob starts to disperse after a) the CoM point is further away from the density front of the blob and closer to the centre of the blob area in d) to f) as the density is evenly dispersed into nearby space}
+            \label{fig:fig7}}
+        \end{figure}  
                 
             \end{itemize}
             \item CoM method displayed the wrong distance, replotted here
