@@ -256,13 +256,23 @@
                 \item Density peaks are found by taking the density profile of the blob at a row for each time value and finding the x value of where the density peaks, and the peaks could be evaluated with only the mid row of z, or for all rows of z
                 \item The peak position with the largest x coordinate value corresponding to the peak density values (mid row or after evaluating all the rows of z) is determined to be the density front of the blob, 
                 \item For each row of density data to be evaluated the peak in the density is found using find\_peaks module from Scipy 
+                
     \begin{figure}[H]
         \centering
         \includegraphics[height=0.5\textheight]{./Fig/Fig9 n front n peak plot.png}
         \normalsize{\caption{Density profile (blue line) and peak position (orange "x") for density of blob at mid row of z and t/(1/$\Omega_i$) at 5000}
         \label{fig:fig9}}
     \end{figure}  
+    
                 \item Additionally a gaussian peak could be fitted over the peak and the x position of the right side of the full width at half maximum (FWHM) of the gaussian function could be defined
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[height=0.5\textheight]{./Fig/Fig10 n front FWHM plot.png}
+        \normalsize{\caption{Density profile (blue line), peak position (orange "x") for density of blob and gaussian function fit (orange dash-dot line) and right position of FWHM for the gaussian fit (black dotted line) at mid row of z and t/(1/$\Omega_i$) at 5000}
+        \label{fig:fig9}}
+    \end{figure}  
+    
                 \item Equation for Gaussian
             \end{itemize}
             
