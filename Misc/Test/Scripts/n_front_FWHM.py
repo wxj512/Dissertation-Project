@@ -167,7 +167,8 @@ if __name__ == "__main__":
     ds = open_boutdataset(BOUT_res, info=False)
     ds = ds.squeeze(drop=True)
 
-    ds_data = ds.isel(t=30)
+    t = 30
+    ds_data = ds.isel(t=t)
 
     for j,z_vals in enumerate(ds_data["z"].values):
     
@@ -212,7 +213,7 @@ if __name__ == "__main__":
 
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()
-    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
+    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(t*500))
     ax1.plot(n,linewidth=0.8, label="Density profile")
     ax1.plot(gauss_fit, linewidth=0.8, linestyle = "-.", label="Gaussian fit of last peak")
     ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange", label="Peak position")
