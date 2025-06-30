@@ -13,15 +13,6 @@ def data_import(_):
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
-
-filepath = data_import("")
-
-BOUT_inp = filepath + "BOUT.inp"
-BOUT_res = filepath + "BOUT.dmp.*.nc"
-
-ds = open_boutdataset(BOUT_res, info=False)
-ds = ds.squeeze(drop=True)
-
 def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
     
     def n_peak(n, height=0.02):
@@ -90,6 +81,15 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
     return n_array # ,f1
 
 if __name__ == "__main__":
+
+    filepath = data_import("")
+
+    BOUT_inp = filepath + "BOUT.inp"
+    BOUT_res = filepath + "BOUT.dmp.*.nc"
+
+    ds = open_boutdataset(BOUT_res, info=False)
+    ds = ds.squeeze(drop=True)
+
     ds_data = ds.isel(t=10)
 
     for j,z_vals in enumerate(ds_data["z"].values):
