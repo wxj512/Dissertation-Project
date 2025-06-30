@@ -14,15 +14,6 @@ def data_import(_):
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
-
-filepath = data_import("")
-
-BOUT_inp = filepath + "BOUT.inp"
-BOUT_res = filepath + "BOUT.dmp.*.nc"
-
-ds = open_boutdataset(BOUT_res, info=False)
-ds = ds.squeeze(drop=True)
-
 def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
     
     def gaussian(x, *params):
@@ -141,17 +132,107 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
 # ds_data["n"].plot(x="x",y="z")
 
 if __name__ == "__main__":
-    n_array = n_calc(ds)
-    n_array_all = n_calc(ds, row_calc = "all_row")
 
-    dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
-    dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+    def gaussian(x, *params):
+        A = params[0]
+        x0 = params[1]
+        c = params[2]
+        n = 2
+        return A*np.exp(-((x-x0)/(np.sqrt(2)*c))**n)
 
-    title = "for n front + FWHM method"
-    dist_array = [dist_x, dx_all]
-    vel_array = [vx, vx_all]
-    plot_label = ["for \nmid row", "for \nall rows"]
+    def FWHM(c, n):
+        FWHM = 2*np.sqrt(2)*(np.log(2)**(1/n))*c 
+        return FWHM
 
-    f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
+    def n_peak(n, height=0.02):
+            peaks = find_peaks(n, height=height)
+            
+            if not(peaks[0].size > 0):
+                max_peak = 0
+                peak_2 = 0
+            elif peaks[0].size == 1:
+                max_peak = np.max(peaks[0])
+                peak_2 = max_peak - (np.where(n>1e-02)[0][-1] - max_peak)
+            else:
+                max_peak = np.max(peaks[0])
+                peak_2 = peaks[0][-2]
 
-# plt.show()
+            return max_peak, peak_2
+
+    filepath = data_import("")
+
+    BOUT_inp = filepath + "BOUT.inp"
+    BOUT_res = filepath + "BOUT.dmp.*.nc"
+
+    ds = open_boutdataset(BOUT_res, info=False)
+    ds = ds.squeeze(drop=True)
+
+    ds_data = ds.isel(t=30)
+
+    for j,z_vals in enumerate(ds_data["z"].values):
+    
+        n0_scale = 1
+        n = ds_data["n"].values[:,j] - n0_scale
+
+        #Find peaks of rows
+        max_peak, peak_2 = n_peak(n)
+        
+        # Makes sure this condition is fullfilled at j = 0
+        if j == 0:
+            max_peak_j = 0
+            peak_2_j = 0
+
+        if max_peak == 0:
+            continue
+        
+        if max_peak>max_peak_j:
+            max_peak_j = max_peak
+            peak_2_j = peak_2
+            row_j = j
+        else:
+            continue
+
+    row = row_j
+    n = ds_data["n"].values[:,row]-1
+    
+    # Mask data
+    # n = ds_data["n"].values[:,row_j] - 1
+    width_guess = ((max_peak_j - peak_2_j)*0.5)*2
+    x_array = np.linspace(0, n.size-1, n.size)
+    mask_n = np.ma.masked_outside(x_array, max_peak_j - (width_guess/2), max_peak_j + (width_guess/2))
+    mask_n = np.ones_like(mask_n)*n
+    mask_n[np.where(mask_n.data==1)[0]] = "nan"
+    # Find gaussian
+    guess = [n[max_peak_j], max_peak_j, 1]
+    popt, pcov = curve_fit(gaussian, x_array, mask_n, p0 = guess, nan_policy = 'omit')
+    # gauss_fit = gaussian(x_array, *popt)
+    gauss_width = FWHM(popt[2], 2)
+    n_front = max_peak_j + (gauss_width / 2)
+    gauss_fit = gaussian(x_array, *popt)
+
+    f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
+    ax1 = f1.gca()
+    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
+    ax1.plot(n,linewidth=0.8, label="Density profile")
+    ax1.plot(gauss_fit, linewidth=0.8, linestyle = "-.", label="Gaussian fit of last peak")
+    ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange", label="Peak position")
+    ax1.vlines(max_peak_j+(gauss_width/2), np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=0.5, color="black", label = "Position of \nright side of FWHM")
+    ax1.set_ylim(np.min(n)-0.05, np.max(n)+0.1)
+    ax1.set_xlabel("x/$\\rho_s$")
+    ax1.set_ylabel("Density/(n/$n_0$)")
+    ax1.legend(fontsize="small")
+
+    # n_array = n_calc(ds)
+    # n_array_all = n_calc(ds, row_calc = "all_row")
+
+    # dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
+    # dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+
+    # title = "for n front + FWHM method"
+    # dist_array = [dist_x, dx_all]
+    # vel_array = [vx, vx_all]
+    # plot_label = ["for \nmid row", "for \nall rows"]
+
+    # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
+
+    plt.show()
