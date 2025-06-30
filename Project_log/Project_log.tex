@@ -215,10 +215,12 @@
             \item 2 other methods for velocity calculation were proposed, which calculates velocity by evaluating the position of maximum density (max n) for the blob, and the position of the density front (n front) of the blob
             \item Some errors still remain for distance and velocity for the CoM method from previous week, therefore CoM method would be corrected and supplemented below
             \item All method comparisons were done using the delta\_1 example mentioned previously (Found in BOUT++ repository: \url{https://github.com/boutproject/BOUT-dev/tree/master/examples/blob2d}) and Figure \ref{fig:fig6} below shows the density evolution of the blob for 0 to 2500 (1/$\Omega_i$) in intervals of 500 (1/$\Omega_i$)
+            \item The euclidean distance and velocity was not calculated for the methods as the variation in the z direction is minimal and not applicable to some methods
+            \item Latest version of the file could be found at 
 
     \begin{figure}[H]
     \centering
-        \includegraphics[width=\textwidth]{./Fig/Fig6 n hmap t0_t50}
+        \includegraphics[height=0.5\textheight]{./Fig/Fig6 n hmap t0_t50}
         \normalsize{\caption{Density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. By d) it could be shown that the blob has lost symmetry and the density of the blob is dispersed. The colour of the blob (such as the yellow dot at a), showing regions of high density compared to the background density $n_0$) becomes very similar to the background, showing the blob density (n) is much closer to the background density ($n_0$) and the value of n/$n_0$ is close to 1 as time evolves}
         \label{fig:fig6}}
     \end{figure}   
@@ -227,24 +229,37 @@
             \begin{itemize}
                 \item As mentioned previously CoM method computes the CoM for the density of the grid for each time slice to evaluate the distance travelled and velocity of the blob
                 \item The point of CoM are overlaid onto the density plot of the blob for different times to show the CoM evolution of the blob that were used to evaluate the distance and velocity, shown below in Figure \ref{fig:fig7}
-
-    \begin{figure}[H]
-        \centering
-            \includegraphics[width=\textwidth]{./Fig/Fig7 vel n CoM hmap t0_t50}
-            \normalsize{\caption{CoM for blob density at different t/(1/$\Omega_i$) depicted as "x" overlaid on density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. As the blob starts to disperse after a) the CoM point is further away from the density front of the blob and closer to the centre of the blob area in d) to f) as the density is evenly dispersed into nearby space}
-            \label{fig:fig7}}
-        \end{figure}   
-        
                 \item The CoM method of calculation for distance and velocity as shown in Figures \ref{fig:fig3}, \ref{fig:fig4} and \ref{fig:fig5} were actually the velocity and acceleration instead, hence the figure is replotted and shown below in Figure \ref{fig:fig8} below
+                \item Latest version for the python file to calculate CoM method could be found at project repository (\url{https://github.com/wxj512/Dissertation-Project.git} in Misc/Test/Scripts/v\_data.py commit number 9813f1e)  
+
+    \begin{figure}
+        \centering
+        \includegraphics[height=0.5\textheight]{./Fig/Fig7 vel n CoM hmap t0_t50}
+        \normalsize{\caption{CoM for blob density at different t/(1/$\Omega_i$) depicted as "x" overlaid on density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. As the blob starts to disperse after a) the CoM point is further away from the density front of the blob and closer to the centre of the blob area in d) to f) as the density is evenly dispersed into nearby space}
+        \label{fig:fig7}}
+    \end{figure}   
 
    \begin{figure}[H]
         \centering
-            \includegraphics[width=\textwidth]{./Fig/Fig8 vel n CoM hmap t0_t50}
-            \normalsize{\caption{CoM for blob density at different t/(1/$\Omega_i$) depicted as "x" overlaid on density evolution of blob for delta\_1 example at different t/(1/$\Omega_i$): a) 0 b) 500 c) 1000 d) 1500 e) 2000 f) 2500. As the blob starts to disperse after a) the CoM point is further away from the density front of the blob and closer to the centre of the blob area in d) to f) as the density is evenly dispersed into nearby space}
-            \label{fig:fig7}}
-        \end{figure}  
-                
+        \includegraphics[height=0.5\textheight]{./Fig/Fig8 CoM dist vel plot.png}
+        \normalsize{\caption{Distance (blue line) and velocity (orange line) of the blob in the x direction from delta\_1 example as calculated using CoM method}
+        \label{fig:fig8}}
+    \end{figure}  
+    
+                \item As the blob moves in the positive x direction, the distance increases as shown in Figure \ref{fig:fig8}, but as depicted in Figure \ref{fig:fig7} that the blob disperses and the CoM are closer to the centre of the area of the blob instead of the front
+                \item Since the blob is dispersed the area of the blob is stretched in both x and z direction, with more elongation in the x direction, causing the blob front in the x direction to be further away from the point of CoM than the z direction 
             \end{itemize}
+
+            \item \textbf{n front method (peak and FWHM)}
+            \begin{itemize}
+                \item n front method calculates the distance by locating the "density front" of the blob using the last "density peak" in the x direction
+                \item Density peaks are found by taking the density profile of the blob at a row for each time value and finding the x value of where the density peaks, and the peaks could be evaluated with only the mid row of z, or for all rows of z
+                \item The peak position with the largest x coordinate value corresponding to the peak density values (mid row or after evaluating all the rows of z) is determined to be the density front of the blob, 
+                \item For each row of density data to be evaluated the peak in the density is found using find\_peaks module from Scipy 
+                
+                \item Additionally, the 
+            \end{itemize}
+            
             \item CoM method displayed the wrong distance, replotted here
             \item n\_calc methods: n front and max n
             \item max n no feasible as blob disperses and max n does not track the "front" and distance move backwards due to dispersed blob (both mid-plane row and all rows)
