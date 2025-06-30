@@ -264,8 +264,16 @@
         \label{fig:fig9}}
     \end{figure}  
     
-                \item Additionally a gaussian peak could be fitted over the peak and the x position of the right side of the full width at half maximum (FWHM) of the gaussian function could be defined
-                \item Equation for Gaussian
+                \item Additionally a gaussian peak could be fitted over the peak and the x position of the right side of the full width at half maximum (FWHM) of the gaussian function could be 
+                defined
+                \item The gaussian distribution function has the following form \cite{chirikjian_gaussian_2009}:
+                \item[] \[ A\exp{-\left(\frac{\left(x-\mu\right)^2}{2\sigma^2}\right)} \]
+                \item[] \[ A = \frac{1}{\sqrt{2\pi}\sigma}=s\]
+                \item where s is the spread (corresponding to height of gaussian function and the density at the peak position), $\mu$ is the mean (or in this case the x coordinate of the peak) and $\sigma^2$ is the variance of the distribution 
+                \item The operation of fitting a gaussian function over the peak of the density assumes it has a gaussian distribution for that particular peak
+                \item The FWHM was used as it could characterize the width of a peak that resembles a gaussian function, and has the following form \cite{rainio_methods_2025}:
+                \item[] \[ FWHM = \sqrt{8\ln{2}}\sigma \]
+                \item where $\sigma$ relates to the variance of the gaussian function
                 \item An example for one of the the gaussian fit is shown below in Figure \ref{fig:fig10}
 
     \begin{figure}[H]
@@ -274,14 +282,13 @@
         \normalsize{\caption{Density profile (blue line), peak position (orange "x") for density of blob and gaussian function fit (orange dash-dot line) and right position of FWHM for the gaussian fit (black dotted line) at z/$\rho_s$ at 36 and t/(1/$\Omega_i$) at 15000}
         \label{fig:fig10}}
     \end{figure}  
-    
                 
             \end{itemize}
             
             \item CoM method displayed the wrong distance, replotted here
             \item n\_calc methods: n front and max n
             \item max n no feasible as blob disperses and max n does not track the "front" and distance move backwards due to dispersed blob (both mid-plane row and all rows)
-            \item n front is possible but finding the row that has the furthest front could take a long time (~1:58)
+            \item n front is possible but finding the row that has the furthest front could take a long time (~1:58), and adding FWHM does not vary simulation time significantly
         \end{itemize}
     
 \end{arrowlist}
