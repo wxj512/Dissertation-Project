@@ -60,25 +60,12 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = "", method = "CoM", t=""
         return n_array
 
 def vel_calc(array):
-    for i,vals in enumerate(array):
+        
+    dist_x = array[:,0] - array[0,0]
+    dist_z = array[:,1] - array[0,1]
     
-        if i == np.shape(array)[0] - 1:
-            break
-
-        # p1 = array[i,:]
-        # p2 = array[i+1,:]
-
-        # dist = p2 - p1
-        
-        # if i == 0:
-        #     dist_x = np.zeros(1)
-        #     dist_z = np.zeros(1)
-        
-        dist_x = array[:,0] - array[0,0]
-        dist_z = array[:,1] - array[0,1]
-        
-        vx = np.gradient(dist_x)
-        vz = np.gradient(dist_z)
+    vx = np.gradient(dist_x)
+    vz = np.gradient(dist_z)
 
     return dist_x, dist_z, vx, vz
 
@@ -136,5 +123,5 @@ if __name__ == "__main__":
 
     dist_array = [dist_x]
     vel_array = [vx]
-
+    print(np.max(vx))
     v_plot(ds["t"].values, dist_array, vel_array)
