@@ -20,7 +20,7 @@ def mk_inp(param_array, ref_folder = "delta_1", path = ""):
         if not(os.path.exists(filepath) and os.path.isdir(filepath)):
             os.mkdir(filepath)
 
-        with fileinput.input(path + ref_folder + "/BOUT.inp") as inp, open(filepath + '/BOUT_new.inp', 'w') as inp_new:
+        with fileinput.input(path + ref_folder + "/BOUT.inp") as inp, open(filepath + '/BOUT.inp', 'w') as inp_new:
             
             inp_new.seek(0)
 

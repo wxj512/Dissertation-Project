@@ -1,27 +1,23 @@
+import os
+from tqdm import tqdm
 import numpy as np
-from xbout import open_boutdataset
-import matplotlib.pyplot as plt
-from matplotlib import font_manager as fm
-from scipy import ndimage
-from boututils import calculus as calc
-from scipy.signal import find_peaks
-from scipy.optimize import curve_fit
 
 
-def data_import(_):
-    folder = "delta_1"
-    filepath = "../Data/Input/" + folder + "/"
-    return filepath
+# def data_import(_):
+#     folder = "delta_B0_" + "*"
+#     filepath = "../Data/Input/" + folder + "/"
+#     return filepath
 
-filepath = data_import("")
+# filepath = data_import("")
 
-BOUT_inp = filepath + "BOUT.inp"
-BOUT_res = filepath + "BOUT.dmp.*.nc"
+path = "../Data/Input/"
+folder = "delta_B0_" + "*.*"
+filepath = "../Data/Input/" + folder + "/"
 
-ds = open_boutdataset(BOUT_res, info=False)
-ds = ds.squeeze(drop=True)
+# for i, [subdir, dirs, files] in enumerate(tqdm(os.walk(path))):
+#     if "B0" in subdir:
+#         print(subdir)
 
-n_hmap_ani = ds["n"].bout.animate2D(cmap=plt.cm.plasma)
+B0_data = np.round(np.linspace(0.1,1,10),2)
+print(B0_data)
 
-
-plt.show()
