@@ -2,6 +2,7 @@
 **~$*.*
 *~*.tmp
 *.out
+*.gitmodules
 
 For Latex:
 *.aux
