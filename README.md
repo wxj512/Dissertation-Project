@@ -2,12 +2,14 @@ Repository to version control Dissertation Project progress
 - Compiled BOUT++ builds
   - test-build (BOUT++ ver. 5.1.1, default cmake)
   - test-blob2d (BOUT++ ver. 5.1.1, default cmake)
-- Project log (latex file, compiled with xelatex in Overleaf)
-  - Figs (png for all figure used in project log)
-  - References (BibLaTex file)
-- Literature review and lay summary (latex file, compiled with xelatex in Overleaf)
-  - Figs (png for all figure used in literature review)
-  - References (BibLaTex file)
+- Overleaf repository
+  Token:olp_4s5GTBpsRzOXbp9YV6efZvKvASJ1dg3VNYs3
+  - Project log (latex file, compiled with xelatex in Overleaf)
+    - Figs (png for all figure used in project log)
+    - References (BibLaTex file)
+  - Literature review and lay summary (latex file, compiled with xelatex in Overleaf)
+    - Figs (png for all figure used in literature review)
+    - References (BibLaTex file)
 - Miscellaneous files
   - vel_out/ (contains .py file for processing and calculating velocity of blob)
   - model_run/ (contains .py file for creating inp file and for executing blob2d model runs)
