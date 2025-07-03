@@ -3,7 +3,7 @@ Repository to version control Dissertation Project progress
   - test-build (BOUT++ ver. 5.1.1, default cmake)
   - test-blob2d (BOUT++ ver. 5.1.1, default cmake)
 - Overleaf repository
-  Token:olp_4s5GTBpsRzOXbp9YV6efZvKvASJ1dg3VNYs3
+  - (Token:olp_4s5GTBpsRzOXbp9YV6efZvKvASJ1dg3VNYs3)
   - Project log (latex file, compiled with xelatex in Overleaf)
     - Figs (png for all figure used in project log)
     - References (BibLaTex file)
