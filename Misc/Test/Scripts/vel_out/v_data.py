@@ -117,11 +117,19 @@ if __name__ == "__main__":
     ds = ds.drop_vars("x")
     ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
+
+    # t = 10
+    # n0_scale = 1
+    # Gridsize = 0.3
+    # ds_data = ds.isel(t=t)
+    # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
     n_array = n_calc(ds, BOUT_inp=BOUT_inp)
 
     dist_x, dist_z, vx, vz = vel_calc(n_array)
 
-    dist_array = [dist_x]
-    vel_array = [vx]
-    print(np.max(vx))
-    v_plot(ds["t"].values, dist_array, vel_array)
+    print(np.shape(n_array))
+
+    # dist_array = [dist_x]
+    # vel_array = [vx]
+    # print(np.max(vx))
+    # v_plot(ds["t"].values, dist_array, vel_array)
