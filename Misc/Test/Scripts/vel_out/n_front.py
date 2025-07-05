@@ -9,7 +9,7 @@ from tqdm import tqdm
 import v_data
 
 def data_import(_):
-    folder = "delta_1"
+    folder = "delta_1_B0_0.1"
     filepath = "../Data/Input/" + folder + "/"
     return filepath
 
@@ -65,14 +65,14 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
         if i == 0:
             # row = row_j
             # max_x = max_peak_j
-            n_array = [[max_peak_j, row_j]]
+            n_array = [[ds["x"].values[max_peak_j], ds["z"].values[row_j]]]
             # f1 = plt.figure(1)
             # ax1 = f1.gca()
    
         else:
             # row = np.append(row, row_j)
             # max_x = np.append(max_x, max_peak_j)
-            n_array = np.append(n_array, [[max_peak_j, row_j]], axis = 0)
+            n_array = np.append(n_array, [[ds["x"].values[max_peak_j], ds["z"].values[row_j]]], axis = 0)
             # n = ds_data["n"].values[:,row_j]-n0_scale
 
         # ax1.plot(n, linewidth=0.5)
@@ -90,61 +90,66 @@ if __name__ == "__main__":
     ds = open_boutdataset(BOUT_res, info=False)
     ds = ds.squeeze(drop=True)
 
+
+    dx = ds["dx"].isel(x=0).values
+    ds = ds.drop_vars("x")
+    ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
     ds_data = ds.isel(t=10)
 
-    for j,z_vals in enumerate(ds_data["z"].values):
+    # for j,z_vals in enumerate(ds_data["z"].values):
                 
-                n = ds_data["n"].values[:,j] - 1
+    #             n = ds_data["n"].values[:,j] - 1
 
-                #Find peaks of rows
-                peaks = find_peaks(n, height=0.02)
+    #             #Find peaks of rows
+    #             peaks = find_peaks(n, height=0.02)
                
-                # Makes sure this condition is fullfilled at j = 0
-                if j == 0:
-                    max_peak_j = 0
+    #             # Makes sure this condition is fullfilled at j = 0
+    #             if j == 0:
+    #                 max_peak_j = 0
 
-                if not(peaks[0].size > 0):
-                    max_peak = 0
-                else:
-                    max_peak = np.max(peaks[0])
+    #             if not(peaks[0].size > 0):
+    #                 max_peak = 0
+    #             else:
+    #                 max_peak = np.max(peaks[0])
 
-                if max_peak == 0:
-                    continue
+    #             if max_peak == 0:
+    #                 continue
                 
-                if max_peak>max_peak_j:
-                    max_peak_j = max_peak
-                    row_j = j
-                else:
-                    continue
-    row = row_j
-    n = ds_data["n"].values[:,row]-1
-    peaks = find_peaks(n, height=0)
-    max_peak = np.max(peaks[0])
-    print(ds["z"].values[row_j])
+    #             if max_peak>max_peak_j:
+    #                 max_peak_j = max_peak
+    #                 row_j = j
+    #             else:
+    #                 continue
+    # row = row_j
+    # n = ds_data["n"].values[:,row]-1
+    # peaks = find_peaks(n, height=0)
+    # max_peak = np.max(peaks[0])
+    # print(ds["z"].values[row_j])
 
-    f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
-    ax1 = f1.gca()
-    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
-    ax1.plot(n,linewidth=0.5, label="Density profile")
-    ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange", label="Peak position")
-    ax1.set_xlabel("x/$\\rho_s$")
-    ax1.set_ylabel("Density/(n/$n_0$)")
-    ax1.legend(fontsize="small")
+    # f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
+    # ax1 = f1.gca()
+    # ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
+    # ax1.plot(n,linewidth=0.5, label="Density profile")
+    # ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange", label="Peak position")
+    # ax1.set_xlabel("x/$\\rho_s$")
+    # ax1.set_ylabel("Density/(n/$n_0$)")
+    # ax1.legend(fontsize="small")
 
 
     # f2 = plt.figure(2)
     # ds_data["n"].plot(x="x",y="z")
 
-    # n_array = n_calc(ds)
+    n_array = n_calc(ds)
     # n_array_all = n_calc(ds, row_calc = "all_row")
 
-    # dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
+    dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
+    
     # dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
 
-    # title = "for n front method"
-    # dist_array = [dist_x, dx_all]
-    # vel_array = [vx, vx_all]
-    # plot_label = ["for \nmid row", "for \nall rows"]
+    title = "for n front method"
+    dist_array = [dist_x]
+    vel_array = [vx]
+    plot_label = ["for \nall row"]
 
     # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
  
