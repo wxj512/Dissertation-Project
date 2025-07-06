@@ -140,17 +140,17 @@ if __name__ == "__main__":
     # ds_data["n"].plot(x="x",y="z")
 
     n_array = n_calc(ds)
-    # n_array_all = n_calc(ds, row_calc = "all_row")
+    n_array_all = n_calc(ds, row_calc = "all_row")
 
     dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
     
-    # dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+    dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
 
     title = "for n front method"
-    dist_array = [dist_x]
-    vel_array = [vx]
-    plot_label = ["for \nall row"]
+    dist_array = [dist_x, dx_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["for \nmid row", "for \nall row"]
 
-    # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
+    f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
  
     plt.show()
