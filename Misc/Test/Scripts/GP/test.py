@@ -3,7 +3,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
 import numpy as np
 from xbout import open_boutdataset
-from vel_out import v_data
+import vel_out.v_data
 
 X = np.linspace(start=0, stop=10, num=1_000).reshape(-1, 1)
 y = np.squeeze(X * np.sin(X))
