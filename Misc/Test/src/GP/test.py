@@ -3,7 +3,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF
 import numpy as np
 from xbout import open_boutdataset
-from vel_out import v_data
+import blob2dgp
 
 
 
