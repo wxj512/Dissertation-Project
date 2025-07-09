@@ -1,19 +1,16 @@
 [project]
-name = "blob2dgp"
+name = "dist_blob2dgp"
 version = "0.1.0"
 dependencies = [
-    "os",
-    "subprocess",
-    "re",
-    "fileinput",
     "numpy",
     "scipy",
     "pandas",
     "xarray",
     "xbout",
     "boututils",
-    "sklearn",
+    "scikit-learn",
     "matplotlib",
+    "pyqt6",
     "tqdm",
 ]
 

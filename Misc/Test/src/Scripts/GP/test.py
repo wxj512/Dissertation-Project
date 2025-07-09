@@ -1,10 +1,9 @@
 import os
-from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF
+# from sklearn.gaussian_process import GaussianProcessRegressor
+# from sklearn.gaussian_process.kernels import RBF
 import numpy as np
 from xbout import open_boutdataset
-import blob2dgp
-
+from Scripts.vel_out import v_data
 
 
 # X = np.linspace(start=0, stop=10, num=1_000).reshape(-1, 1)

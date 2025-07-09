@@ -1,0 +1,10 @@
+numpy
+scipy
+pandas
+xarray
+xbout
+boututils
+scikit-learn
+matplotlib
+pyqt6
+tqdm
