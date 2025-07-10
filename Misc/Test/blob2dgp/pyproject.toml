@@ -1,5 +1,5 @@
 [project]
-name = "dist_blob2dgp"
+name = "test_blob2dgp"
 version = "0.1.0"
 dependencies = [
     "numpy",

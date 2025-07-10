@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 
 def data_import(_):
     folder = "delta_1_B0_" + "0.1"
-    filepath = "../Data/Input/" + folder + "/"
+    filepath = "../../../../Data/Input/" + folder + "/"
     return filepath
 
 filepath = data_import("")
-
+print(filepath)
 # path = "../Data/Input/"
 # folder = "delta_B0_" + "*.*"
 # filepath = "../Data/Input/" + folder + "/"
