@@ -9,7 +9,7 @@ def mk_inp(param_array, ref_folder = "delta_1", path = ""):
     if not(path == ""):
         path = path
     else:
-        path = "../../../../../Builds/BOUT++5.1.1/examples/blob2d/"
+        path = "../../../../../../../Builds/BOUT++5.1.1/examples/blob2d/"
 
     for i, val in enumerate(param_array):
 
@@ -31,6 +31,6 @@ def mk_inp(param_array, ref_folder = "delta_1", path = ""):
                 inp_new.write(line)
 
 if __name__ == "__main__":
-    path = "../../../../../Builds/BOUT++5.1.1/examples/blob2d/"
+    path = "../../../../../../../Builds/BOUT++5.1.1/examples/blob2d/"
     B0_inp = np.linspace(0.1, 1, 10)
     mk_inp(B0_inp, path=path)

@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 def data_import(_):
     folder = "delta_1"
-    filepath = "../Data/Input/" + folder + "/"
+    filepath = "../../../../Data/Input/" + folder + "/"
     return filepath
 
 class consts:
