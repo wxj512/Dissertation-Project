@@ -11,17 +11,13 @@ import test_blob2dgp.vel_out.v_data as v_data
 # y = np.squeeze(X * np.sin(X))
 
 
-# if __name__ == "__main__":
-    
-#     path = "../Data/Input/"
 
-#     for file_i, [subdir, dirs, files] in enumerate(os.walk(path)):
+def main(): 
+    data_path = v_data.data_import("")[3]
+
+#     for file_i, [subdir, dirs, files] in enumerate(os.walk(data_path)):
 #         if "B0" in subdir:
-#             filepath = v_data.data_import(filepath=subdir)
-
-#             BOUT_inp = filepath + "BOUT.inp"
-#             BOUT_res = filepath + "BOUT.dmp.*.nc"
-
+#             BOUT_res, BOUT_settings = v_data.data_import(folder=subdir)[0:2]
 #             ds = open_boutdataset(BOUT_res, info=False)
 #             ds = ds.squeeze(drop=True)
 
@@ -44,4 +40,6 @@ import test_blob2dgp.vel_out.v_data as v_data
 # training_indices = rng.choice(np.arange(y.size), size=6, replace=False)
 # X_train, y_train = X[training_indices], y[training_indices]
 
-# print(max_v_array)
+
+if __name__ == "__main__":
+    main()
