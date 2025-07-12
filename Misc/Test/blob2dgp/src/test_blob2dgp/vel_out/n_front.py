@@ -46,11 +46,9 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
                 # Makes sure this condition is fullfilled at j = 0
                 if j == 0:
                     max_peak_j = 0
-
-                if max_peak == 0:
+                elif max_peak == 0:
                     continue
-                
-                if max_peak>max_peak_j:
+                elif max_peak>max_peak_j:
                     max_peak_j = max_peak
                     row_j = j
                 else:
@@ -113,41 +111,41 @@ def main():
     #                 row_j = j
     #             else:
     #                 continue
-    n0_scale = 1
-    row_j = int(ds_data["z"].shape[0]/2)
-    row = row_j
-    n = ds_data["n"].values[:,row]-1
-    peaks = find_peaks(n, height=0.02)
-    max_peak = np.max(peaks[0])
-    max_peak_j = max_peak
-    print(ds["z"].values[row_j])
+    # n0_scale = 1
+    # row_j = int(ds_data["z"].shape[0]/2)
+    # row = row_j
+    # n = ds_data["n"].values[:,row]-1
+    # peaks = find_peaks(n, height=0.02)
+    # max_peak = np.max(peaks[0])
+    # max_peak_j = max_peak
+    # print(ds["z"].values[row_j])
 
-    f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
-    ax1 = f1.gca()
-    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
-    ax1.plot(ds_data["x"].values,n,linewidth=0.5, label="Density profile")
-    ax1.scatter(max_peak_j*0.3,n[max_peak_j],marker="x", color="orange", label="Peak position")
-    ax1.set_xlabel("x/$\\rho_s$")
-    ax1.set_ylabel("Density/(n/$n_0$)")
-    ax1.legend(fontsize="small")
+    # f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
+    # ax1 = f1.gca()
+    # ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(10*500))
+    # ax1.plot(ds_data["x"].values,n,linewidth=0.5, label="Density profile")
+    # ax1.scatter(max_peak_j*0.3,n[max_peak_j],marker="x", color="orange", label="Peak position")
+    # ax1.set_xlabel("x/$\\rho_s$")
+    # ax1.set_ylabel("Density/(n/$n_0$)")
+    # ax1.legend(fontsize="small")
 
 
     # f2 = plt.figure(2)
     # ds_data["n"].plot(x="x",y="z")
 
-    # n_array = n_calc(ds)
-    # n_array_all = n_calc(ds, row_calc = "all_row")
+    n_array = n_calc(ds)
+    n_array_all = n_calc(ds, row_calc = "all_row")
 
-    # dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
+    dist_x, dist_z, vx, vz = v_data.vel_calc(n_array)
     
-    # dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
+    dx_all, dz_all, vx_all, vz_all = v_data.vel_calc(n_array_all)
 
-    # title = "for n front method"
-    # dist_array = [dist_x, dx_all]
-    # vel_array = [vx, vx_all]
-    # plot_label = ["for \nmid row", "for \nall row"]
+    title = "for n front method"
+    dist_array = [dist_x, dx_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["for \nmid row", "for \nall row"]
 
-    # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
+    f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
  
     plt.show()
 
