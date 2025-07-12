@@ -1,8 +1,6 @@
 import numpy as np
 from xbout import open_boutdataset
 import matplotlib.pyplot as plt
-from scipy import ndimage
-from boututils import calculus as calc
 from tqdm import tqdm
 
 import v_data
@@ -51,14 +49,11 @@ def n_calc(ds, n0_scale = 1, row_calc = "midplane", t = ""):
     # ax1.legend()
     return n_array
 
-if __name__ == "__main__":
+def main():
 
-    filepath = v_data.data_import("")
+    BOUT_res, BOUT_settings = v_data.data_import("")[0:2]
 
-    BOUT_inp = filepath + "BOUT.inp"
-    BOUT_res = filepath + "BOUT.dmp.*.nc"
-
-    ds = open_boutdataset(BOUT_res, info=False)
+    ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
 
     n_array_all = n_calc(ds, row_calc = "all_row")
@@ -71,7 +66,7 @@ if __name__ == "__main__":
     vel_array = [vx, vx_all]
     plot_label = ["for \nmid row", "for \nall rows"]
 
-    f1 = v_data.v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
+    v_data.v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
 
     # t = 30
 
@@ -82,6 +77,9 @@ if __name__ == "__main__":
     # ax1.scatter(n_array[t,0], n_array[t,1], marker = "x", color = "orange")
 
     # plt.show()
+
+if __name__ == "__main__":
+    main()
 
 
 

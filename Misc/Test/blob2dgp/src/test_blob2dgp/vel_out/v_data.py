@@ -1,9 +1,9 @@
+import pathlib
+import sys
 import numpy as np
 from xbout import open_boutdataset
 import matplotlib.pyplot as plt
 from scipy import ndimage
-from boututils import calculus as calc
-import pathlib
 from tqdm import tqdm
 
 
@@ -12,38 +12,43 @@ def data_import(folder = ""):
         folder = "delta_1"
     else:
         folder = folder
-    top_level_dir = pathlib.Path(__file__).parent.parent
-    project_top_level = top_level_dir.parent.parent.parent
-    filepath = str(project_top_level) + "/Data/Input/" + folder + "/"
-    return filepath, project_top_level
+    top_level_dir = pathlib.Path(__file__).parents[1]
+    scripts_top_level = top_level_dir.parents[2]
+    data_path = scripts_top_level.joinpath("Data", "Input")
+    filepath = scripts_top_level.joinpath("Data", "Input", folder)
+    BOUT_res = filepath.joinpath("BOUT.dmp.*.nc")
+    BOUT_settings = filepath.joinpath("BOUT.settings")
+    BOUT_inp = filepath.joinpath("BOUT.inp")
+    return BOUT_res, BOUT_settings, BOUT_inp, data_path,
 
 class consts:
-# With reference to blob2d.cxx file
-    def __init__(self,BOUT_inp = ""):
-        self.m_i = 2 * 1.667e-27 # Ion mass [kg]
-        self.m_e = 9.11e-31      # Electron mass [kg]
-        self.e = 1.602e-19       # Electron charge [C]
-        self.B0 = 0.35           # Constant magnetic field [T]
-        if not(BOUT_inp == ""):
-            ds_inp = open(BOUT_inp).readlines()
-            for i,line in enumerate(ds_inp):
-                if "Te0" in line:
-                    self.Te0 = float(line.split("=")[-1].strip().split()[0])
-                if "n0" in line:
-                    self.n0 = float(line.split("=")[-1].strip().split()[0])
-                if "size of perturbation" and "[n]" in line:
-                    line = open(BOUT_inp).readlines()[i+1]
-                    self.n0_scale = float(line.split("=")[-1].strip().split()[0])
-                if "Grid spacing" in line:
-                    self.Gridsize = float(line.split("=")[-1].strip().split()[0])
+# With reference to .settings file
+    def __init__(self, ds = None, folder = None):
+        if ds is not None:
+            ds = ds
         else:
-            self.Te0 = 30            # Isothermal temperature [eV]
-            self.n0 = 1e19           # Background density [m^-3]
+            print("No ds specified, checking folder")
+            if folder is None:
+                print("Folder default to delta_1/")
+                folder = "delta_1"
+            else:
+                folder = folder
+            BOUT_res, BOUT_settings = data_import(folder = folder)[0:2]
+            ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings , info=False)
+        
+        try:
+            self.Te0 = ds.attrs["options"]["model"]["Te0"]
+            self.n0 = ds.attrs["options"]["model"]["n0"]
+            self.n0_scale = ds.attrs["options"]["n"]["scale"]
+            self.Gridsize = ds.attrs["options"]["mesh"]["dx"]
+            self.B0 = ds.attrs["options"]["model"]["B0"]
+        except TypeError:
+            print("Error: check if ds has specified inputfilepath for .settings")
+            sys.exit()
 
-def n_calc(ds, Gridsize = 0.3, n0_scale = 1, BOUT_inp = "", method = "CoM", t=""):
-        if not(BOUT_inp == ""):
-            n0_scale = consts(BOUT_inp).n0_scale
-            Gridsize = consts(BOUT_inp).Gridsize
+def n_calc(ds, method = "CoM", t = ""):
+        n0_scale = consts(ds = ds).n0_scale
+        Gridsize = consts(ds = ds).Gridsize
 
         if t == "":
             tvals = np.linspace(0, ds["t"].shape[0]-1, ds["t"].shape[0], dtype = int)
@@ -110,13 +115,11 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
     return f1
     
 
-if __name__ == "__main__":
-    filepath = data_import("")
+def main():
+    
+    BOUT_res, BOUT_settings = data_import("")[0:2]
 
-    BOUT_inp = filepath + "BOUT.inp"
-    BOUT_res = filepath + "BOUT.dmp.*.nc"
-
-    ds = open_boutdataset(BOUT_res, info=False)
+    ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
 
     dx = ds["dx"].isel(x=0).values
@@ -129,13 +132,16 @@ if __name__ == "__main__":
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array = n_calc(ds, BOUT_inp=BOUT_inp)
+    n_array = n_calc(ds)
 
     dist_x, dist_z, vx, vz = vel_calc(n_array)
 
-    print(np.shape(n_array))
+    # print(np.shape(n_array))
 
-    # dist_array = [dist_x]
-    # vel_array = [vx]
+    dist_array = [dist_x]
+    vel_array = [vx]
     # print(np.max(vx))
-    # v_plot(ds["t"].values, dist_array, vel_array)
+    v_plot(ds["t"].values, dist_array, vel_array)
+
+if __name__ == "__main__":
+    main()

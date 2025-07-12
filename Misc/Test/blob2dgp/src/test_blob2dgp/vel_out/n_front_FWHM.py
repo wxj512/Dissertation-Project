@@ -127,7 +127,7 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midplane", t = ""):
 # f2 = plt.figure(2)
 # ds_data["n"].plot(x="x",y="z")
 
-if __name__ == "__main__":
+def main():
 
     def gaussian(x, *params):
         A = params[0]
@@ -155,12 +155,9 @@ if __name__ == "__main__":
 
             return max_peak, peak_2
 
-    filepath = v_data.data_import("")
+    BOUT_res, BOUT_settings = v_data.data_import("")[0:2]
 
-    BOUT_inp = filepath + "BOUT.inp"
-    BOUT_res = filepath + "BOUT.dmp.*.nc"
-
-    ds = open_boutdataset(BOUT_res, info=False)
+    ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
     dx = ds["dx"].isel(x=0).values
     ds = ds.drop_vars("x")
@@ -240,3 +237,6 @@ if __name__ == "__main__":
     # f1 = v_data.v_plot(ds["t"],dist_array,vel_array, plot_label=plot_label, title=title)
 
     plt.show()
+
+if __name__ == "__main__":
+    main()
