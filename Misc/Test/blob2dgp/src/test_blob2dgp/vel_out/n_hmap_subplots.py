@@ -72,45 +72,47 @@ def n_hmap_subplots(t, ds, res_array = "", plotstyle = "line", legend = ""):
     
     plt.show()
 
-filepath = v_data.data_import("")
+def main():
+    
+    BOUT_res, BOUT_settings = v_data.data_import("")[0:2]
 
-BOUT_inp = filepath + "BOUT.inp"
-BOUT_res = filepath + "BOUT.dmp.*.nc"
+    ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
+    ds = ds.squeeze(drop=True)
 
-ds = open_boutdataset(BOUT_res, info=False)
-ds = ds.squeeze(drop=True)
+    dx = ds["dx"].isel(x=0).values
+    ds = ds.drop_vars("x")
+    ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
-dx = ds["dx"].isel(x=0).values
-ds = ds.drop_vars("x")
-ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
+    t = [0, 10, 20, 30, 40, 50]
 
-t = [0, 10, 20, 30, 40, 50]
+    ## n front
+    n_array = n_front.n_calc(ds, t=t)
+    n_array_all = n_front.n_calc(ds, t=t, row_calc="all_row")
+    # n_array_FWHM = n_front_FWHM.n_calc(ds,t=t, row_calc="all_row")
+    ## Max n
+    # n_array = max_n.n_calc(ds, t=t)
+    # n_array_all = max_n.n_calc(ds, t=t, row_calc="all_row")
+    ## CoM
+    # n_array = v_data.n_calc(ds, t=t)
 
-## n front
-n_array = n_front.n_calc(ds, t=t)
-n_array_all = n_front.n_calc(ds, t=t, row_calc="all_row")
-# n_array_FWHM = n_front_FWHM.n_calc(ds,t=t, row_calc="all_row")
-## Max n
-# n_array = max_n.n_calc(ds, t=t)
-# n_array_all = max_n.n_calc(ds, t=t, row_calc="all_row")
-## CoM
-# n_array = v_data.n_calc(ds, t=t)
+    ## X-res_array, each coloumn for x-coords (vlines) or every 2 columns for x and z coords (scatter)
+    ## For vline
+    ## n front
+    # For 1 results
+    # res_array = n_array[:,0]
+    # For 2 results 
+    res_array = np.append(n_array[:,0],n_array_all[:,0]).reshape(n_array.shape[0],2, order="F")
 
-## X-res_array, each coloumn for x-coords (vlines) or every 2 columns for x and z coords (scatter)
-## For vline
-## n front
-# For 1 results
-# res_array = n_array[:,0]
-# For 2 results 
-res_array = np.append(n_array[:,0],n_array_all[:,0]).reshape(n_array.shape[0],2, order="F")
+    ## For scatter
+    ## Max n
+    # n_array_res = np.vstack(([ds["x"].values[n_array[:,0]]],[ds["z"].values[n_array[:,1]]])).transpose()
+    # n_array_all_res = np.append([ds["x"].values[n_array_all[:,0]]],[ds["z"].values[n_array_all[:,1]]], axis = 0).transpose()
+    # res_array = np.append(n_array_res,n_array_all_res,axis=1)
+    ## CoM
+    # res_array = np.vstack((n_array[:,0]/0.3, n_array[:,1])).transpose()
+    legend = ["n front midrow", "n front all rows"]
+    n_hmap_subplots(t,ds, res_array=res_array, plotstyle="vline", legend=legend)
+    # print(ds["x"].interp(x=n_array[:,0]).values)
 
-## For scatter
-## Max n
-# n_array_res = np.vstack(([ds["x"].values[n_array[:,0]]],[ds["z"].values[n_array[:,1]]])).transpose()
-# n_array_all_res = np.append([ds["x"].values[n_array_all[:,0]]],[ds["z"].values[n_array_all[:,1]]], axis = 0).transpose()
-# res_array = np.append(n_array_res,n_array_all_res,axis=1)
-## CoM
-# res_array = np.vstack((n_array[:,0]/0.3, n_array[:,1])).transpose()
-legend = ["n front midrow", "n front all rows"]
-n_hmap_subplots(t,ds, res_array=res_array, plotstyle="vline", legend=legend)
-# print(ds["x"].interp(x=n_array[:,0]).values)
+if __name__ == "__main__":
+    main()
