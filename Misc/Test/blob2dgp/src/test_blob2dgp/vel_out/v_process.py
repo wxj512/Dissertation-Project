@@ -6,14 +6,6 @@ import matplotlib.pyplot as plt
 import v_data, n_front, n_front_FWHM 
 
 
-def data_import(folder = "delta_1", filepath = ""):
-    folder = folder
-    if not(filepath == ""):
-        filepath = filepath + "/"
-    else:
-        filepath = "../Data/Input/" + folder + "/"
-    return filepath
-
 def main():  
     data_path = v_data.data_import("")[3]
 
@@ -29,8 +21,8 @@ def main():
             ds = ds.drop_vars("x")
             ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
-            n_array_CoM = v_data.n_calc(ds)
-            n_array_nf = n_front.n_calc(ds)
+            n_array_CoM = v_data.n_calc(ds, method = "CoM")
+            n_array_nf = v_data.n_calc(ds, method = "n_front")
             # n_array_nf_all = n_front.n_calc(ds, row_calc = "all_row")
             # n_array_FWHM = n_front_FWHM.n_calc(ds, row_calc = "all_row")
 

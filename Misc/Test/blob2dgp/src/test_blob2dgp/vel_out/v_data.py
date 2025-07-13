@@ -103,7 +103,7 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "midplane"):
         ds_data = ds.isel(t = vals)
 
         if method == "CoM":
-            n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
+            n_point = np.array(ndimage.center_of_mass(ds_data["n"].values - n0_scale)) * Gridsize
         if method == "max_n" or "n_front" or "n_front_FWHM":
             if row_calc == "midplane":
                 row_j = int(ds_data["z"].shape[0]/2)
@@ -223,7 +223,8 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array = n_calc(ds, method="n_front_FWHM", row_calc = "all_row")
+    n_array = n_calc(ds, method="CoM")
+   
     dist_x, dist_z, vx, vz = vel_calc(n_array)
 
     # print(np.shape(n_array))
