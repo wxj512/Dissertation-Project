@@ -8,10 +8,10 @@ import v_data
 
 def main():  
     data_path = v_data.data_import("")[3]
-
+    file_count = 0
     for file_i, [subdir, dirs, files] in enumerate(os.walk(data_path)):
         if "B0" in subdir:
-            
+
             BOUT_res, BOUT_settings = v_data.data_import(folder = subdir)[0:2]
 
             ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
@@ -32,15 +32,17 @@ def main():
             # dx_FWHM_all, dz_FWHM_all, vx_FWHM_all, vz_FWHM_all = v_data.vel_calc(n_array_FWHM_all)
 
             v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf)]]).transpose()
-            # v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf)]]).transpose()
+            v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf)]]).transpose()
 
-            try:
-                v_max_array = np.append(v_max_array, v_max, axis = 0)
-                # v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
-            except NameError:
+            if file_count == 0:
                 v_max_array = v_max
-                # v_avg_array = v_avg
-                
+                v_avg_array = v_avg
+            else:
+                v_max_array = np.append(v_max_array, v_max, axis = 0)
+                v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
+            
+            file_count = file_count + 1
+
 
     B0_data = np.round(np.linspace(0.1,1,10),2)
 
@@ -55,16 +57,16 @@ def main():
     ax1.set_ylabel("$v_{max}$/$c_s$")
     ax1.legend()
 
-    # f2 = plt.figure(linewidth = 3, edgecolor = "#000000")
-    # ax2 = f2.gca()
-    # ax2.set_title("Average velocity of blob for varying B0")
-    # ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
-    # ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
-    # # ax2.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
-    # # ax2.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
-    # ax2.set_xlabel("B0/T")
-    # ax2.set_ylabel("$v_{avg}$/$c_s$")
-    # ax2.legend()
+    f2 = plt.figure(linewidth = 3, edgecolor = "#000000")
+    ax2 = f2.gca()
+    ax2.set_title("Average velocity of blob for varying B0")
+    ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
+    ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
+    # ax2.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
+    # ax2.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
+    ax2.set_xlabel("B0/T")
+    ax2.set_ylabel("$v_{avg}$/$c_s$")
+    ax2.legend()
     plt.show()
 
 if __name__ == "__main__":
