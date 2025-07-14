@@ -5,8 +5,6 @@ from xbout import open_boutdataset
 import fileinput
 import numpy as np
 
-import test_blob2dgp.vel_out.v_data as v_data
-
 def mk_inp(param_array, param, ref_folder = "delta_1", path = ""):
     ref_folder = ref_folder
 

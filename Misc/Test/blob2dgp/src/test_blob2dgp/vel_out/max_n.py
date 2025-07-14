@@ -6,7 +6,7 @@ from tqdm import tqdm
 import v_data
 
 
-def n_calc(ds, n0_scale = 1, row_calc = "midplane", t = ""):
+def n_calc(ds, n0_scale = 1, row_calc = "midrow", t = ""):
     
     # Find max n value of grid and return position (x,z) of max n
     def n_max(n, n0_scale, row = ""):
@@ -28,7 +28,7 @@ def n_calc(ds, n0_scale = 1, row_calc = "midplane", t = ""):
         
         ds_data = ds.isel(t = vals)
         
-        if row_calc == "midplane":
+        if row_calc == "midrow":
             row = int(ds_data["z"].size/2)
             n = ds_data["n"].values[:, row]
             n_max_pos = n_max(n, n0_scale, row)
