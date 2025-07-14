@@ -51,21 +51,23 @@ class consts:
 class n_calc_methods:
     
     def __init__(self, ds_data, row_calc, n0_scale, Gridsize):
-        self.ds_data = ds_data
+        self.ds_data = ds_data.copy()
         self.row_calc = row_calc
         self.n0_scale = n0_scale
         self.Gridsize = Gridsize
+        del ds_data
         
     
     def n_array(self, row):
         if row == "whole_grid":
-            self.n = self.ds_data["n"].values
+            self.n = self.ds_data["n"].values - self.n0_scale
         else:
             self.n = self.ds_data["n"].values[:,row] - self.n0_scale
         return self.n
     
     def CoM(self):
-        self.n_point = np.array(ndimage.center_of_mass(self.n_array("whole_grid") - self.n0_scale)) * self.Gridsize
+        self.n_point = np.array(ndimage.center_of_mass(self.n_array("whole_grid"))) * self.Gridsize
+        del self.ds_data
         return self.n_point
     
     def n_max(self):
@@ -83,6 +85,8 @@ class n_calc_methods:
             self.n_point = n_max_pos(self.n_array(row), self.n0_scale, row = row)
         elif self.row_calc == "all_row":
             self.n_point = n_max_pos(self.n_array("whole_grid"), self.n0_scale)
+        
+        del self.ds_data
         return self.n_point
         
     def n_front(self, FWHM = False):
@@ -149,7 +153,7 @@ class n_calc_methods:
             gauss_width = FWHM(popt[2])
             n_front = max_peak_j * self.Gridsize + (gauss_width / 2)
             self.n_point = [n_front, self.ds_data["z"].values[row]]
-
+        del self.ds_data
         return self.n_point
 
 def n_calc(ds, method = "CoM", t = "", row_calc = "midrow"):
@@ -183,7 +187,7 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "midrow"):
             n_array = [n_point]
         else:
             n_array = np.append(n_array, [n_point], axis = 0)
-        
+    del ds, ds_data  
     return n_array
 
 def vel_calc(array):

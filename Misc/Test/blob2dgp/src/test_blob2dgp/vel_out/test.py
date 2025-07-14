@@ -7,17 +7,11 @@ from scipy import ndimage
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 from tqdm import tqdm
+import xarray
 
 import v_data
 
-BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1_B0_0.1")[0:2]
 
-ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
-ds = ds.squeeze(drop=True)
-
-dx = ds["dx"].isel(x=0).values
-ds = ds.drop_vars("x")
-ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
 class n_calc_methods:
     
@@ -125,12 +119,15 @@ class n_calc_methods:
         return self.n_point, gauss_fit, row
 
 
-ds_data = ds.isel(t=50)
-n_point, gauss_fit, row = n_calc_methods(ds_data, "midrow", 1, 0.3).n_front(FWHM=True)
+BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1_B0_0.1")[0:2]
 
-# row = int(ds_data["z"].shape[0]/2)
-peak_n = ds_data["n"].values[:,row] - 1
-x_array = np.linspace(0, peak_n.size-1, peak_n.size)
-plt.plot(ds["x"].values, peak_n)
-plt.plot(ds["x"].values, gauss_fit)
-plt.show()
+ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
+ds = ds.squeeze(drop=True)
+
+dx = ds["dx"].isel(x=0).values
+ds = ds.drop_vars("x")
+ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
+
+ds_data = ds.isel(t=50)
+del ds
+print(ds)
