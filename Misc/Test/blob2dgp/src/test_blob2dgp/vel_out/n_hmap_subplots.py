@@ -74,7 +74,7 @@ def n_hmap_subplots(t, ds, res_array = "", plotstyle = "line", legend = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = v_data.data_import("")[0:2]
+    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1_B0_0.1")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
@@ -86,8 +86,8 @@ def main():
     t = [0, 10, 20, 30, 40, 50]
 
     ## n front
-    n_array = n_front.n_calc(ds, t=t)
-    n_array_all = n_front.n_calc(ds, t=t, row_calc="all_row")
+    n_array = v_data.n_calc(ds, t=t, row_calc="midrow", method="n_front_FWHM")
+    n_array_all = v_data.n_calc(ds, t=t, row_calc="all_row", method="n_front_FWHM")
     # n_array_FWHM = n_front_FWHM.n_calc(ds,t=t, row_calc="all_row")
     ## Max n
     # n_array = max_n.n_calc(ds, t=t)
