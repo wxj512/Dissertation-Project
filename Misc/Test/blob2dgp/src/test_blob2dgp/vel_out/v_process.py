@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from xbout import open_boutdataset
+import xarray as xr
 import matplotlib.pyplot as plt
 
 import v_data
@@ -43,31 +44,44 @@ def main():
             
             file_count = file_count + 1
 
-
+    n_calc_method = ["CoM", "n_front midrow"]
     B0_data = np.round(np.linspace(0.1,1,10),2)
 
-    f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
-    ax1 = f1.gca()
-    ax1.set_title("Maximum velocity of blob for varying B0")
-    ax1.plot(B0_data, v_max_array[:,0], label = "CoM method")
-    ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor mid row")
-    # ax1.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
-    # ax1.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
-    ax1.set_xlabel("B0/T")
-    ax1.set_ylabel("$v_{max}$/$c_s$")
-    ax1.legend()
+    v_all_ds = xr.Dataset(
+        data_vars = dict(
+            v_max = (["B0", "n_method"], v_max_array, {"long_name": "maximum velocity", "units": "c_s"}),
+            v_avg = (["B0", "n_method"], v_avg_array, {"long_name": "averagevelocity", "units": "c_s"})
+        ),
+        coords = dict(
+            B0 = ("B0", B0_data, {"long_name": "magnetic field", "units": "T"}),
+            n_method =  ("n_method", n_calc_method, {"long_name": "density calculation method"})
+        ),
+    )
 
-    f2 = plt.figure(linewidth = 3, edgecolor = "#000000")
-    ax2 = f2.gca()
-    ax2.set_title("Average velocity of blob for varying B0")
-    ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
-    ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
-    # ax2.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
-    # ax2.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
-    ax2.set_xlabel("B0/T")
-    ax2.set_ylabel("$v_{avg}$/$c_s$")
-    ax2.legend()
-    plt.show()
+    v_all_ds.to_netcdf()
+
+    # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
+    # ax1 = f1.gca()
+    # ax1.set_title("Maximum velocity of blob for varying B0")
+    # ax1.plot(B0_data, v_max_array[:,0], label = "CoM method")
+    # ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor mid row")
+    # # ax1.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
+    # # ax1.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
+    # ax1.set_xlabel("B0/T")
+    # ax1.set_ylabel("$v_{max}$/$c_s$")
+    # ax1.legend()
+
+    # f2 = plt.figure(linewidth = 3, edgecolor = "#000000")
+    # ax2 = f2.gca()
+    # ax2.set_title("Average velocity of blob for varying B0")
+    # ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
+    # ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
+    # # ax2.plot(B0_data, max_v_array[:,2], label = "n front method \nfor all row")
+    # # ax2.plot(B0_data, max_v_array[:,2], label = "n front + FWHM method \nfor mid row")
+    # ax2.set_xlabel("B0/T")
+    # ax2.set_ylabel("$v_{avg}$/$c_s$")
+    # ax2.legend()
+    # plt.show()
 
 if __name__ == "__main__":
     main()
