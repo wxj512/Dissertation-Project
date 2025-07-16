@@ -20,10 +20,11 @@ dx = ds["dx"].isel(x=0).values
 ds = ds.drop_vars("x")
 ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
-t = 20
+t = 0
 
 ds_data = ds.isel(t=t)
 n_flat = np.ravel(ds_data["n"].values, order="F") - 1
+n = ds_data["n"].values[:,128]
 
 peaks, peak_info = find_peaks(n_flat, height = 0.005)
 col = ds_data["x"].size
@@ -31,7 +32,10 @@ row = ds_data["z"].size
 peak1x = np.max(peaks % col)
 peak1z = peaks[np.where((peaks%col) == peak1x)[0][0]] // col
 
-peak2x = peaks[np.where((peaks%col) == peak1x)[0][0] - 1]%col
+if peaks.size == 1:
+    peak_2 = peak1x - (np.where(n > 0.0001 * n_flat[peak1x*peak1z])[0][-1] - peak1z)
+else:
+    peak2x = peaks[np.where((peaks%col) == peak1x)[0][0] - 1]%col
 
 print(peak1x, peak1z)
 print(peak2x)

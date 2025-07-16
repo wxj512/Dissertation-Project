@@ -57,7 +57,6 @@ class n_calc_methods:
         self.Gridsize = Gridsize
         del ds_data
         
-    
     def n_array(self, row):
         if row == "whole_grid":
             self.n = self.ds_data["n"].values - self.n0_scale
@@ -91,43 +90,56 @@ class n_calc_methods:
         
     def n_front(self, FWHM = False):
         
-        def n_peak(n, height=0.005):
-            peaks = find_peaks(n, height=height)
-            if not(peaks[0].size > 0):
+        def n_peak(n, height=0.005, row_calc = "midrow", ds_col = 260):
+            peaks, _ = find_peaks(n, height=height)
+            if not(peaks.size > 0):
                 max_peak = 0
+            elif row_calc == "midrow":
+                max_peak = np.max(peaks)
+                max_peak_row = None
+            else:
+                max_peak = np.max(peaks % ds_col)
+                max_peak_row = peaks[np.where((peaks % ds_col) == max_peak)[0][0]] // ds_col
+            return max_peak, max_peak_row
+        
+        def peak_2(n, max_peak, height=0.005):
+            peaks, _ = find_peaks(n, height=height)
+            if not(peaks.size > 0):
                 peak_2 = 0
-            elif peaks[0].size == 1:
-                max_peak = np.max(peaks[0])
+            elif peaks.size == 1:
                 peak_2 = max_peak - (np.where(n > 0.0001 * n[max_peak])[0][-1] - max_peak)
             else:
-                max_peak = np.max(peaks[0])
-                peak_2 = peaks[0][-2]
-            return max_peak, peak_2
+                peak_2 = peaks[-2]
+            return peak_2
         
+        ds_col = self.ds_data["x"].size
+
         if self.row_calc == "midrow":
             row = int(self.ds_data["z"].shape[0]/2)
-            max_peak_j, peak_2_j = n_peak(self.n_array(row))
-            peak_n = self.n_array(row)
+            ## max peak row not returned as always returns 0 if only 1 n row specified
+            max_peak, _ = n_peak(self.n_array(row), row_calc = self.row_calc)
         elif self.row_calc == "all_row":
-            for j,z_vals in enumerate(self.ds_data["z"].values):
-                        #Find peaks of rows
-                        max_peak, peak_2 = n_peak(self.n_array(j))
-                        # Makes sure this condition is fullfilled at j = 0
-                        if j == 0:
-                            max_peak_j = 0
-                            peak_2_j = 0
-                        elif max_peak == 0:
-                            continue
-                        elif max_peak>max_peak_j:
-                            max_peak_j = max_peak
-                            row = j
-                            peak_2_j = peak_2
-                            peak_n = self.n_array(row)
-                        else:
-                            continue
+            n_flat = np.ravel(self.n_array("whole_grid"), order="F")
+            max_peak, row = n_peak(n_flat, row_calc = self.row_calc, ds_col = ds_col)
+            # for j,z_vals in enumerate(self.ds_data["z"].values):
+            #             #Find peaks of rows
+            #             max_peak, peak_2 = n_peak(self.n_array(j))
+            #             # Makes sure this condition is fullfilled at j = 0
+            #             if j == 0:
+            #                 max_peak_j = 0
+            #                 peak_2_j = 0
+            #             elif max_peak == 0:
+            #                 continue
+            #             elif max_peak>max_peak_j:
+            #                 max_peak_j = max_peak
+            #                 row = j
+            #                 peak_2_j = peak_2
+            #                 peak_n = self.n_array(row)
+            #             else:
+            #                 continue
         
         if FWHM == False:
-            self.n_point = [self.ds_data["x"].values[max_peak_j], self.ds_data["z"].values[row]]
+            self.n_point = [self.ds_data["x"].values[max_peak], self.ds_data["z"].values[row]]
         elif FWHM == True:
 
             def gaussian(x, *params):
@@ -141,17 +153,19 @@ class n_calc_methods:
                 return FWHM
             
             #   Mask data
-            width_guess = ((max_peak_j - peak_2_j) * 0.5) * 2
+            peak_n = self.n_array(row)
+            peak_n2 = peak_2(peak_n, max_peak)
+            width_guess = ((max_peak - peak_n2) * 0.5) * 2
             x_array = np.linspace(0, peak_n.size-1, peak_n.size)
-            mask_n = np.ma.masked_outside(x_array, max_peak_j - (width_guess / 2), max_peak_j + (width_guess / 2))
+            mask_n = np.ma.masked_outside(x_array, max_peak - (width_guess / 2), max_peak + (width_guess / 2))
             mask_n = np.ones_like(mask_n) * peak_n
             mask_n[np.where(mask_n.data == 1)[0]] = "nan"
             # Find gaussian
-            guess = [peak_n[max_peak_j], max_peak_j * self.Gridsize, 1 / (peak_n[max_peak_j] * np.sqrt(2 * np.pi))]
+            guess = [peak_n[max_peak], max_peak * self.Gridsize, 1 / (peak_n[max_peak] * np.sqrt(2 * np.pi))]
             bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
-            popt, pcov = curve_fit(gaussian, x_array * self.Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
+            popt, _ = curve_fit(gaussian, x_array * self.Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
             gauss_width = FWHM(popt[2])
-            n_front = max_peak_j * self.Gridsize + (gauss_width / 2)
+            n_front = max_peak * self.Gridsize + (gauss_width / 2)
             self.n_point = [n_front, self.ds_data["z"].values[row]]
         del self.ds_data
         return self.n_point
@@ -253,13 +267,15 @@ def main():
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
     n_array = n_calc(ds, method="n_front_FWHM", row_calc="midrow")
+    n_array_all = n_calc(ds, method="n_front_FWHM", row_calc="all_row")
     
     dist_x, dist_z, vx, vz = vel_calc(n_array)
+    dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(n_array_all)
 
     # print(np.shape(n_array))
 
-    dist_array = [dist_x]
-    vel_array = [vx]
+    dist_array = [dist_x, dist_x_all]
+    vel_array = [vx, vx_all]
     # print(np.max(vx))
     v_plot(ds["t"].values, dist_array, vel_array)
 
