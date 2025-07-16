@@ -90,8 +90,8 @@ class n_calc_methods:
         
     def n_front(self, FWHM = False):
         
-        def n_peak(n, height=0.005, row_calc = "midrow", ds_col = 260):
-            peaks, _ = find_peaks(n, height=height)
+        def n_peak(n, height=0.001, prominence = 0.0006, row_calc = "midrow", ds_col = 260):
+            peaks, _ = find_peaks(n, height = height, prominence = prominence)
             if not(peaks.size > 0):
                 max_peak = 0
             elif row_calc == "midrow":
@@ -102,8 +102,8 @@ class n_calc_methods:
                 max_peak_row = peaks[np.where((peaks % ds_col) == max_peak)[0][0]] // ds_col
             return max_peak, max_peak_row
         
-        def peak_2(n, max_peak, height=0.005):
-            peaks, _ = find_peaks(n, height=height)
+        def peak_2(n, max_peak, height=0.001, prominence = 0.0006):
+            peaks, _ = find_peaks(n, height = height, prominence = prominence)
             if not(peaks.size > 0):
                 peak_2 = 0
             elif peaks.size == 1:
@@ -121,22 +121,6 @@ class n_calc_methods:
         elif self.row_calc == "all_row":
             n_flat = np.ravel(self.n_array("whole_grid"), order="F")
             max_peak, row = n_peak(n_flat, row_calc = self.row_calc, ds_col = ds_col)
-            # for j,z_vals in enumerate(self.ds_data["z"].values):
-            #             #Find peaks of rows
-            #             max_peak, peak_2 = n_peak(self.n_array(j))
-            #             # Makes sure this condition is fullfilled at j = 0
-            #             if j == 0:
-            #                 max_peak_j = 0
-            #                 peak_2_j = 0
-            #             elif max_peak == 0:
-            #                 continue
-            #             elif max_peak>max_peak_j:
-            #                 max_peak_j = max_peak
-            #                 row = j
-            #                 peak_2_j = peak_2
-            #                 peak_n = self.n_array(row)
-            #             else:
-            #                 continue
         
         if FWHM == False:
             self.n_point = [self.ds_data["x"].values[max_peak], self.ds_data["z"].values[row]]
@@ -251,7 +235,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import("")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "delta_1_B0_0.1")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
@@ -266,18 +250,19 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array = n_calc(ds, method="n_front_FWHM", row_calc="midrow")
+    # n_array = n_calc(ds, method="n_front", row_calc="all_row")
     n_array_all = n_calc(ds, method="n_front_FWHM", row_calc="all_row")
     
-    dist_x, dist_z, vx, vz = vel_calc(n_array)
+    # dist_x, dist_z, vx, vz = vel_calc(n_array)
     dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(n_array_all)
 
     # print(np.shape(n_array))
-
-    dist_array = [dist_x, dist_x_all]
-    vel_array = [vx, vx_all]
+    title = "for n front with FWHM method"
+    dist_array = [dist_x_all]
+    vel_array = [vx_all]
+    plot_label = ["for \nall row"]
     # print(np.max(vx))
-    v_plot(ds["t"].values, dist_array, vel_array)
+    v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
 
 if __name__ == "__main__":
     main()
