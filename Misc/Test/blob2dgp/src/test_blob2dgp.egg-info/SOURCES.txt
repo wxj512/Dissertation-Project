@@ -6,6 +6,7 @@ src/test_blob2dgp.egg-info/dependency_links.txt
 src/test_blob2dgp.egg-info/entry_points.txt
 src/test_blob2dgp.egg-info/requires.txt
 src/test_blob2dgp.egg-info/top_level.txt
+src/test_blob2dgp/GP/GP_regression.py
 src/test_blob2dgp/GP/__init__.py
 src/test_blob2dgp/GP/test.py
 src/test_blob2dgp/model_run/__init__.py

@@ -8,8 +8,9 @@ import v_data
 
 def main():  
     data_path = v_data.data_import("")[3]
+    data_input_path = data_path.joinpath("Input")
     file_count = 0
-    for file_i, [subdir, dirs, files] in enumerate(os.walk(data_path)):
+    for file_i, [subdir, dirs, files] in enumerate(os.walk(data_input_path)):
         if "B0" in subdir:
 
             BOUT_res, BOUT_settings = v_data.data_import(folder = subdir)[0:2]
@@ -58,7 +59,7 @@ def main():
     )
 
     output_folder = f"B0_{B0_data.min():.1f}_{B0_data.max():.1f}"
-    output_path = data_path.parent.joinpath("Output", "vel_max_avg", output_folder)
+    output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
 
     if not(os.path.exists(output_path) and os.path.isdir(output_path)):
             os.mkdir(output_path)
