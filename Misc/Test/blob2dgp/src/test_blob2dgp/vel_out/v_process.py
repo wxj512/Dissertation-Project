@@ -25,15 +25,15 @@ def main():
             n_array_CoM = v_data.n_calc(ds, method = "CoM")
             n_array_nf = v_data.n_calc(ds, method = "n_front")
             n_array_nf_all =v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
-            # n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
+            n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
             dx_CoM, dz_CoM, vx_CoM, vz_CoM = v_data.vel_calc(n_array_CoM)
             dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
             dx_nf_all, dz_nf_all, vx_nf_all, vz_nf_all = v_data.vel_calc(n_array_nf_all)
-            # dx_FWHM_all, dz_FWHM_all, vx_FWHM_all, vz_FWHM_all = v_data.vel_calc(n_array_FWHM_all)
+            dx_FWHM_all, dz_FWHM_all, vx_FWHM_all, vz_FWHM_all = v_data.vel_calc(n_array_FWHM_all)
 
-            v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf)], [np.max(vx_nf_all)]]).transpose()
-            v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf)], [np.mean(vx_nf_all)]]).transpose()
+            v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
+            v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
 
             if file_count == 0:
                 v_max_array = v_max
@@ -44,7 +44,7 @@ def main():
             
             file_count = file_count + 1
 
-    n_calc_method = ["CoM", "n_front mid row", "n_front all row"]
+    n_calc_method = ["CoM", "n_front mid row", "n_front all row", "n_front + FWHM all row"]
     B0_data = np.round(np.linspace(0.1,1,10),2)
 
     v_all_ds = xr.Dataset(
@@ -72,7 +72,7 @@ def main():
     ax1.plot(B0_data, v_max_array[:,0], label = "CoM method")
     ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor mid row")
     ax1.plot(B0_data, v_max_array[:,2], label = "n front method \nfor all row")
-    # ax1.plot(B0_data, v_max_array[:,3], label = "n front + FWHM method \nfor all row")
+    ax1.plot(B0_data, v_max_array[:,3], label = "n front + FWHM \nmethod for all row")
     ax1.set_xlabel("B0/T")
     ax1.set_ylabel("$v_{max}$/$c_s$")
     ax1.legend()
@@ -83,7 +83,7 @@ def main():
     ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
     ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
     ax2.plot(B0_data, v_avg_array[:,2], label = "n front method \nfor all row")
-    # ax2.plot(B0_data, v_avg_array[:,3], label = "n front + FWHM method \nfor all row")
+    ax2.plot(B0_data, v_avg_array[:,3], label = "n front + FWHM \nmethod for all row")
     ax2.set_xlabel("B0/T")
     ax2.set_ylabel("$v_{avg}$/$c_s$")
     ax2.legend()

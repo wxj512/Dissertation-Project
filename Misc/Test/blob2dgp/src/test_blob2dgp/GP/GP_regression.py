@@ -53,7 +53,7 @@ def main():
 
         mean_prediction, stdev_prediction = gp_reg(x_train, y_train, ds_x)
 
-        gp_plot(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_method, fig_no = i, vel_type = "avg")
+        gp_plot(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_method, fig_no = i, vel_type = "max")
         
 
     plt.show()

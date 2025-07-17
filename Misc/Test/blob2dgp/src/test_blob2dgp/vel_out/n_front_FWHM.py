@@ -10,7 +10,7 @@ from tqdm import tqdm
 import v_data
 
 
-def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midrow", t = ""):
+def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "mid_row", t = ""):
     
     def gaussian(x, *params):
         A = params[0]
@@ -47,7 +47,7 @@ def n_calc(ds, Gridsize = 0.3, n0_scale = 1, row_calc = "midrow", t = ""):
         
         ds_data = ds.isel(t = vals)
         
-        if row_calc == "midrow":
+        if row_calc == "mid_row":
             row_j = int(ds_data["z"].shape[0]/2)
             n = ds_data["n"].values[:,row_j] - n0_scale
             max_peak_j, peak_2_j = n_peak(n, height=0.015)

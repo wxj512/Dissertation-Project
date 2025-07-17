@@ -86,7 +86,7 @@ def main():
     t = [0, 10, 20, 30, 40, 50]
 
     ## n front
-    n_array = v_data.n_calc(ds, t=t, row_calc="midrow", method="n_front_FWHM")
+    n_array = v_data.n_calc(ds, t=t, row_calc="mid_row", method="n_front_FWHM")
     n_array_all = v_data.n_calc(ds, t=t, row_calc="all_row", method="n_front_FWHM")
     # n_array_FWHM = n_front_FWHM.n_calc(ds,t=t, row_calc="all_row")
     ## Max n
@@ -110,7 +110,7 @@ def main():
     # res_array = np.append(n_array_res,n_array_all_res,axis=1)
     ## CoM
     # res_array = np.vstack((n_array[:,0]/0.3, n_array[:,1])).transpose()
-    legend = ["n front midrow", "n front all rows"]
+    legend = ["n front mid row", "n front all rows"]
     n_hmap_subplots(t,ds, res_array=res_array, plotstyle="vline", legend=legend)
     # print(ds["x"].interp(x=n_array[:,0]).values)
 

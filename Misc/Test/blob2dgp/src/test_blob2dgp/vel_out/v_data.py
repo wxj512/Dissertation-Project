@@ -48,28 +48,20 @@ class consts:
             print("Error: check if ds has specified inputfilepath for .settings")
             sys.exit()
 
-class n_calc_methods:
-    
-    def __init__(self, ds_data, row_calc, n0_scale, Gridsize):
-        self.ds_data = ds_data.copy()
-        self.row_calc = row_calc
-        self.n0_scale = n0_scale
-        self.Gridsize = Gridsize
-        del ds_data
+def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         
-    def n_array(self, row):
+    def n_array(ds_data, n0_scale, row):
         if row == "whole_grid":
-            self.n = self.ds_data["n"].values - self.n0_scale
+            n = ds_data["n"].values - n0_scale
         else:
-            self.n = self.ds_data["n"].values[:,row] - self.n0_scale
-        return self.n
+            n = ds_data["n"].values[:,row] - n0_scale
+        return n
     
-    def CoM(self):
-        self.n_point = np.array(ndimage.center_of_mass(self.n_array("whole_grid"))) * self.Gridsize
-        del self.ds_data
-        return self.n_point
+    if method == "CoM":
+        row = "whole_grid"
+        return np.array(ndimage.center_of_mass(n_array(ds_data, n0_scale, row))) * Gridsize
     
-    def n_max(self):
+    if method == "n_max":
         
         def n_max_pos(n, n0_scale, row = ""):
             n_max_pos = np.where((n - n0_scale) == np.max(n - n0_scale))
@@ -79,22 +71,20 @@ class n_calc_methods:
                 n_max_pos = [int(n_max_pos[0][0]), int(row)]
             return n_max_pos
         
-        if self.row_calc == "midrow":
-            row = int(self.ds_data["z"].shape[0]/2)
-            self.n_point = n_max_pos(self.n_array(row), self.n0_scale, row = row)
-        elif self.row_calc == "all_row":
-            self.n_point = n_max_pos(self.n_array("whole_grid"), self.n0_scale)
+        if row_calc == "mid_row":
+            row = int(ds_data["z"].shape[0]/2)
+            return n_max_pos(n_array(ds_data, n0_scale, row), n0_scale, row = row)
+        elif row_calc == "all_row":
+            row = "whole_grid"
+            return n_max_pos(n_array(ds_data, n0_scale, row), n0_scale)
         
-        del self.ds_data
-        return self.n_point
+    if method == "n_front" or "n_front_FWHM":
         
-    def n_front(self, FWHM = False):
-        
-        def n_peak(n, height=0.001, prominence = 0.0006, row_calc = "midrow", ds_col = 260):
+        def n_peak(n, height = 0.03, prominence = 0.002, row_calc = "mid_row", ds_col = 260):
             peaks, _ = find_peaks(n, height = height, prominence = prominence)
             if not(peaks.size > 0):
                 max_peak = 0
-            elif row_calc == "midrow":
+            elif row_calc == "mid_row":
                 max_peak = np.max(peaks)
                 max_peak_row = None
             else:
@@ -102,7 +92,21 @@ class n_calc_methods:
                 max_peak_row = peaks[np.where((peaks % ds_col) == max_peak)[0][0]] // ds_col
             return max_peak, max_peak_row
         
-        def peak_2(n, max_peak, height=0.001, prominence = 0.0006):
+        ds_col = ds_data["x"].size
+
+        if row_calc == "mid_row":
+            row = int(ds_data["z"].shape[0]/2)
+            ## max peak row not returned as always returns 0 if only 1 n row specified
+            max_peak, _ = n_peak(n_array(ds_data, n0_scale, row))
+        elif row_calc == "all_row":
+            row = "whole_grid"
+            n_flat = np.ravel(n_array(ds_data, n0_scale, row), order="F")
+            max_peak, row = n_peak(n_flat, row_calc = row_calc, ds_col = ds_col)
+        
+        if max_peak == (ds_data["x"].size - 1) or method == "n_front":
+            return [ds_data["x"].values[max_peak], ds_data["z"].values[row]]
+
+        def peak_2(n, max_peak, height=0.001, prominence = 0.0005):
             peaks, _ = find_peaks(n, height = height, prominence = prominence)
             if not(peaks.size > 0):
                 peak_2 = 0
@@ -112,49 +116,35 @@ class n_calc_methods:
                 peak_2 = peaks[-2]
             return peak_2
         
-        ds_col = self.ds_data["x"].size
+        def gaussian(x, *params):
+            A = params[0]
+            x0 = params[1]
+            c = params[2]
+            return A * np.exp(-((x - x0)/(np.sqrt(2) * c)) ** 2)
 
-        if self.row_calc == "midrow":
-            row = int(self.ds_data["z"].shape[0]/2)
-            ## max peak row not returned as always returns 0 if only 1 n row specified
-            max_peak, _ = n_peak(self.n_array(row), row_calc = self.row_calc)
-        elif self.row_calc == "all_row":
-            n_flat = np.ravel(self.n_array("whole_grid"), order="F")
-            max_peak, row = n_peak(n_flat, row_calc = self.row_calc, ds_col = ds_col)
+        def FWHM(c):
+            FWHM = 2 * np.sqrt(2) * (np.log(2) ** (1/2)) * c 
+            return FWHM
         
-        if FWHM == False:
-            self.n_point = [self.ds_data["x"].values[max_peak], self.ds_data["z"].values[row]]
-        elif FWHM == True:
+        #   Mask data
+        peak_n = n_array(ds_data, n0_scale, row)
+        peak_n2 = peak_2(peak_n, max_peak)
+        width_guess = ((max_peak - peak_n2) * 0.5) * 2
+        x_array = np.linspace(0, peak_n.size-1, peak_n.size)
+        mask_n = np.ma.masked_outside(x_array, max_peak - (width_guess / 2), max_peak + (width_guess / 2))
+        mask_n = np.ones_like(mask_n) * peak_n
+        mask_n[np.where(mask_n.data == 1)[0]] = "nan"
+        # Find gaussian
+        param_1 = peak_n[max_peak]; param_2 = max_peak * Gridsize; param_3 = 1 / (peak_n[max_peak] * np.sqrt(2 * np.pi))
+        guess = [param_1, param_2, param_3]
+        bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
+        popt, _ = curve_fit(gaussian, x_array * Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
+        gauss_width = FWHM(popt[2])
+        n_front = max_peak * Gridsize + (gauss_width / 2)
+        return [n_front, ds_data["z"].values[row]]
 
-            def gaussian(x, *params):
-                A = params[0]
-                x0 = params[1]
-                c = params[2]
-                return A * np.exp(-((x - x0)/(np.sqrt(2) * c)) ** 2)
 
-            def FWHM(c):
-                FWHM = 2 * np.sqrt(2) * (np.log(2) ** (1/2)) * c 
-                return FWHM
-            
-            #   Mask data
-            peak_n = self.n_array(row)
-            peak_n2 = peak_2(peak_n, max_peak)
-            width_guess = ((max_peak - peak_n2) * 0.5) * 2
-            x_array = np.linspace(0, peak_n.size-1, peak_n.size)
-            mask_n = np.ma.masked_outside(x_array, max_peak - (width_guess / 2), max_peak + (width_guess / 2))
-            mask_n = np.ones_like(mask_n) * peak_n
-            mask_n[np.where(mask_n.data == 1)[0]] = "nan"
-            # Find gaussian
-            guess = [peak_n[max_peak], max_peak * self.Gridsize, 1 / (peak_n[max_peak] * np.sqrt(2 * np.pi))]
-            bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
-            popt, _ = curve_fit(gaussian, x_array * self.Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
-            gauss_width = FWHM(popt[2])
-            n_front = max_peak * self.Gridsize + (gauss_width / 2)
-            self.n_point = [n_front, self.ds_data["z"].values[row]]
-        del self.ds_data
-        return self.n_point
-
-def n_calc(ds, method = "CoM", t = "", row_calc = "midrow"):
+def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
 # All n calculation methods:
 # CoM = Center of mass method
 # max_n = Maximum density method
@@ -168,24 +158,12 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "midrow"):
     else:
         tvals = t
 
+    n_array = np.empty((0, 2))
+
     for i,vals in enumerate(tqdm(tvals)):
-
         ds_data = ds.isel(t = vals)
-
-        if method == "CoM":
-            n_point = n_calc_methods(ds_data, "", n0_scale, Gridsize).CoM()
-        elif method == "n_max":
-            n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize).n_max()
-        elif method == "n_front":
-            n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize).n_front(FWHM=False)
-        elif method == "n_front_FWHM":
-            n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize).n_front(FWHM=True)
-
-        if i == 0:
-            n_array = [n_point]
-        else:
-            n_array = np.append(n_array, [n_point], axis = 0)
-    del ds, ds_data  
+        n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method)
+        n_array = np.append(n_array, [n_point], axis = 0)
     return n_array
 
 def vel_calc(array):
@@ -250,17 +228,17 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    # n_array = n_calc(ds, method="n_front", row_calc="all_row")
-    n_array_all = n_calc(ds, method="n_front_FWHM", row_calc="all_row")
+    n_array_nf_all = n_calc(ds, method="n_front", row_calc="all_row")
+    n_array_FWHM_all = n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
     
-    # dist_x, dist_z, vx, vz = vel_calc(n_array)
-    dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(n_array_all)
+    dist_x, dist_z, vx, vz = vel_calc(n_array_nf_all)
+    dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(n_array_FWHM_all)
 
     # print(np.shape(n_array))
-    title = "for n front with FWHM method"
-    dist_array = [dist_x_all]
-    vel_array = [vx_all]
-    plot_label = ["for \nall row"]
+    title = "for n front and \nn front with FWHM method"
+    dist_array = [dist_x, dist_x_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["for n front \nmethod", "for n front +\nFWHM method"]
     # print(np.max(vx))
     v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
 
