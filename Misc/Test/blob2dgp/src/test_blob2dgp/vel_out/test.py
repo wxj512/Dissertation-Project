@@ -24,11 +24,20 @@ t = 44
 
 ds_data = ds.isel(t=t)
 
-n_point = v_data.n_calc_methods(ds_data, row_calc="all_row", n0_scale=1, Gridsize=0.3).n_front(FWHM=True)
+n_point = v_data.n_calc_methods(ds_data, row_calc = "all_row", n0_scale = 1, Gridsize = 0.3, method = "n_front_FWHM")
+n_point_nf = v_data.n_calc_methods(ds_data, row_calc = "all_row", n0_scale = 1, Gridsize = 0.3, method = "n_front")
 
+
+
+n = ds_data["n"][:,int(n_point_nf[1]/0.3)] - 1
+print(n_point_nf)
 print(n_point)
+f1 = plt.figure(1)
+ax1 = f1.gca()
+ax1.plot(ds["x"].values,n)
+ax1.vlines(n_point_nf[0], np.min(n) * 1.1, np.max(n) * 1.1, linestyle = "--")
+ax1.vlines(n_point[0], np.min(n) * 1.1, np.max(n) * 1.1, linestyle = "--")
 
-n = ds_data["n"][:,int(n_point[1]/0.3)] - 1
-
-plt.plot(n)
+f2 = plt.figure(2)
+ds_data["n"].plot(x="x", y="z")
 plt.show()
