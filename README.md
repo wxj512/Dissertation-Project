@@ -17,8 +17,11 @@ Repository to version control Dissertation Project progress
     - model_run/ (contains .py files for creating inp file and for executing blob2d model runs)
     - GP/ (contains .py files for performing gaussian process on data for machine learning on blob velocity)
   - Data folder
-    - delta_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
-    - delta_1_B0_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+    - Inputs
+      - delta_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+      - delta_1_B0_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+    - Outputs
+      - vel_max_avg/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc within corresponding folders for inp conditions) 
   - blob2d.cxx (source file for blob2d model)
 
 Created 30/03/2025
