@@ -1,8 +1,10 @@
-import os
-# from sklearn.gaussian_process import GaussianProcessRegressor
-# from sklearn.gaussian_process.kernels import RBF
+import pathlib
 import numpy as np
-from xbout import open_boutdataset
+import xarray as xr
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF
+import matplotlib.pyplot as plt
+
 
 import test_blob2dgp.vel_out.v_data as v_data
 
@@ -14,32 +16,18 @@ import test_blob2dgp.vel_out.v_data as v_data
 
 def main(): 
     data_path = v_data.data_import("")[3]
+    data_input_path = data_path.joinpath("Output", "vel_max_avg", "B0_0.1_1.0")
+    vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
+    
+    ds_x = vall_ds["B0"].values.reshape(-1, 1)
+    ds_y = vall_ds["v_max"].values.reshape(-1, 1)
 
-#     for file_i, [subdir, dirs, files] in enumerate(os.walk(data_path)):
-#         if "B0" in subdir:
-#             BOUT_res, BOUT_settings = v_data.data_import(folder=subdir)[0:2]
-#             ds = open_boutdataset(BOUT_res, info=False)
-#             ds = ds.squeeze(drop=True)
+    # # Random sampling from dataset
+    # rng = np.random.RandomState(1)
+    # training_indices = rng.choice(np.arange(ds_y.size), size = int(0.6 * ds_y.size), replace = False)
+    # x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
-#             dx = ds["dx"].isel(x=0).values
-#             ds = ds.drop_vars("x")
-#             ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
-
-#             n_array_CoM = v_data.n_calc(ds)
-#             dx_CoM, dz_CoM, vx_CoM, vz_CoM = v_data.vel_calc(n_array_CoM)
-
-#             max_v = np.array([np.max(vx_CoM)]).transpose()
-
-#             try:
-#                 max_v_array = np.append(max_v_array, max_v, axis = 0)
-#             except: 
-#                 max_v_array = max_v
-
-
-# rng = np.random.RandomState(1)
-# training_indices = rng.choice(np.arange(y.size), size=6, replace=False)
-# X_train, y_train = X[training_indices], y[training_indices]
-
+    print(vall_ds["n_method"].values)
 
 if __name__ == "__main__":
     main()
