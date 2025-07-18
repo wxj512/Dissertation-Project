@@ -140,7 +140,10 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
         popt, _ = curve_fit(gaussian, x_array * Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
         gauss_width = FWHM(popt[2])
-        n_front = max_peak * Gridsize + (gauss_width / 2)
+        if max_peak * Gridsize + (gauss_width / 2) >= ds_data["x"].values.max():
+            n_front = ds_data["x"].values.max()
+        else:
+            n_front = max_peak * Gridsize + (gauss_width / 2)
         return [n_front, ds_data["z"].values[row]]
 
 
