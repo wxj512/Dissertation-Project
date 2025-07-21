@@ -1,14 +1,15 @@
 import numpy as np
 import xarray as xr
 from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF
+from sklearn.gaussian_process.kernels import RBF, WhiteKernel
 import matplotlib.pyplot as plt
 
 import test_blob2dgp.vel_out.v_data as v_data
 
-def gp_reg(x_train, y_train, x_arr, restarts = 9, len_scale = 1):
-    kernel_CoM = 1 * RBF(length_scale = len_scale, length_scale_bounds = (1e-2, 1e2))
-    GP_CoM = GaussianProcessRegressor(kernel = kernel_CoM, n_restarts_optimizer = restarts)
+def gp_reg(x_train, y_train, x_arr, restarts = 9, len_scale = 1e-2):
+    kernel_CoM = 1 * RBF(length_scale = len_scale, length_scale_bounds = (1e-2, 1e3)) + WhiteKernel(
+        noise_level = 1e-4, noise_level_bounds = (1e-10, 1e-1))
+    GP_CoM = GaussianProcessRegressor(kernel = kernel_CoM, alpha = 0.0, n_restarts_optimizer = restarts)
     GP_CoM.fit(x_train, y_train)
     mean_prediction, stdev_prediction = GP_CoM.predict(x_arr, return_std=True)
     return mean_prediction, stdev_prediction
@@ -27,7 +28,7 @@ def gp_plot(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_m
         ds_x.ravel(),
         mean_prediction - 1.96 * stdev_prediction,
         mean_prediction + 1.96 * stdev_prediction,
-        alpha = 0.5,
+        alpha = 0.3,
         label = f"95% confidence \ninterval",
     )
     ax1.set_xlim(0, 1.1 * np.max(ds_x))
@@ -44,11 +45,12 @@ def main():
     # v_max plots
     for i, n_method in enumerate(vall_ds["n_method"].values):
         ds_x = vall_ds["B0"].values.reshape(-1, 1)
-        ds_y = vall_ds["v_avg"].sel(n_method = n_method).values.reshape(-1, 1)
+        ds_y = vall_ds["v_max"].sel(n_method = n_method).values.reshape(-1, 1)
+        # ds_y = vall_ds["v_avg"].sel(n_method = n_method).values.reshape(-1, 1)
 
         # Random sampling from dataset
         rng = np.random.RandomState(1)
-        training_indices = rng.choice(np.arange(ds_y.size), size = int(0.5 * ds_y.size), replace = False)
+        training_indices = rng.choice(np.arange(ds_y.size), size = int(0.7 * ds_y.size), replace = False)
         x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
         mean_prediction, stdev_prediction = gp_reg(x_train, y_train, ds_x)
