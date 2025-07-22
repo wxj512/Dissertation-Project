@@ -45,17 +45,17 @@ def main():
     # v_max plots
     for i, n_method in enumerate(vall_ds["n_method"].values):
         ds_x = vall_ds["B0"].values.reshape(-1, 1)
-        ds_y = vall_ds["v_max"].sel(n_method = n_method).values.reshape(-1, 1)
+        ds_y = vall_ds["v_avg"].sel(n_method = n_method).values.reshape(-1, 1)
         # ds_y = vall_ds["v_avg"].sel(n_method = n_method).values.reshape(-1, 1)
 
         # Random sampling from dataset
         rng = np.random.RandomState(1)
-        training_indices = rng.choice(np.arange(ds_y.size), size = int(0.7 * ds_y.size), replace = False)
+        training_indices = rng.choice(np.arange(ds_y.size), size = int(0.6 * ds_y.size), replace = False)
         x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
         mean_prediction, stdev_prediction = gp_reg(x_train, y_train, ds_x)
 
-        gp_plot(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_method, fig_no = i, vel_type = "max")
+        gp_plot(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_method, fig_no = i, vel_type = "avg")
         
 
     plt.show()
