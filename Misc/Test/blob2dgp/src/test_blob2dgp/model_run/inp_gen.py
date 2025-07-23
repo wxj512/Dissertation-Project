@@ -4,6 +4,8 @@ import pathlib
 from xbout import open_boutdataset
 import fileinput
 import numpy as np
+from tqdm import tqdm
+
 import epyscan
 
 def param_gen(params: str, min_max, n_samples = None, log = None, endpoint = None):
@@ -37,8 +39,14 @@ def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no =
         # path = "../../../../../Builds/BOUT++5.1.1/examples/blob2d/"
         run_path = build_path.joinpath("Builds", build,"examples/blob2d")
 
-    for i, val in enumerate(param_array):
-        campaign = f"campaign_{campaign_no}"
+    campaign = f"campaign_{campaign_no}"
+    BOUT_res = run_path.joinpath(ref_folder, "BOUT.dmp.*.nc")
+    BOUT_inp = run_path.joinpath(ref_folder, "BOUT.inp")
+    ds_inp = open_boutdataset(BOUT_res, inputfilepath=BOUT_inp, info=False)
+    inp_txt = ds_inp.attrs["options"]
+
+    for i, val in enumerate(tqdm(param_array)):
+        
         folder = ["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1f}" for t in val.items()] 
         folder = "_".join(folder)
         filepath = run_path.joinpath(campaign, folder)
@@ -48,12 +56,7 @@ def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no =
         elif not(os.path.exists(filepath) and os.path.isdir(filepath)):
             os.mkdir(filepath)
 
-        BOUT_res = filepath.parents[1].joinpath(ref_folder, "BOUT.dmp.*.nc")
-        BOUT_inp = filepath.parents[1].joinpath(ref_folder, "BOUT.inp")
-        
         try:
-            ds_inp = open_boutdataset(BOUT_res, inputfilepath=BOUT_inp, info=False)
-            inp_txt = ds_inp.attrs["options"]
             for p_var in params:
                 inp_txt["model"][p_var] = f"{val[p_var]:.1f}"
             inp_file = filepath.joinpath("BOUT.inp")
@@ -65,9 +68,10 @@ def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no =
                 inp_new.seek(0)
 
                 for j, line in enumerate(inp):
-                    if params in line:
-                        param_val = f"{val:.1f}"
-                        line = re.sub(r"(=) (\d*\.*\d+)","= " + param_val, line)
+                    for p_vals in params:
+                        if p_vals in line:
+                            param_val = f"{val[p_vals]:.1f}"
+                            line = re.sub(r"(=) (\d*\.*\d+)","= " + param_val, line)
                     inp_new.write(line)
 
 def main():
