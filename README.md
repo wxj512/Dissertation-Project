@@ -18,9 +18,9 @@ Repository to version control Dissertation Project progress
     - GP/ (contains .py files for performing gaussian process on data for machine learning on blob velocity)
   - Data/
     - Input/
-      - delta_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
-      - delta_1_B0_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
-      - campaign_1/delta_1_B0_*_Te0_*/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files) 
+      - delta_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+      - delta_1_B0_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+      - campaign_1/delta_1_B0_x_Te0_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files) 
     - Output/
       - vel_max_avg/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc within corresponding folders for inp conditions) 
   - blob2d.cxx (source file for blob2d model)
