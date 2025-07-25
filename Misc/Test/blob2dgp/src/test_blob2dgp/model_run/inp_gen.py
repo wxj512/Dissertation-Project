@@ -77,7 +77,7 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 def main():
     params = ["B0", "Te0"]
     min_max = np.array([[0.1, 3.2], [4, 40]])
-    n_samples = [30, 30]
+    n_samples = [10, 10]
     parameters = param_gen(params, min_max, n_samples = n_samples)
     grid_scan = epyscan.GridScan(parameters)
     mk_inp(grid_scan, params, 1)
