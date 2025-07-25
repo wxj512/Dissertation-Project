@@ -1,0 +1,9 @@
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 51/51 [00:00<00:00, 76.14it/s]
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 51/51 [00:00<00:00, 114.30it/s]
+ 84%|███████████████████████████████████████████████████████████████████████████████████████████████████▍                  | 43/51 [00:00<00:00, 98.23it/s]
+Exception ignored in: <function CachingFileManager.__del__ at 0x7b06b460be20>
+Traceback (most recent call last):
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/file_manager.py", line 250, in __del__
+gundam511@gundam511Lenovo:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp$ 

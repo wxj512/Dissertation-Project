@@ -1,0 +1,85 @@
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 1 with PID 0 on node gundam511Lenovo exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+terminate called after throwing an instance of 'BoutException'
+  what():  Could not create PID file /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/.BOUT.pid.0
+[gundam511Lenovo:145556] *** Process received signal ***
+[gundam511Lenovo:145556] Signal: Aborted (6)
+[gundam511Lenovo:145556] Signal code:  (-6)
+[gundam511Lenovo:145556] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x75f0bde42520]
+[gundam511Lenovo:145556] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x75f0bde969fc]
+[gundam511Lenovo:145556] [ 2] /lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x75f0bde42476]
+[gundam511Lenovo:145556] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x75f0bde287f3]
+[gundam511Lenovo:145556] [ 4] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xa2b9e)[0x75f0be2a2b9e]
+[gundam511Lenovo:145556] [ 5] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae20c)[0x75f0be2ae20c]
+[gundam511Lenovo:145556] [ 6] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae277)[0x75f0be2ae277]
+[gundam511Lenovo:145556] [ 7] /lib/x86_64-linux-gnu/libstdc++.so.6(__cxa_rethrow+0x4b)[0x75f0be2ae52b]
+[gundam511Lenovo:145556] [ 8] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/lib/libbout++.so.5.1.0(+0xe9b9b)[0x75f0be75eb9b]
+[gundam511Lenovo:145556] [ 9] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13387)[0x6198c939a387]
+[gundam511Lenovo:145556] [10] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x75f0bde29d90]
+[gundam511Lenovo:145556] [11] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x75f0bde29e40]
+[gundam511Lenovo:145556] [12] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13585)[0x6198c939a585]
+[gundam511Lenovo:145556] *** End of error message ***
+Could not open log file '/mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/BOUT.log.2'
+terminate called after throwing an instance of 'BoutException'
+  what():  Could not open /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/BOUT.log.2 for writing
+[gundam511Lenovo:145559] *** Process received signal ***
+[gundam511Lenovo:145559] Signal: Aborted (6)
+[gundam511Lenovo:145559] Signal code:  (-6)
+[gundam511Lenovo:145559] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x706c53442520]
+[gundam511Lenovo:145559] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x706c534969fc]
+[gundam511Lenovo:145559] [ 2] /lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x706c53442476]
+[gundam511Lenovo:145559] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x706c534287f3]
+[gundam511Lenovo:145559] [ 4] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xa2b9e)[0x706c538a2b9e]
+[gundam511Lenovo:145559] [ 5] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae20c)[0x706c538ae20c]
+[gundam511Lenovo:145559] [ 6] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae277)[0x706c538ae277]
+[gundam511Lenovo:145559] [ 7] /lib/x86_64-linux-gnu/libstdc++.so.6(__cxa_rethrow+0x4b)[0x706c538ae52b]
+[gundam511Lenovo:145559] [ 8] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/lib/libbout++.so.5.1.0(+0xe9b9b)[0x706c53e60b9b]
+[gundam511Lenovo:145559] [ 9] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13387)[0x57a51f817387]
+[gundam511Lenovo:145559] [10] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x706c53429d90]
+[gundam511Lenovo:145559] [11] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x706c53429e40]
+[gundam511Lenovo:145559] [12] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13585)[0x57a51f817585]
+[gundam511Lenovo:145559] *** End of error message ***
+Could not open log file '/mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/BOUT.log.3'
+terminate called after throwing an instance of 'BoutException'
+  what():  Could not open /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/BOUT.log.3 for writing
+[gundam511Lenovo:145560] *** Process received signal ***
+[gundam511Lenovo:145560] Signal: Aborted (6)
+[gundam511Lenovo:145560] Signal code:  (-6)
+[gundam511Lenovo:145560] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7b48fec42520]
+[gundam511Lenovo:145560] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7b48fec969fc]
+[gundam511Lenovo:145560] [ 2] /lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7b48fec42476]
+[gundam511Lenovo:145560] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7b48fec287f3]
+[gundam511Lenovo:145560] [ 4] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xa2b9e)[0x7b48ff0a2b9e]
+[gundam511Lenovo:145560] [ 5] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae20c)[0x7b48ff0ae20c]
+[gundam511Lenovo:145560] [ 6] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae277)[0x7b48ff0ae277]
+[gundam511Lenovo:145560] [ 7] /lib/x86_64-linux-gnu/libstdc++.so.6(__cxa_rethrow+0x4b)[0x7b48ff0ae52b]
+[gundam511Lenovo:145560] [ 8] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/lib/libbout++.so.5.1.0(+0xe9b9b)[0x7b48ff4e8b9b]
+[gundam511Lenovo:145560] [ 9] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13387)[0x556dfd79d387]
+[gundam511Lenovo:145560] [10] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x7b48fec29d90]
+[gundam511Lenovo:145560] [11] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x7b48fec29e40]
+[gundam511Lenovo:145560] [12] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13585)[0x556dfd79d585]
+[gundam511Lenovo:145560] *** End of error message ***
+terminate called after throwing an instance of 'BoutException'
+  what():  Could not create PID file /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_1/delta_1_B0_3.2_Te0_9.0/.BOUT.pid.1
+[gundam511Lenovo:145558] *** Process received signal ***
+[gundam511Lenovo:145558] Signal: Aborted (6)
+[gundam511Lenovo:145558] Signal code:  (-6)
+[gundam511Lenovo:145558] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x760c8da42520]
+[gundam511Lenovo:145558] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x760c8da969fc]
+[gundam511Lenovo:145558] [ 2] /lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x760c8da42476]
+[gundam511Lenovo:145558] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x760c8da287f3]
+[gundam511Lenovo:145558] [ 4] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xa2b9e)[0x760c8dea2b9e]
+[gundam511Lenovo:145558] [ 5] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae20c)[0x760c8deae20c]
+[gundam511Lenovo:145558] [ 6] /lib/x86_64-linux-gnu/libstdc++.so.6(+0xae277)[0x760c8deae277]
+[gundam511Lenovo:145558] [ 7] /lib/x86_64-linux-gnu/libstdc++.so.6(__cxa_rethrow+0x4b)[0x760c8deae52b]
+[gundam511Lenovo:145558] [ 8] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/lib/libbout++.so.5.1.0(+0xe9b9b)[0x760c8e465b9b]
+[gundam511Lenovo:145558] [ 9] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13387)[0x5b550959a387]
+[gundam511Lenovo:145558] [10] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x760c8da29d90]
+[gundam511Lenovo:145558] [11] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x760c8da29e40]
+[gundam511Lenovo:145558] [12] /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/blob2d(+0x13585)[0x5b550959a585]
+[gundam511Lenovo:145558] *** End of error message ***
+--------------------------------------------------------------------------
