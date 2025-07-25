@@ -47,8 +47,7 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 
     for i, val in enumerate(tqdm(param_array)):
         
-        folder = ["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1f}" for t in val.items()] 
-        folder = "_".join(folder)
+        folder = "_".join(["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1f}" for t in val.items()]) 
         filepath = run_path.joinpath(campaign, folder)
         
         if not(os.path.exists(filepath.parent) and os.path.isdir(filepath.parent)):
