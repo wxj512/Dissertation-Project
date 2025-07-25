@@ -1,0 +1,2 @@
+*.dmp.*.nc filter=lfs diff=lfs merge=lfs -text
+*.restart.*.nc filter=lfs diff=lfs merge=lfs -text
