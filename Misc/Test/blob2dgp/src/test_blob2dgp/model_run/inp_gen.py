@@ -29,7 +29,7 @@ def param_gen(params: str, min_max, n_samples = None, log = None, endpoint = Non
             parameters[p_val].update({"endpoint": False})
     return parameters
 
-def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no = 1):
+def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 
     if not(path == ""):
         run_path = path
@@ -53,7 +53,8 @@ def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no =
         
         if not(os.path.exists(filepath.parent) and os.path.isdir(filepath.parent)):
             os.mkdir(filepath.parent)
-        elif not(os.path.exists(filepath) and os.path.isdir(filepath)):
+            
+        if not(os.path.exists(filepath) and os.path.isdir(filepath)):
             os.mkdir(filepath)
 
         try:
@@ -76,11 +77,11 @@ def mk_inp(param_array, params, ref_folder = "delta_1", path = "", campaign_no =
 
 def main():
     params = ["B0", "Te0"]
-    min_max = np.array([[0.1, 1.0], [11, 20]])
-    n_samples = [10, 10]
+    min_max = np.array([[0.1, 3.2], [4, 40]])
+    n_samples = [30, 30]
     parameters = param_gen(params, min_max, n_samples = n_samples)
     grid_scan = epyscan.GridScan(parameters)
-    mk_inp(grid_scan, params)
+    mk_inp(grid_scan, params, 1)
 
 
 if __name__ == "__main__":
