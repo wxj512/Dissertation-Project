@@ -163,7 +163,7 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
 
     n_array = np.empty((0, 2))
 
-    for i,vals in enumerate(tqdm(tvals)):
+    for i,vals in enumerate((tvals)):
         ds_data = ds.isel(t = vals)
         n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method)
         n_array = np.append(n_array, [n_point], axis = 0)
