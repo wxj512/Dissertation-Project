@@ -7,12 +7,11 @@ import matplotlib.pyplot as plt
 
 import v_data
 
-def v_all_calc(campaign_no, data_path = ""):
+def v_all_calc(campaign_no, param_var, data_path = ""):
     if data_path == "":  
         data_path = v_data.data_import("")[3]
         data_input_path = data_path.joinpath("Input", f"campaign_{campaign_no}")
 
-    param_var = ["B0", "Te0", "n0", "R_c"]
     v_max_array = np.empty(0)
     v_avg_array = np.empty(0)
     parval_array = np.empty((0, len(param_var)))
@@ -22,7 +21,7 @@ def v_all_calc(campaign_no, data_path = ""):
 
         BOUT_res, BOUT_settings = v_data.data_import(folder = folder)[0:2]
 
-        ds = open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False, grid_mismatch = "ignore")
+        ds = open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False)
         ds = ds.squeeze(drop=True)
 
         dx = ds["dx"].isel(x = 0).values
@@ -33,8 +32,8 @@ def v_all_calc(campaign_no, data_path = ""):
 
         n_array_CoM = v_data.n_calc(ds, method = "CoM")
         # n_array_nf = v_data.n_calc(ds, method = "n_front")
-        # n_array_nf_all =v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
-        # n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
+        n_array_nf_all =v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
+        n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
         dx_CoM, dz_CoM, vx_CoM, vz_CoM = v_data.vel_calc(n_array_CoM)
         # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
@@ -51,19 +50,39 @@ def v_all_calc(campaign_no, data_path = ""):
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, params
 
-def write_nc(v_max_array, v_avg_array, data_path, campaign_no):
-    n_calc_method = ["CoM", "n_front mid row", "n_front all row", "n_front + FWHM all row"]
-    B0_data = np.round(np.linspace(0.1,1,10),2)
+def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no):
+    # n_calc_method = ["CoM", "n_front mid row", "n_front all row", "n_front + FWHM all row"]
+
+    v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1]
+    v_all_param = dict([(var, np.unique(params[var])) for var in param_var])
+    
+    ## For checking if parameter variables specified matches parameters changed
+    assert len(param_var) == len(v_all_reshape), "parameters not matching specification, check data input parameters changed"
+
+    v_max_array = np.reshape(v_max_array, v_all_reshape)
+    v_avg_array = np.reshape(v_avg_array, v_all_reshape)
+
+    vmax_da = xr.DataArray(v_max_array, coords = v_all_param, attrs = {"long_name": "maximum velocity", "units": "c_s"})
+    vavg_da = xr.DataArray(v_avg_array, coords = v_all_param, attrs = {"long_name": "average velocity", "units": "c_s"})
+
+    param_attrs = {
+        "B0": {"long_name": "magnetic field", "units": "T"},
+        "Te0": {"long_name": "electron temperature", "units": "eV"},
+        "n0": {"long_name": "background plasma density", "units": "m^-3"},
+        "R_c": {"long_name": "radius of curvature", "units": "m"},
+    }
+
+    v_all_coords = dict(
+        [(var, (var, v_all_param[var], param_attrs[var])) for var in param_var]
+    )
 
     v_all_ds = xr.Dataset(
-        data_vars = dict(
-            v_max = (["B0", "n_method"], v_max_array, {"long_name": "maximum velocity", "units": "c_s"}),
-            v_avg = (["B0", "n_method"], v_avg_array, {"long_name": "averagevelocity", "units": "c_s"})
-        ),
-        coords = dict(
-            B0 = ("B0", B0_data, {"long_name": "magnetic field", "units": "T"}),
-            n_method =  ("n_method", n_calc_method, {"long_name": "density calculation method"})
-        ),
+        data_vars = {
+            "v_max": vmax_da,
+            "v_avg": vavg_da
+        },
+
+        coords = v_all_coords
     )
 
     output_folder = f"campaign_{campaign_no}"
@@ -76,11 +95,13 @@ def write_nc(v_max_array, v_avg_array, data_path, campaign_no):
 
 def main(): 
     data_path = v_data.data_import("")[3]
-    B0_data = np.round(np.linspace(0.1,1,10),2)
+    
+    param_var = ["B0", "Te0"]   ## Check what parameters was changed for data to specify param_var
+    # B0_data = np.round(np.linspace(0.1,1,10),2)
 
-    v_max_array, v_avg_array, params = v_all_calc(1)
+    v_max_array, v_avg_array, params = v_all_calc(1, param_var)
 
-    # write_nc(v_max_array, v_avg_array, data_path, 1)
+    write_nc(v_max_array, v_avg_array, param_var, params, data_path, 1)
 
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
