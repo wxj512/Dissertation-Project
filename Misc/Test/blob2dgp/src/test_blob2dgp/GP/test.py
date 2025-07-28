@@ -28,9 +28,13 @@ def main():
     # x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
     
-    vall_data = vall_ds["v_max"].sel(Te0 = 4, method="nearest")
-    vall_ds.close()
-    vall_data.close()
-    
+    vall_data_CoM = vall_ds["v_max"].sel(n_method = "CoM", Te0 = 12)
+    vall_data_nf = vall_ds["v_max"].sel(n_method = "n_front_all", Te0 = 12)
+    vall_data_FWHM = vall_ds["v_max"].sel(n_method = "FWHM_all", Te0 = 12)
+    vall_data_CoM.plot()
+    vall_data_nf.plot()
+    vall_data_FWHM.plot()
+    plt.show()
+
 if __name__ == "__main__":
     main()

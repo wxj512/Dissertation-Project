@@ -80,8 +80,8 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         
     if method == "n_front" or "n_front_FWHM":
         
-        def n_peak(n, height = 0.03, prominence = 0.002, row_calc = "mid_row", ds_col = 260):
-            peaks, _ = find_peaks(n, height = height, prominence = prominence)
+        def n_peak(n, height = 0.01, row_calc = "mid_row", ds_col = 260):
+            peaks, _ = find_peaks(n, height = height)
             if not(peaks.size > 0):
                 max_peak = 0
             elif row_calc == "mid_row":
@@ -104,10 +104,10 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
             max_peak, row = n_peak(n_flat, row_calc = row_calc, ds_col = ds_col)
         
         if max_peak == (ds_data["x"].size - 1) or method == "n_front":
-            return [ds_data["x"].values[max_peak], ds_data["z"].values[row]]
+            return [ds_data["x"].values[max_peak], ds_data["z"].values[row]]#, row
 
-        def peak_2(n, max_peak, height=0.001, prominence = 0.0005):
-            peaks, _ = find_peaks(n, height = height, prominence = prominence)
+        def peak_2(n, max_peak, height=0.01):
+            peaks, _ = find_peaks(n, height = height)
             if not(peaks.size > 0):
                 peak_2 = 0
             elif peaks.size == 1:
@@ -140,11 +140,12 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
         popt, _ = curve_fit(gaussian, x_array * Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
         gauss_width = FWHM(popt[2])
+        gauss_fit = gaussian(x_array*0.3, *popt)
         if max_peak * Gridsize + (gauss_width / 2) >= ds_data["x"].values.max():
             n_front = ds_data["x"].values.max()
         else:
             n_front = max_peak * Gridsize + (gauss_width / 2)
-        return [n_front, ds_data["z"].values[row]]
+        return [n_front, ds_data["z"].values[row]]#, row, gauss_fit
 
 
 def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
@@ -217,7 +218,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import(folder = "delta_1_B0_0.1")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "campaign_1/delta_1_B0_0.1_Te0_4.0")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
