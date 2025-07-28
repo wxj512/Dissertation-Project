@@ -12,8 +12,8 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         data_path = v_data.data_import("")[3]
         data_input_path = data_path.joinpath("Input", f"campaign_{campaign_no}")
 
-    v_max_array = np.empty(0)
-    v_avg_array = np.empty(0)
+    v_max_array = np.empty((0, 3))
+    v_avg_array = np.empty((0, 3))
     parval_array = np.empty((0, len(param_var)))
     params = {}
 
@@ -32,32 +32,33 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
 
         n_array_CoM = v_data.n_calc(ds, method = "CoM")
         # n_array_nf = v_data.n_calc(ds, method = "n_front")
-        n_array_nf_all =v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
+        n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
         n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
-        dx_CoM, dz_CoM, vx_CoM, vz_CoM = v_data.vel_calc(n_array_CoM)
+        ds.close()
+        
+        vx_CoM = v_data.vel_calc(n_array_CoM)[2]
         # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
-        # dx_nf_all, dz_nf_all, vx_nf_all, vz_nf_all = v_data.vel_calc(n_array_nf_all)
-        # dx_FWHM_all, dz_FWHM_all, vx_FWHM_all, vz_FWHM_all = v_data.vel_calc(n_array_FWHM_all)
+        vx_nf_all = v_data.vel_calc(n_array_nf_all)[2]
+        vx_FWHM_all = v_data.vel_calc(n_array_FWHM_all)[2]
 
-        v_max = np.array([[np.max(vx_CoM)]])
-        v_avg = np.array([[np.mean(vx_CoM)]])
-        v_max_array = np.append(v_max_array, [v_max])
-        v_avg_array = np.append(v_avg_array, [v_avg])
+        v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
+        v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
+        v_max_array = np.append(v_max_array, v_max, axis = 0)
+        v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
-        del ds
     
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, params
 
 def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no):
-    # n_calc_method = ["CoM", "n_front mid row", "n_front all row", "n_front + FWHM all row"]
+    n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
 
-    v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1]
-    v_all_param = dict([(var, np.unique(params[var])) for var in param_var])
+    v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [3]
+    v_all_param = dict([(var, np.unique(params[var])) for var in param_var] + [("method", n_calc_method)])
     
     ## For checking if parameter variables specified matches parameters changed
-    assert len(param_var) == len(v_all_reshape), "parameters not matching specification, check data input parameters changed"
+    assert len(param_var) == len(v_all_reshape) - 1, "parameters not matching specification, check data input parameters changed"
 
     v_max_array = np.reshape(v_max_array, v_all_reshape)
     v_avg_array = np.reshape(v_avg_array, v_all_reshape)
@@ -70,10 +71,11 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
         "Te0": {"long_name": "electron temperature", "units": "eV"},
         "n0": {"long_name": "background plasma density", "units": "m^-3"},
         "R_c": {"long_name": "radius of curvature", "units": "m"},
+        "method": {"long_name": "density calculation method"},
     }
 
     v_all_coords = dict(
-        [(var, (var, v_all_param[var], param_attrs[var])) for var in param_var]
+        [(var, (var, v_all_param[var], param_attrs[var])) for var in param_var] + [("method",("method", v_all_param["method"], param_attrs["method"]))]
     )
 
     v_all_ds = xr.Dataset(
