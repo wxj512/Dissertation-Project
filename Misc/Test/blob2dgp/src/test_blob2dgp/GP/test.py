@@ -28,7 +28,9 @@ def main():
     # x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
     
+    vall_data = vall_ds["v_max"].sel(Te0 = 4, method="nearest")
     vall_ds.close()
+    vall_data.close()
     
 if __name__ == "__main__":
     main()
