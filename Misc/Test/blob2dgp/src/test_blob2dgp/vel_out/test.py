@@ -16,5 +16,6 @@ import v_data
 BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1")[0:2]
 
 ds = open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False)
-
-ds.close()
+dx = ds["dx"].isel(x = 0).values
+# ds.close()
+print(dx)
