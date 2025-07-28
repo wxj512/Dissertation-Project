@@ -167,6 +167,7 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
         ds_data = ds.isel(t = vals)
         n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method)
         n_array = np.append(n_array, [n_point], axis = 0)
+
     return n_array
 
 def vel_calc(array):
