@@ -27,10 +27,8 @@ def main():
     # training_indices = rng.choice(np.arange(ds_y.size), size = int(0.6 * ds_y.size), replace = False)
     # x_train, y_train = ds_x[training_indices], ds_y[training_indices]
 
-    vall_data = vall_ds.sel(Te0 = 40, method="nearest")
-    vall_data["v_avg"].plot(x="B0")
-    plt.show()
-    # print(vall_ds["Te0"])
+    
+    vall_ds.close()
     
 if __name__ == "__main__":
     main()
