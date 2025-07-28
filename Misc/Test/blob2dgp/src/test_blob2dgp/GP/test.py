@@ -35,7 +35,7 @@ def main():
     # vall_data_nf.plot()
     # vall_data_FWHM.plot()
     vmax_CoM = vall_ds["v_max"].sel(n_method = "CoM")
-    vmax_CoM.plot(x="B0", y="Te0")
+    vmax_CoM.plot(x="B0", y="Te0", cmap="plasma")
     plt.show()
     # print(vall_ds)
 
