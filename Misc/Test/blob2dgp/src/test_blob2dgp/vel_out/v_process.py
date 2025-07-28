@@ -2,23 +2,33 @@ import os
 import numpy as np
 from xbout import open_boutdataset
 import xarray as xr
+from natsort import natsorted
 from tqdm import tqdm
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 import v_data
 
 def v_all_calc(campaign_no, param_var, data_path = ""):
     if data_path == "":  
         data_path = v_data.data_import("")[3]
-        data_input_path = data_path.joinpath("Input", f"campaign_{campaign_no}")
+        data_input_path = data_path.joinpath("Input")
+        if campaign_no != "":
+            data_input_path = data_input_path.joinpath(f"campaign_{campaign_no}")
 
     v_max_array = np.empty((0, 3))
     v_avg_array = np.empty((0, 3))
     parval_array = np.empty((0, len(param_var)))
     params = {}
+    total = len(list(data_input_path.glob("*/")))
+    folder_list = natsorted([folder.name for folder in data_input_path.glob("*/")])
+    
+    for file_i, folder in enumerate(folder_list):
+        print(f"Processing {file_i + 1} of {total}")
+        print(f"Folder: {folder}")
 
-    for file_i, folder in enumerate(tqdm(data_input_path.glob("*/"), total = len(list(data_input_path.glob("*/"))))):
-
+        if campaign_no != "":
+            folder = f"campaign_{campaign_no}/" + folder
+             
         BOUT_res, BOUT_settings = v_data.data_import(folder = folder)[0:2]
 
         ds = open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False)
@@ -48,13 +58,21 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
     
+    # parval_split = np.empty((0,parval_array.shape[0]))
+    # parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
+    # parval_sort = np.lexsort(parval_split,axis=0)
+    
+    # parval_array = parval_array[parval_sort] 
+    # v_max_array = v_max_array[parval_sort] 
+    # v_avg_array = v_avg_array[parval_sort]
+
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, params
 
 def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no):
     n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
 
-    v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [3]
+    v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [len(n_calc_method)]
     v_all_param = dict([(var, np.unique(params[var])) for var in param_var] + [("n_method", n_calc_method)])
     
     ## For checking if parameter variables specified matches parameters changed
