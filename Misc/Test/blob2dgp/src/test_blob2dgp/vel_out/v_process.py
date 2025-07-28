@@ -36,7 +36,7 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
         ds.close()
-        
+
         vx_CoM = v_data.vel_calc(n_array_CoM)[2]
         # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
         vx_nf_all = v_data.vel_calc(n_array_nf_all)[2]
@@ -55,7 +55,7 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
     n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
 
     v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [3]
-    v_all_param = dict([(var, np.unique(params[var])) for var in param_var] + [("method", n_calc_method)])
+    v_all_param = dict([(var, np.unique(params[var])) for var in param_var] + [("n_method", n_calc_method)])
     
     ## For checking if parameter variables specified matches parameters changed
     assert len(param_var) == len(v_all_reshape) - 1, "parameters not matching specification, check data input parameters changed"
@@ -71,11 +71,11 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
         "Te0": {"long_name": "electron temperature", "units": "eV"},
         "n0": {"long_name": "background plasma density", "units": "m^-3"},
         "R_c": {"long_name": "radius of curvature", "units": "m"},
-        "method": {"long_name": "density calculation method"},
+        "n_method": {"long_name": "density calculation method"},
     }
 
     v_all_coords = dict(
-        [(var, (var, v_all_param[var], param_attrs[var])) for var in param_var] + [("method",("method", v_all_param["method"], param_attrs["method"]))]
+        [(var, (var, v_all_param[var], param_attrs[var])) for var in param_var] + [("n_method",("n_method", v_all_param["n_method"], param_attrs["n_method"]))]
     )
 
     v_all_ds = xr.Dataset(
