@@ -80,8 +80,8 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         
     if method == "n_front" or "n_front_FWHM":
         
-        def n_peak(n, height = 0.01, row_calc = "mid_row", ds_col = 260):
-            peaks, _ = find_peaks(n, height = height)
+        def n_peak(n, height = 0.01, prominence = 0.005, row_calc = "mid_row", ds_col = 260):
+            peaks, _ = find_peaks(n, height = height, prominence = prominence)
             if not(peaks.size > 0):
                 max_peak = 0
             elif row_calc == "mid_row":
@@ -106,8 +106,8 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         if max_peak == (ds_data["x"].size - 1) or method == "n_front":
             return [ds_data["x"].values[max_peak], ds_data["z"].values[row]]#, row
 
-        def peak_2(n, max_peak, height=0.01):
-            peaks, _ = find_peaks(n, height = height)
+        def peak_2(n, max_peak, height = 0.01, prominence = 0.005, distance = 1):
+            peaks, _ = find_peaks(n, height = height, prominence = prominence, distance = distance)
             if not(peaks.size > 0):
                 peak_2 = 0
             elif peaks.size == 1:
@@ -129,11 +129,11 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         #   Mask data
         peak_n = n_array(ds_data, n0_scale, row)
         peak_n2 = peak_2(peak_n, max_peak)
-        width_guess = ((max_peak - peak_n2) * 0.5) * 2
+        width_guess = ((max_peak - peak_n2) * 0.5) * 1.5
         x_array = np.linspace(0, peak_n.size-1, peak_n.size)
         mask_n = np.ma.masked_outside(x_array, max_peak - (width_guess / 2), max_peak + (width_guess / 2))
         mask_n = np.ones_like(mask_n) * peak_n
-        mask_n[np.where(mask_n.data == 1)[0]] = "nan"
+        mask_n[np.where(mask_n.data == 1)[0]] = 0
         # Find gaussian
         param_1 = peak_n[max_peak]; param_2 = max_peak * Gridsize; param_3 = 1 / (peak_n[max_peak] * np.sqrt(2 * np.pi))
         guess = [param_1, param_2, param_3]
@@ -145,8 +145,7 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
             n_front = ds_data["x"].values.max()
         else:
             n_front = max_peak * Gridsize + (gauss_width / 2)
-        return [n_front, ds_data["z"].values[row]]#, row, gauss_fit
-
+        return [n_front, ds_data["z"].values[row]]#, row, gauss_fit, mask_n
 
 def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
 # All n calculation methods:
@@ -218,7 +217,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import(folder = "campaign_1/delta_1_B0_0.1_Te0_4.0")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "campaign_1/delta_1_B0_0.4_Te0_16.0")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
