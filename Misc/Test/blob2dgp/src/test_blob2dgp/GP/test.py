@@ -26,9 +26,9 @@ def main():
 
 
 
-    ls = (1,1)
+    ls = (0.4,1)
     bounds_l = ((1e-2,100.),) * 2
-    kernel_CoM_1 = RBF(length_scale = 1, length_scale_bounds = (1e-2,100.)) + WhiteKernel(
+    kernel_CoM_1 = RBF(length_scale = ls, length_scale_bounds = bounds_l) + WhiteKernel(
         noise_level = 1e-3, noise_level_bounds = (1e-5, 100.))
     GP_CoM_1 = GaussianProcessRegressor(kernel = kernel_CoM_1, n_restarts_optimizer = 9)
     
@@ -88,16 +88,18 @@ def main():
     # # samples = np.column_stack([samples_1, samples_2]).transpose()
     # samples_1 = [samples_1[:, i] for i in range(N)]
     # samples_1 = [samples_1[:, i] for i in range(N)]
-
-    K = kernel_CoM_1(X)
-    D = kernel_CoM_1.diag(X)
+    
+    K = GP_CoM_1.kernel_(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
+    D = GP_CoM_1.kernel_.diag(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
     f2 = plt.figure(2, linewidth = 3, edgecolor = "#000000")
     ax2 = f2.gca()
     pcplot = ax2.imshow(np.diag(D**-0.5).dot(K).dot(np.diag(D**-0.5)), cmap="plasma")
+    
     f2.colorbar(pcplot)
     ax2.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
-    ax2.set_title("Parameters",fontsize=10)
-    ax2.set_ylabel("Parameters")
+    ax2.set_title("Dimensions",fontsize=10)
+    ax2.set_xlabel(r"$\ell_{RBF}$= " + f"{GP_CoM_1.kernel_.get_params()["k1__length_scale"][0]:.2f}, {GP_CoM_1.kernel_.get_params()["k1__length_scale"][1]:.2f}, " + r"${\sigma^2}_{WN}$= " + f"{GP_CoM_1.kernel_.get_params()["k2__noise_level"]:.2f}")
+    ax2.set_ylabel("Dimensions")
     ax2.set_aspect('equal')
     ax2.set_xticks([])
     ax2.set_yticks([])
