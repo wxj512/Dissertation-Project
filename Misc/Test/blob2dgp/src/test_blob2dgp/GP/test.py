@@ -26,7 +26,7 @@ def main():
 
 
 
-    ls = (0.4,1)
+    ls = (1,) * 2
     bounds_l = ((1e-2,100.),) * 2
     kernel_CoM_1 = RBF(length_scale = ls, length_scale_bounds = bounds_l) + WhiteKernel(
         noise_level = 1e-3, noise_level_bounds = (1e-5, 100.))
@@ -98,7 +98,7 @@ def main():
     f2.colorbar(pcplot)
     ax2.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
     ax2.set_title("Dimensions",fontsize=10)
-    ax2.set_xlabel(r"$\ell_{RBF}$= " + f"{GP_CoM_1.kernel_.get_params()["k1__length_scale"][0]:.2f}, {GP_CoM_1.kernel_.get_params()["k1__length_scale"][1]:.2f}, " + r"${\sigma^2}_{WN}$= " + f"{GP_CoM_1.kernel_.get_params()["k2__noise_level"]:.2f}")
+    ax2.set_xlabel(r"$\ell_{RBF}$= " + f"{GP_CoM_1.kernel_.get_params()["k1__length_scale"][0]:.2f}, {GP_CoM_1.kernel_.get_params()["k1__length_scale"][1]:.2f}, " + r"${\lambda^2}_{WN}$= " + f"{GP_CoM_1.kernel_.get_params()["k2__noise_level"]:.2f}")
     ax2.set_ylabel("Dimensions")
     ax2.set_aspect('equal')
     ax2.set_xticks([])
