@@ -63,9 +63,11 @@ def main():
     Z = np.empty(0)
     Z = [np.append(Z,vmax_data.sel(B0=i, Te0=j)) for i,j in X]
     Z = np.reshape(Z,(-1,1))
-    GP = gp_reg(X, Z, return_GP=True)
-    score = GP.score(X,Z)
-    print(score)    
+    mean, stdev, score = gp_reg(X, Z)
+    gpfunc = gp_reg(X, Z, return_GP = True)
+    mean = gpfunc.predict(X)
+    print(X)
+    print(mean)    
 
     # plt.show()
 
