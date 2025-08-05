@@ -47,7 +47,7 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 
     for i, val in enumerate(tqdm(param_array)):
         
-        folder = "_".join(["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1f}" for t in val.items()]) 
+        folder = "_".join(["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1E}" for t in val.items()]) 
         filepath = run_path.joinpath(campaign, folder)
         
         if not(os.path.exists(filepath.parent) and os.path.isdir(filepath.parent)):
@@ -58,7 +58,10 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 
         try:
             for p_var in params:
-                inp_txt["model"][p_var] = f"{val[p_var]:.1f}"
+                if val[p_var] > 1e3 or val[p_var] < 1e-3:
+                    inp_txt["model"][p_var] = f"{val[p_var]:.1E}"
+                else:
+                    inp_txt["model"][p_var] = f"{val[p_var]:.1f}"
             inp_file = filepath.joinpath("BOUT.inp")
             pathlib.Path.write_text(inp_file,str(inp_txt))
         except OSError:
@@ -75,12 +78,15 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
                     inp_new.write(line)
 
 def main():
-    params = ["B0", "Te0"]
-    min_max = np.array([[0.1, 3.2], [4, 40]])
-    n_samples = [10, 10]
-    parameters = param_gen(params, min_max, n_samples = n_samples)
-    grid_scan = epyscan.GridScan(parameters)
-    mk_inp(grid_scan, params, 1)
+    params = ["B0", "Te0", "n0", "R_c"]
+    min_max = np.array([[0.1, 3.2], [4, 40], [1e16, 2.8e20], [0.25, 0.9]])
+    log = [False, False, True, False]
+    # n_samples = [10, 10]
+    parameters = param_gen(params, min_max, log = log)
+    samples = 400
+    grid_scan = epyscan.LatinHypercubeSampler(parameters).sample(samples)
+    # [print(i) for i in grid_scan.sample(samples)]
+    mk_inp(grid_scan, params, 2)
 
 
 if __name__ == "__main__":
