@@ -26,7 +26,6 @@ def main():
     batch = 0
 
     repo = Repo(repo_path.parents[4])
-    [print(name) for name in repo.remotes]
     main = repo.remote(name = "origin")
     
     for folder in tqdm(folder_list):
