@@ -58,13 +58,13 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
     
-    # parval_split = np.empty((0,parval_array.shape[0]))
-    # parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
-    # parval_sort = np.lexsort(parval_split,axis=0)
+    parval_split = np.empty((0,parval_array.shape[0]))
+    parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
+    parval_sort = np.lexsort(parval_split,axis=0)
     
-    # parval_array = parval_array[parval_sort] 
-    # v_max_array = v_max_array[parval_sort] 
-    # v_avg_array = v_avg_array[parval_sort]
+    parval_array = parval_array[parval_sort] 
+    v_max_array = v_max_array[parval_sort] 
+    v_avg_array = v_avg_array[parval_sort]
 
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, params
