@@ -16,6 +16,7 @@ Repository to version control Dissertation Project progress
     - vel_out/ (contains .py files for processing and calculating velocity of blob)
     - model_run/ (contains .py files for creating inp file and for executing blob2d model runs)
     - GP/ (contains .py files for performing gaussian process on data for machine learning on blob velocity)
+    - sobol/ (contains .py files for evaluting sobol indicies of blob2d parameters)
   - Data/
     - Input/
       - delta_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
