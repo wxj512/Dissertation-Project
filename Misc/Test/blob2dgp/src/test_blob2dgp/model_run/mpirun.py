@@ -22,7 +22,7 @@ def blob_run(campaign, path = ""):
     return status
 
 def main():
-    blob_run(1)
+    blob_run(2)
 
 if __name__ == "__main__":
     main()
