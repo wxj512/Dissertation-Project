@@ -50,7 +50,7 @@ def main():
     sb_boot = sb_ind.bootstrap()
     # print(sb_boot.total_order.confidence_interval.low, sb_boot.total_order.confidence_interval.high)
 
-    params = [r"$B_0$", r"$T_{e0}$"]
+    params = [r"$B_0$", r"$T_{e,0}$"]
     sb_dict = {
         "First Order": sb_ind.first_order,
         "Total Order": sb_ind.total_order
