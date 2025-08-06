@@ -1,0 +1,172 @@
+IncIntShear = false		# type: bool, source: default
+MXG = 2		# type: int, doc: Number of guard cells on each side in X, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+MYG = 0		# type: int, doc: Number of guard cells on each side in Y, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+ZMAX = 1		# type: BoutReal, source: default
+ZMIN = 0		# type: BoutReal, source: default
+append = false		# type: bool, doc: Add new outputs to the end of existing files? If false, overwrite files., source: default
+async_send = false		# type: bool, doc: Whether to use asyncronous MPI sends, source: default
+datadir = /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01		# type: string, source: Command line
+dump_on_restart = true		# type: bool, doc: Write initial state as time point 0?, source: default
+non_uniform = true		# type: bool, source: default
+nout = 50		# type: int, doc: Number of output steps, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+optionfile = BOUT.inp		# type: string, source: default
+periodicX = false		# type: bool, doc: Make grid periodic in X?, source: default
+restart = false		# type: bool, doc: Load state from restart files?, source: default
+settingsfile = BOUT.settings		# type: string, source: default
+stopCheck = false		# type: bool, doc: Check if a file exists, and exit if it does., source: default
+stopCheckName = BOUT.stop		# type: string, doc: Name of file whose existence triggers a stop, source: default
+timestep = 50		# type: BoutReal, doc: Output time step size, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+twistshift = false		# type: bool, doc: Apply a Twist-Shift boundary using ShiftAngle?, source: default
+wall_limit = -1		# type: BoutReal, doc: Wall time limit in hours. By default (< 0), no limit, source: default
+
+[all]
+bndry_all = neumann		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+function = 0.0		# type: string, source: default
+scale = 0.0		# type: BoutReal, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[fft]
+fft_measurement_flag = estimate		# type: 20FFT_MEASUREMENT_FLAG, doc: Level speed measurements to optimise FFT settings: [estimate], measure, exhaustive, source: default
+
+[input]
+error_on_unused_options = true		# type: bool, doc: Error if there are any unused options before starting the main simulation, source: default
+max_recursion_depth = 0		# type: string, doc: Maximum recursion depth allowed in expressions. 0 = no recursion; -1 = unlimited, source: default
+transform_from_field_aligned = true		# type: bool, source: default
+validate = false		# type: bool, doc: Check for unused options and stop, source: default
+
+[laplace]
+all_terms = true		# type: bool, doc: Include first derivative terms?, source: default
+async = true		# type: bool, doc: Use asyncronous MPI send?, source: default
+dst = false		# type: bool, doc: Use Discrete Sine Transform in Z to enforce Dirichlet boundaries in Z, source: default
+extra_yguards_lower = 0		# type: int, doc: Exclude some number of points at the lower boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+extra_yguards_upper = 0		# type: int, doc: Exclude some number of points at the upper boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+filter = 0		# type: BoutReal, doc: Fraction of Z modes to filter out. Between 0 and 1, source: default
+global_flags = 0		# type: int, doc: Default flags, source: default
+include_yguards = false		# type: bool, doc: Solve Laplacian in Y guard cells?, source: default
+inner_boundary_flags = 0		# type: int, doc: Flags to set inner boundary condition, source: default
+low_mem = false		# type: bool, doc: If true, reduce the amount of memory used, source: default
+maxmode = 128		# type: int, doc: The maximum Z mode to solve for, source: default
+nonuniform = true		# type: bool, doc: Use non-uniform grid corrections? Default is the mesh setting., source: default
+outer_boundary_flags = 0		# type: int, doc: Flags to set outer boundary condition, source: default
+type = cyclic		# type: string, source: default
+
+[mesh]
+calcParallelSlices_on_communicate = true		# type: bool, doc: Calculate parallel slices on all communicated fields, source: default
+dx = 0.3		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+dz = 0.3		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+extrapolate_x = false		# type: bool, source: default
+extrapolate_y = false		# type: bool, source: default
+include_corner_cells = true		# type: bool, doc: Communicate corner guard and boundary cells. Can be set to false if you are sure that you will not need these cells, for mixed derivatives D2DXDY (or anything else), for example if your grid has orthogonal x- and y-directions. This might slightly reduce communication time., source: default
+maxregionblocksize = 64		# type: int, doc: (Advanced) Sets the maximum size of continguous blocks when creating Regions, source: default
+nx = 260		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+ny = 1		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+nz = 256		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+staggergrids = false		# type: bool, doc: Enable staggered grids. By default, all variables are cell centred, source: default
+symmetricGlobalX = true		# type: bool, source: default
+symmetricGlobalY = true		# type: bool, source: default
+type = bout		# type: string, source: default
+
+[mesh:ddx]
+first = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+second = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+upwind = W3		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[mesh:ddy]
+first = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+second = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+upwind = W3		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[mesh:ddz]
+fft_filter = 0		# type: BoutReal, source: default
+first = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+second = C2		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+upwind = W3		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[mesh:paralleltransform]
+type = identity		# type: string, source: default
+
+[model]
+B0 = 3.0		# type: BoutReal, doc: Value of magnetic field strength, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+D_n = 1e-06		# type: BoutReal, doc: Density diffusion coefficient, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+D_vort = 1e-06		# type: BoutReal, doc: Viscous diffusion coefficient, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+L_par = 10		# type: BoutReal, doc: Parallel connection length, source: default
+R_c = 0.4		# type: BoutReal, doc: Radius of curvature, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+Te0 = 33.1		# type: BoutReal, doc: Temperature in eV, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+boussinesq = true		# type: bool, doc: Use Boussinesq approximation in vorticity, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+compressible = false		# type: bool, doc: Compressible ExB term in density equation, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+e = 1.602e-19		# type: BoutReal, source: default
+m_e = 9.11e-31		# type: BoutReal, source: default
+m_i = 3.334e-27		# type: BoutReal, source: default
+n0 = 4.2E+18		# type: BoutReal, doc: Background density in cubic m, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+sheath = true		# type: bool, doc: Sheath closure, source: default
+
+[n]
+evolve_bndry = false		# type: bool, source: default
+function = 1 + height * exp(-((x-0.25)/width)^2 - ((z/(2*pi) - 0.5)/width)^2)		# type: string, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+height = 0.5		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+scale = 1.0		# type: BoutReal, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+width = 0.05		# source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[omega]
+evolve_bndry = false		# type: bool, source: default
+
+[output]
+enabled = true		# type: bool, doc: Write output files, source: default
+
+[phiBoussinesq]
+all_terms = true		# type: bool, doc: Include first derivative terms?, source: default
+async = true		# type: bool, doc: Use asyncronous MPI send?, source: default
+dst = false		# type: bool, doc: Use Discrete Sine Transform in Z to enforce Dirichlet boundaries in Z, source: default
+extra_yguards_lower = 0		# type: int, doc: Exclude some number of points at the lower boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+extra_yguards_upper = 0		# type: int, doc: Exclude some number of points at the upper boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+filter = 0		# type: BoutReal, doc: Fraction of Z modes to filter out. Between 0 and 1, source: default
+global_flags = 0		# type: int, doc: Default flags, source: default
+include_yguards = false		# type: bool, doc: Solve Laplacian in Y guard cells?, source: default
+inner_boundary_flags = 0		# type: int, doc: Flags to set inner boundary condition, source: default
+low_mem = false		# type: bool, doc: If true, reduce the amount of memory used, source: default
+maxmode = 128		# type: int, doc: The maximum Z mode to solve for, source: default
+nonuniform = true		# type: bool, doc: Use non-uniform grid corrections? Default is the mesh setting., source: default
+outer_boundary_flags = 0		# type: int, doc: Flags to set outer boundary condition, source: default
+type = cyclic		# type: string, source: default
+
+[phiSolver]
+fourth_order = true		# unused value (marked conditionally used), source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+pctype = user		# unused value (marked conditionally used), source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+type = petsc		# unused value (marked conditionally used), source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[phiSolver:precon]
+filter = 0.0		# unused value (marked conditionally used), source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+flags = 49152		# unused value (marked conditionally used), source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+
+[restart_files]
+enabled = true		# type: bool, doc: Write restart files, source: default
+
+[run]
+finished = Tue Aug  5 20:29:41 2025
+		# unused value (NOT marked conditionally used), source: Output
+revision = 9b6ce3ac6d159307094571fc61a62757ff3d95a0		# unused value (NOT marked conditionally used), source: Output
+run_id = e429ea84-28d6-41ce-98b0-d5bef1d953bf		# unused value (NOT marked conditionally used), source: Output
+run_restart_from = zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz		# unused value (NOT marked conditionally used), source: Output
+started = Tue Aug  5 20:28:32 2025
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.1.2		# unused value (NOT marked conditionally used), source: Output
+
+[solver]
+atol = 1e-10		# type: BoutReal, doc: Absolute tolerance, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+is_nonsplit_model_diffusive = true		# type: bool, doc: If not a split operator, treat RHS as diffusive?, source: default
+mldq = 132		# type: int, source: default
+mlkeep = 0		# type: int, source: default
+mms = false		# type: bool, doc: Use Method of Manufactured Solutions to track error scaling, source: default
+mms_initialise = false		# type: bool, doc: Use MMS solution for field initial conditions, source: default
+monitor_timestep = false		# type: bool, doc: Call monitors on internal timesteps, source: default
+mudq = 132		# type: int, source: default
+mukeep = 0		# type: int, source: default
+mxstep = 10000		# type: int, doc: Maximum number of internal steps, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+nout = 50		# type: int, doc: Number of output steps. Overrides global setting., source: default
+output_step = 50		# type: BoutReal, doc: Output time step size. Overrides global 'timestep' setting., source: default
+precon_dimens = 50		# type: int, doc: Maximum Krylov dimension, source: default
+precon_tol = 0.0001		# type: BoutReal, doc: Tolerance for preconditioner, source: default
+rtol = 1e-05		# type: BoutReal, doc: Relative tolerance, source: /mnt/c/Users/enlan/University/York/Dissertation/Builds/BOUT++5.1.1/examples/blob2d/campaign_2/delta_1_B0_3.0E+00_Te0_3.3E+01_n0_4.2E+18_R_c_3.8E-01/BOUT.inp
+save_repeat_run_id = false		# type: bool, doc: Write run_id and run_restart_from at every output timestep, to make it easier to concatenate output data sets in time, source: default
+type = pvode		# type: string, source: default
+use_precon = false		# type: bool, doc: Use user-supplied preconditioner, source: default
