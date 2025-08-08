@@ -3,7 +3,7 @@ import numpy as np
 from xbout import open_boutdataset
 import xarray as xr
 from natsort import natsorted
-from tqdm import tqdm
+# from tqdm import tqdm
 # import matplotlib.pyplot as plt
 
 import v_data
@@ -31,21 +31,21 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
              
         BOUT_res, BOUT_settings = v_data.data_import(folder = folder)[0:2]
 
-        ds = open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False)
-        ds = ds.squeeze(drop=True)
+        with open_boutdataset(BOUT_res, inputfilepath = BOUT_settings, info = False) as ds:
+            ds = ds.squeeze(drop=True)
+            Gridsize = v_data.consts(ds).Gridsize
+            # dx = ds["dx"].isel(x = 0).values
+            ds = ds.drop_vars("x")
+            ds = ds.assign_coords(x = np.arange(ds.copy().sizes["x"]) * Gridsize)
 
-        dx = ds["dx"].isel(x = 0).values
-        ds = ds.drop_vars("x")
-        ds = ds.assign_coords(x = np.arange(ds.sizes["x"])*dx)
+            param_val = np.array([[ds.copy().attrs["options"]["model"][var]] for var in param_var]).transpose()
 
-        param_val = np.array([[ds.attrs["options"]["model"][var]] for var in param_var]).transpose()
+            n_array_CoM = v_data.n_calc(ds, method = "CoM")
+            # n_array_nf = v_data.n_calc(ds, method = "n_front")
+            n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
+            n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
-        n_array_CoM = v_data.n_calc(ds, method = "CoM")
-        # n_array_nf = v_data.n_calc(ds, method = "n_front")
-        n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
-        n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
-
-        ds.close()
+        # ds.close()
 
         vx_CoM = v_data.vel_calc(n_array_CoM)[2]
         # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
@@ -58,13 +58,13 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
     
-    parval_split = np.empty((0,parval_array.shape[0]))
-    parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
-    parval_sort = np.lexsort(parval_split,axis=0)
+    # parval_split = np.empty((0,parval_array.shape[0]))
+    # parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
+    # parval_sort = np.lexsort(parval_split,axis=0)
     
-    parval_array = parval_array[parval_sort] 
-    v_max_array = v_max_array[parval_sort] 
-    v_avg_array = v_avg_array[parval_sort]
+    # parval_array = parval_array[parval_sort] 
+    # v_max_array = v_max_array[parval_sort] 
+    # v_avg_array = v_avg_array[parval_sort]
 
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, params
