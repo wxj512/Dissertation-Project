@@ -1,0 +1,90 @@
+(src) gundam511@gundam511Lenovo:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp$  cd /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp ; /usr/bin/env /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/bin/python /home/gundam511/.vscode-server/extensions/ms-python.debugpy-2025.10.0-linux-x64/bundled/libs/debugpy/adapter/../../debugpy/launcher 37297 -- /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_process.py 
+Processing 1 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.2E+01_n0_6.3E+18_R_c_5.6E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 2 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.8E+01_n0_7.8E+16_R_c_8.7E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 3 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.9E+01_n0_9.5E+16_R_c_6.3E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 4 of 400
+Folder: delta_1_B0_1.0E+00_Te0_2.0E+01_n0_1.7E+19_R_c_4.0E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 5 of 400
+Folder: delta_1_B0_1.0E+00_Te0_2.7E+01_n0_1.9E+18_R_c_6.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Exception ignored in: <function CachingFileManager.__del__ at 0x7dd3abd3c040>
+Traceback (most recent call last):
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/file_manager.py", line 250, in __del__
+    self.close(needs_lock=False)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/file_manager.py", line 234, in close
+    file.close()
+  File "src/netCDF4/_netCDF4.pyx", line 2669, in netCDF4._netCDF4.Dataset.close
+  File "src/netCDF4/_netCDF4.pyx", line 2636, in netCDF4._netCDF4.Dataset._close
+  File "src/netCDF4/_netCDF4.pyx", line 2164, in netCDF4._netCDF4._ensure_nc_success
+RuntimeError: NetCDF: HDF error
+Traceback (most recent call last):
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_process.py", line 150, in <module>
+    main()
+    ~~~~^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_process.py", line 122, in main
+    v_max_array, v_avg_array, params = v_all_calc(2, param_var)
+                                       ~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_process.py", line 45, in v_all_calc
+    n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_data.py", line 168, in n_calc
+    n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_data.py", line 103, in n_calc_methods
+    n_flat = np.ravel(n_array(ds_data, n0_scale, row), order="F")
+                      ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_data.py", line 55, in n_array
+    n = ds_data["n"].values - n0_scale
+        ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/dataarray.py", line 797, in values
+    return self.variable.values
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/variable.py", line 536, in values
+    return _as_array_or_item(self._data)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/variable.py", line 316, in _as_array_or_item
+    data = np.asarray(data)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/dask/array/core.py", line 1729, in __array__
+    x = self.compute()
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/dask/base.py", line 373, in compute
+    (result,) = compute(self, traverse=False, **kwargs)
+                ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/dask/base.py", line 681, in compute
+    results = schedule(expr, keys, **kwargs)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/indexing.py", line 573, in __array__
+    return np.asarray(self.get_duck_array(), dtype=dtype, copy=copy)
+                      ~~~~~~~~~~~~~~~~~~~^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/indexing.py", line 578, in get_duck_array
+    return self.array.get_duck_array()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/indexing.py", line 797, in get_duck_array
+    return self.array.get_duck_array()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/indexing.py", line 652, in get_duck_array
+    array = self.array[self.key]
+            ~~~~~~~~~~^^^^^^^^^^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/netCDF4_.py", line 108, in __getitem__
+    return indexing.explicit_indexing_adapter(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        key, self.shape, indexing.IndexingSupport.OUTER, self._getitem
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/core/indexing.py", line 1021, in explicit_indexing_adapter
+    result = raw_indexing_method(raw_key.tuple)
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/netCDF4_.py", line 121, in _getitem
+    array = getitem(original_array, key)
+  File "src/netCDF4/_netCDF4.pyx", line 5079, in netCDF4._netCDF4.Variable.__getitem__
+  File "src/netCDF4/_netCDF4.pyx", line 6051, in netCDF4._netCDF4.Variable._get
+  File "src/netCDF4/_netCDF4.pyx", line 2164, in netCDF4._netCDF4._ensure_nc_success
+RuntimeError: NetCDF: HDF error
+(src) gundam511@gundam511Lenovo:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp$

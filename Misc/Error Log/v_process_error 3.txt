@@ -1,0 +1,97 @@
+(src) gundam511@gundam511Lenovo:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp$  cd /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp ; /usr/bin/env /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/bin/python /home/gundam511/.vscode-server/extensions/ms-python.debugpy-2025.10.0-linux-x64/bundled/libs/debugpy/adapter/../../debugpy/launcher 58363 -- /mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp/vel_out/v_process.py 
+Processing 1 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.2E+01_n0_6.3E+18_R_c_5.6E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 2 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.8E+01_n0_7.8E+16_R_c_8.7E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 3 of 400
+Folder: delta_1_B0_1.0E+00_Te0_1.9E+01_n0_9.5E+16_R_c_6.3E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 4 of 400
+Folder: delta_1_B0_1.0E+00_Te0_2.0E+01_n0_1.7E+19_R_c_4.0E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 5 of 400
+Folder: delta_1_B0_1.0E+00_Te0_2.7E+01_n0_1.9E+18_R_c_6.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 6 of 400
+Folder: delta_1_B0_1.0E+00_Te0_3.3E+01_n0_2.8E+17_R_c_5.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 7 of 400
+Folder: delta_1_B0_1.0E+00_Te0_3.9E+01_n0_5.3E+16_R_c_8.2E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 8 of 400
+Folder: delta_1_B0_1.0E+00_Te0_5.2E+00_n0_4.0E+17_R_c_8.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 9 of 400
+Folder: delta_1_B0_1.1E+00_Te0_1.4E+01_n0_1.7E+19_R_c_5.5E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 10 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.0E+01_n0_1.8E+20_R_c_3.7E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 11 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.0E+01_n0_5.1E+18_R_c_2.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 12 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.1E+01_n0_1.0E+19_R_c_8.4E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 13 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.2E+01_n0_2.8E+19_R_c_4.3E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 14 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.3E+01_n0_2.5E+20_R_c_5.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 15 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.6E+01_n0_6.1E+18_R_c_5.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 16 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.8E+01_n0_5.8E+18_R_c_5.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 17 of 400
+Folder: delta_1_B0_1.1E+00_Te0_2.9E+01_n0_5.6E+17_R_c_5.7E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 18 of 400
+Folder: delta_1_B0_1.1E+00_Te0_3.5E+01_n0_6.0E+16_R_c_8.9E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 19 of 400
+Folder: delta_1_B0_1.1E+00_Te0_3.7E+01_n0_8.7E+18_R_c_3.0E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 20 of 400
+Folder: delta_1_B0_1.1E+00_Te0_6.5E+00_n0_5.5E+18_R_c_7.4E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 21 of 400
+Folder: delta_1_B0_1.1E+00_Te0_8.9E+00_n0_3.1E+16_R_c_4.2E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 22 of 400
+Folder: delta_1_B0_1.1E-01_Te0_1.9E+01_n0_2.5E+16_R_c_8.5E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Processing 23 of 400
+Folder: delta_1_B0_1.1E-01_Te0_2.9E+01_n0_1.3E+18_R_c_3.5E-01
+/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xbout/geometries.py:226: UserWarning: Size of toroidal domain as calculated from nz*dz (dask.array<sub, shape=(), dtype=float64, chunksize=(), chunktype=numpy.ndarray> is not the same as 2pi*(ZMAX - ZMIN) (6.283185307179586): using value from dz
+  warn(
+Exception ignored in: <function CachingFileManager.__del__ at 0x7bef2ca1c040>
+Traceback (most recent call last):
+  File "/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/.venv/lib/python3.13/site-packages/xarray/backends/file_manager.py", line 250, in __del__
+(src) gundam511@gundam511Lenovo:/mnt/c/Users/enlan/University/York/Dissertation/Repositories/Dissertation_Project/Misc/Test/blob2dgp/src/test_blob2dgp$ 

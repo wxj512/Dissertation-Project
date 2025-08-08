@@ -116,12 +116,12 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
 def main(): 
     data_path = v_data.data_import("")[3]
     
-    param_var = ["B0", "Te0"]   ## Check what parameters was changed for data to specify param_var
+    param_var = ["B0", "Te0", "n0", "R_c"]   ## Check what parameters was changed for data to specify param_var
     # B0_data = np.round(np.linspace(0.1,1,10),2)
 
-    v_max_array, v_avg_array, params = v_all_calc(1, param_var)
+    v_max_array, v_avg_array, params = v_all_calc(2, param_var)
 
-    write_nc(v_max_array, v_avg_array, param_var, params, data_path, 1)
+    write_nc(v_max_array, v_avg_array, param_var, params, data_path, 2)
 
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
