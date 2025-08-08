@@ -39,11 +39,11 @@ class consts:
             ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings , info=False)
         
         try:
-            self.Te0 = ds.attrs["options"]["model"]["Te0"]
-            self.n0 = ds.attrs["options"]["model"]["n0"]
-            self.n0_scale = ds.attrs["options"]["n"]["scale"]
-            self.Gridsize = ds.attrs["options"]["mesh"]["dx"]
-            self.B0 = ds.attrs["options"]["model"]["B0"]
+            self.Te0 = ds.copy().attrs["options"]["model"]["Te0"]
+            self.n0 = ds.copy().attrs["options"]["model"]["n0"]
+            self.n0_scale = ds.copy().attrs["options"]["n"]["scale"]
+            self.Gridsize = ds.copy().attrs["options"]["mesh"]["dx"]
+            self.B0 = ds.copy().attrs["options"]["model"]["B0"]
         except TypeError:
             print("Error: check if ds has specified inputfilepath for .settings")
             sys.exit()
@@ -51,11 +51,10 @@ class consts:
 def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         
     def n_array(ds_data, n0_scale, row):
-        if row == "whole_grid":
-            n = ds_data["n"].values - n0_scale
-        else:
-            n = ds_data["n"].values[:,row] - n0_scale
-        return n
+        n = ds_data["n"].copy()
+        if row != "whole_grid":
+            n = n.isel(z = row)
+        return np.array(n) - n0_scale
     
     if method == "CoM":
         row = "whole_grid"
@@ -99,12 +98,12 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
             ## max peak row not returned as always returns 0 if only 1 n row specified
             max_peak, _ = n_peak(n_array(ds_data, n0_scale, row))
         elif row_calc == "all_row":
-            row = "whole_grid"
-            n_flat = np.ravel(n_array(ds_data, n0_scale, row), order="F")
+            n_row = "whole_grid"
+            n_flat = np.ravel(n_array(ds_data, n0_scale, n_row), order="F")
             max_peak, row = n_peak(n_flat, row_calc = row_calc, ds_col = ds_col)
         
-        if max_peak == (ds_data["x"].size - 1) or method == "n_front":
-            return [ds_data["x"].values[max_peak], ds_data["z"].values[row]]#, row
+        if max_peak == (ds_col - 1) or method == "n_front":
+            return [ds_data["x"].isel(x = max_peak), ds_data["z"].isel(z = row)]#, row
 
         def peak_2(n, max_peak, height = 0.01, prominence = 0.005, distance = 1):
             peaks, _ = find_peaks(n, height = height, prominence = prominence, distance = distance)
@@ -129,8 +128,8 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         #   Mask data
         peak_n = n_array(ds_data, n0_scale, row)
         peak_n2 = peak_2(peak_n, max_peak)
-        width_guess = ((max_peak - peak_n2) * 0.5) * 1.5
-        x_array = np.linspace(0, peak_n.size-1, peak_n.size)
+        width_guess = ((max_peak - peak_n2) * 0.5) * 1.3
+        x_array = np.linspace(0, peak_n.size - 1, peak_n.size)
         mask_n = np.ma.masked_outside(x_array, max_peak - (width_guess / 2), max_peak + (width_guess / 2))
         mask_n = np.ones_like(mask_n) * peak_n
         mask_n[np.where(mask_n.data == 1)[0]] = 0
@@ -140,12 +139,12 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
         bnd = ([-np.inf, -np.inf, 0], [np.inf, np.inf, np.inf])
         popt, _ = curve_fit(gaussian, x_array * Gridsize, mask_n, p0 = guess, nan_policy = 'omit', bounds = bnd)
         gauss_width = FWHM(popt[2])
-        gauss_fit = gaussian(x_array*0.3, *popt)
-        if max_peak * Gridsize + (gauss_width / 2) >= ds_data["x"].values.max():
-            n_front = ds_data["x"].values.max()
+        # gauss_fit = gaussian(x_array*0.3, *popt)
+        if max_peak * Gridsize + (gauss_width / 2) >= ds_data["x"].max():
+            n_front = ds_data["x"].max()
         else:
             n_front = max_peak * Gridsize + (gauss_width / 2)
-        return [n_front, ds_data["z"].values[row]]#, row, gauss_fit, mask_n
+        return [n_front, ds_data["z"].isel(z = row)]#, row, gauss_fit, mask_n
 
 def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
 # All n calculation methods:
@@ -157,17 +156,17 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
     Gridsize = consts(ds = ds).Gridsize
 
     if t == "":
-        tvals = np.linspace(0, ds["t"].shape[0]-1, ds["t"].shape[0], dtype = int)
+        tvals = np.linspace(0, ds["t"].copy().shape[0]-1, ds["t"].copy().shape[0], dtype = int)
     else:
         tvals = t
 
     n_array = np.empty((0, 2))
 
     for i,vals in enumerate((tvals)):
-        ds_data = ds.isel(t = vals)
+        ds_data = ds.copy().isel(t = vals)
         n_point = n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method)
         n_array = np.append(n_array, [n_point], axis = 0)
-        ds_data.close()
+        # ds_data.close()
     return n_array
 
 def vel_calc(array):
@@ -217,7 +216,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import(folder = "campaign_1/delta_1_B0_0.4_Te0_16.0")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "campaign_2/delta_1_B0_7.1E-01_Te0_3.9E+01_n0_4.7E+19_R_c_5.2E-01")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
