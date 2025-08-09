@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from xbout import open_boutdataset
+import pandas as pd
 import xarray as xr
 from natsort import natsorted
 # from tqdm import tqdm
@@ -58,16 +59,16 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
     
-    # parval_split = np.empty((0,parval_array.shape[0]))
-    # parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
-    # parval_sort = np.lexsort(parval_split,axis=0)
+    parval_split = np.empty((0,parval_array.shape[0]))
+    parval_split = [np.append(parval_split, parval_array[:,col]) for col in np.arange(parval_array.shape[1])[::-1]]
+    parval_sort = np.lexsort(parval_split,axis=0)
     
-    # parval_array = parval_array[parval_sort] 
-    # v_max_array = v_max_array[parval_sort] 
-    # v_avg_array = v_avg_array[parval_sort]
+    parval_array = parval_array[parval_sort] 
+    v_max_array = v_max_array[parval_sort] 
+    v_avg_array = v_avg_array[parval_sort]
 
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
-    return v_max_array, v_avg_array, params
+    return v_max_array, v_avg_array, parval_array, params
 
 def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no):
     n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
@@ -113,15 +114,33 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
 
     v_all_ds.to_netcdf(output_path.joinpath("v_all.nc"))
 
+def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no):
+    n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
+    vmax_df = pd.DataFrame(v_max_array, columns = n_calc_method)
+    vavg_df = pd.DataFrame(v_avg_array, columns = n_calc_method)
+    parval_df = pd.DataFrame(parval_array, columns = param_var)
+
+    vmax_df = pd.concat((vmax_df, parval_df), axis = 1)
+    vavg_df = pd.concat((vavg_df, parval_df), axis = 1)
+
+    output_folder = f"campaign_{campaign_no}"
+    output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
+
+    if not(os.path.exists(output_path) and os.path.isdir(output_path)):
+            os.mkdir(output_path)
+
+    vmax_df.to_csv(output_path.joinpath("v_max.csv"))
+    vavg_df.to_csv(output_path.joinpath("v_avg.csv"))
+
 def main(): 
     data_path = v_data.data_import("")[3]
     
     param_var = ["B0", "Te0", "n0", "R_c"]   ## Check what parameters was changed for data to specify param_var
     # B0_data = np.round(np.linspace(0.1,1,10),2)
 
-    v_max_array, v_avg_array, params = v_all_calc(2, param_var)
+    v_max_array, v_avg_array, parval_array, params = v_all_calc(2, param_var)
 
-    write_nc(v_max_array, v_avg_array, param_var, params, data_path, 2)
+    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, 2)
 
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
