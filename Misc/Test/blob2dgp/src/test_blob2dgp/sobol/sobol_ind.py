@@ -1,4 +1,5 @@
-import xarray as xr
+# import xarray as xr
+import pandas as pd
 import numpy as np
 from scipy.stats import sobol_indices, uniform
 import matplotlib.pyplot as plt
@@ -29,28 +30,37 @@ def sobol(sb_func, bnds, n = 2**(10)):
 
 def main():
     data_path = v_data.data_import("")[3]
-    data_input_path = data_path.joinpath("Output", "vel_max_avg", "campaign_1")
-    vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
-    vmax_data = vall_ds["v_max"].sel(n_method = "CoM")
-    B0 = vall_ds["B0"].values
-    Te0 = vall_ds["Te0"].values
-    x2,x1 = np.meshgrid(Te0, B0)
-    x1v = x1.reshape(-1,1)
-    x2v = x2.reshape(-1,1)
-    X = np.column_stack((x1v.reshape(-1), x2v.reshape(-1)))
-    Z = [vmax_data.sel(B0=i, Te0=j) for i,j in X]
-    Z = np.reshape(Z,(-1,1))
-    
-    gprfunc = gpr.gp_reg(X, Z, return_GP=True)
+    data_input_path = data_path.joinpath("Output", "vel_max_avg", "campaign_2")
+    # vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
+    # vmax_data = vall_ds["v_max"].sel(n_method = "CoM")
+    # B0 = vall_ds["B0"].values
+    # # Te0 = vall_ds["Te0"].values
+    # x2,x1 = np.meshgrid(Te0, B0)
+    # x1v = x1.reshape(-1,1)
+    # x2v = x2.reshape(-1,1)
+    vall_df = pd.read_csv(data_input_path.joinpath("v_max.csv"), index_col=0)
+    vmax_data = vall_df[["CoM", "n_front_all", "FWHM_all"]]
+    param_val = vall_df[["B0", "Te0", "n0", "R_c"]]
+    # X = np.column_stack((x1v.reshape(-1), x2v.reshape(-1)))
+    Z = vmax_data["CoM"].values.reshape(-1,1)
+    X = param_val.values
+
+    gprfunc, x_train, x_test, y_train, y_test = gpr.gp_reg(X, Z, len_scale_bnds = ((1e-20, 1e40),) * 4, noise_bnds = (1e-10, 1e10), restarts = 499,
+                                 return_data = True)
+    print(gprfunc.score(x_test, y_test))
     v_func = sb_func(gprfunc).v_func
-    sb_bnds = [np.array([np.min(vall_ds[dim]), np.max(vall_ds[dim])]) for dim in vall_ds.coords if dim != "n_method"]
+    sb_bnds = [np.array([np.min(param_val[dim]), np.max(param_val[dim])]) for dim in param_val.columns]
+    print(sb_bnds)
+    # gprfunc = gpr.gp_reg(X, Z, return_GP=True)
+    # v_func = sb_func(gprfunc).v_func
+    # sb_bnds = [np.array([np.min(vall_ds[dim]), np.max(vall_ds[dim])]) for dim in vall_ds.coords if dim != "n_method"]
     sb_ind = sobol(v_func, sb_bnds)
     # print(sb_ind.first_order)
     # print(sb_ind.total_order)
     sb_boot = sb_ind.bootstrap()
     # print(sb_boot.total_order.confidence_interval.low, sb_boot.total_order.confidence_interval.high)
 
-    params = [r"$B_0$", r"$T_{e,0}$"]
+    params = [r"$B_0$", r"$T_{e,0}$", r"$n_0$", r"$R_c$"]
     sb_dict = {
         "First Order": sb_ind.first_order,
         "Total Order": sb_ind.total_order
@@ -61,8 +71,8 @@ def main():
     }
 
     print(sb_err["First Order"][0])
-    x = np.array([0.075, 0.275])
-    width = 0.025
+    x = np.arange(len(params))
+    width = 0.1
     multiplier = 0
 
     
@@ -77,7 +87,7 @@ def main():
         rects = ax1.bar(x + offset, index, width, label = order, yerr = err, capsize = 3)
         # ax1.bar_label(rects, padding=0.5)
         multiplier += 1
-    ax1.set_xlim(0, 0.4)
+    # ax1.set_xlim(0, 0.4)
     ax1.set_xticks(x + (width/2), params)
     ax1.set_xlabel("Parameters")
     ax1.set_ylabel("Sobol Index Value")
