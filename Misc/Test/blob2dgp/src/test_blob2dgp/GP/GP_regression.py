@@ -1,19 +1,22 @@
 import numpy as np
 import xarray as xr
+import pandas as pd
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, WhiteKernel
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 import matplotlib.pyplot as plt
 
 import test_blob2dgp.vel_out.v_data as v_data
 
-def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2, 1e3),),
-            noise = 1e-2, noise_bnds = (1e-10, 1e2), return_GP = False):
+def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2, 1e5),),
+            noise = 1e-2, noise_bnds = (1e-10, 1e5), return_GP = False, return_data = False):
     ## Requires x_arr and y_arr in vertical stack
     cols = np.shape(x_arr)[1]
     if cols > 1:
-        len_scale = len_scale * cols
-        len_scale_bnds = len_scale_bnds * cols
+        if len_scale == (1,):
+            len_scale = len_scale * cols
+        if len_scale_bnds == ((1e-2, 1e5),):
+            len_scale_bnds = len_scale_bnds * cols
     kernel = RBF(length_scale = len_scale, length_scale_bounds = len_scale_bnds) + WhiteKernel(
         noise_level = noise, noise_level_bounds = noise_bnds)
     GP = GaussianProcessRegressor(kernel = kernel, n_restarts_optimizer = restarts)
@@ -21,6 +24,8 @@ def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2
     GP.fit(x_train, y_train)
     if return_GP == True:
         return GP
+    elif return_data == True:
+        return GP, x_train, x_test, y_train, y_test
     mean_prediction, stdev_prediction = GP.predict(x_arr, return_std = True)
     score = GP.score(x_arr, y_arr)
     return mean_prediction, stdev_prediction, score
@@ -50,24 +55,30 @@ def gp_plot_1d(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, 
 
 def main():
     data_path = v_data.data_import("")[3]
-    data_input_path = data_path.joinpath("Output", "vel_max_avg", "campaign_1")
-    vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
-    vmax_data = vall_ds["v_max"].sel(n_method = "CoM")
+    data_input_path = data_path.joinpath("Output", "vel_max_avg", "campaign_2")
+    vmax_df = pd.read_csv(data_input_path.joinpath("v_max.csv"))
+    # vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
+    # vmax_data = vall_ds["v_max"].sel(n_method = "CoM")
     
-    B0 = vall_ds["B0"].values
-    Te0 = vall_ds["Te0"].values
-    x2,x1 = np.meshgrid(Te0, B0)
-    x1v = x1.reshape(-1,1)
-    x2v = x2.reshape(-1,1)
-    X = np.column_stack((x1v.reshape(-1), x2v.reshape(-1)))
-    Z = np.empty(0)
-    Z = [np.append(Z,vmax_data.sel(B0=i, Te0=j)) for i,j in X]
-    Z = np.reshape(Z,(-1,1))
-    mean, stdev, score = gp_reg(X, Z)
-    gpfunc = gp_reg(X, Z, return_GP = True)
-    mean = gpfunc.predict(X)
-    print(X)
-    print(mean)    
+    params = vmax_df[["B0", "Te0", "n0", "R_c"]].values
+    vmax_CoM = vmax_df["CoM"].values.reshape(-1,1)
+    # print(((1e-2, 1e5),) * 4)
+
+    # Z = np.empty(0)
+    # Z = [np.append(Z,vmax_data.sel(B0=i, Te0=j)) for i,j in X]
+    # Z = np.reshape(Z,(-1,1))
+    GP, x_train, x_test, y_train, y_test = gp_reg(params, vmax_CoM, len_scale_bnds = ((1e-20, 1e40),) * 4, noise_bnds = (1e-10, 1e10), restarts = 499,
+                                 return_data = True)
+    score = cross_val_score(GP, x_train, y_train, scoring = "r2")
+    r2 = GP.score(x_test, y_test)
+    print(score)
+    print(r2)
+    print(GP.kernel_.get_params()["k2__noise_level"])
+
+    # gpfunc = gp_reg(X, Z, return_GP = True)
+    # mean = gpfunc.predict(X)
+    # print(X)
+    # print(mean)    
 
     # plt.show()
 
