@@ -48,10 +48,10 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
 
         # ds.close()
 
-        vx_CoM = v_data.vel_calc(n_array_CoM)[2]
+        vx_CoM = v_data.vel_calc(ds, n_array_CoM)[2]
         # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
-        vx_nf_all = v_data.vel_calc(n_array_nf_all)[2]
-        vx_FWHM_all = v_data.vel_calc(n_array_FWHM_all)[2]
+        vx_nf_all = v_data.vel_calc(ds, n_array_nf_all)[2]
+        vx_FWHM_all = v_data.vel_calc(ds, n_array_FWHM_all)[2]
 
         v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
         v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
