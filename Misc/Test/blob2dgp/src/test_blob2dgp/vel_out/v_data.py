@@ -62,9 +62,9 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
     
     if method == "n_max":
         
-        def n_max_pos(n, n0_scale, row = ""):
+        def n_max_pos(n, n0_scale, row = None):
             n_max_pos = np.where((n - n0_scale) == np.max(n - n0_scale))
-            if row == "":
+            if row == None:
                 n_max_pos = [int(n_max_pos[0][0]), int(n_max_pos[1][0])]
             else:
                 n_max_pos = [int(n_max_pos[0][0]), int(row)]
@@ -169,13 +169,15 @@ def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
         # ds_data.close()
     return n_array
 
-def vel_calc(array):
+def vel_calc(ds, array):
+
+    t = ds["t"].copy()
         
     dist_x = array[:,0] - array[0,0]
     dist_z = array[:,1] - array[0,1]
     
-    vx = np.gradient(dist_x)
-    vz = np.gradient(dist_z)
+    vx = np.gradient(dist_x, t)
+    vz = np.gradient(dist_z, t)
 
     return dist_x, dist_z, vx, vz
 
@@ -216,7 +218,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import(folder = "campaign_2/delta_1_B0_7.1E-01_Te0_3.9E+01_n0_4.7E+19_R_c_5.2E-01")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "delta_1")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
@@ -231,19 +233,19 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array_nf_all = n_calc(ds, method="n_front", row_calc="all_row")
-    n_array_FWHM_all = n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
+    n_array_nf_all = n_calc(ds, method="CoM", row_calc="all_row")
+    # n_array_nf = n_calc(ds, method = "n_max", row_calc = "mid_row")
     
-    dist_x, dist_z, vx, vz = vel_calc(n_array_nf_all)
-    dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(n_array_FWHM_all)
+    dist_x_all, dist_z, vx_all, vz = vel_calc(ds, n_array_nf_all)
+    # dist_x, dist_z_all, vx, vz_all = vel_calc(ds, n_array_nf)
 
     # print(np.shape(n_array))
-    title = "for n front and \nn front with FWHM method"
-    dist_array = [dist_x, dist_x_all]
-    vel_array = [vx, vx_all]
-    plot_label = ["for n front \nmethod", "for n front +\nFWHM method"]
+    title = "for n max method"
+    dist_array = [dist_x_all]
+    vel_array = [vx_all]
+    # plot_label = ["for \nmid row", "for \nall row"]
     # print(np.max(vx))
-    v_plot(ds["t"].values, dist_array, vel_array, plot_label=plot_label, title=title)
+    v_plot(ds["t"].values, dist_array, vel_array, title=title)#, plot_label = plot_label)
 
 if __name__ == "__main__":
     main()
