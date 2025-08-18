@@ -14,7 +14,7 @@ import v_data
 
 # Plot results on n heatmap for 6 subplots based on time, defined in t
 
-def n_hmap_subplots(t, ds, res_array = "", plotstyle = "line", legend = ""):
+def n_hmap_subplots(t, ds, res_array = None, plotstyle = "line", legend = None):
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000", figsize=[6.9*1.8,4.8*1.8])
     # f1.suptitle("Comparison of n front at peak and FWHM for n at different t", fontsize = "large")
     # axs = f1.subplots(2, 3)
@@ -39,9 +39,9 @@ def n_hmap_subplots(t, ds, res_array = "", plotstyle = "line", legend = ""):
 
         cmap = plt.cm.Pastel1.colors[:] 
 
-        if np.size(res_array > 0): 
+        if res_array is not None and np.size(res_array > 0): 
 
-            if pos == 0 and not(legend == ""):
+            if pos == 0 and not(legend == None):
                 legend = legend
             elif np.size(legend) > 1:
                 legend = np.full(res_array.shape[1],"")
@@ -74,7 +74,7 @@ def n_hmap_subplots(t, ds, res_array = "", plotstyle = "line", legend = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1_B0_0.1")[0:2]
+    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
@@ -86,14 +86,14 @@ def main():
     t = [0, 10, 20, 30, 40, 50]
 
     ## n front
-    n_array = v_data.n_calc(ds, t=t, row_calc="mid_row", method="n_front_FWHM")
-    n_array_all = v_data.n_calc(ds, t=t, row_calc="all_row", method="n_front_FWHM")
+    # n_array = v_data.n_calc(ds, t=t, row_calc="mid_row", method="n_front_FWHM")
+    # n_array_all = v_data.n_calc(ds, t=t, row_calc="all_row", method="n_front_FWHM")
     # n_array_FWHM = n_front_FWHM.n_calc(ds,t=t, row_calc="all_row")
     ## Max n
     # n_array = max_n.n_calc(ds, t=t)
     # n_array_all = max_n.n_calc(ds, t=t, row_calc="all_row")
     ## CoM
-    # n_array = v_data.n_calc(ds, t=t)
+    n_array = v_data.n_calc(ds, t=t)
 
     ## X-res_array, each coloumn for x-coords (vlines) or every 2 columns for x and z coords (scatter)
     ## For vline
@@ -101,7 +101,7 @@ def main():
     # For 1 results
     # res_array = n_array[:,0]
     # For 2 results 
-    res_array = np.append(n_array[:,0],n_array_all[:,0]).reshape(n_array.shape[0],2, order="F")
+    # res_array = np.append(n_array[:,0],n_array_all[:,0]).reshape(n_array.shape[0],2, order="F")
 
     ## For scatter
     ## Max n
@@ -109,9 +109,9 @@ def main():
     # n_array_all_res = np.append([ds["x"].values[n_array_all[:,0]]],[ds["z"].values[n_array_all[:,1]]], axis = 0).transpose()
     # res_array = np.append(n_array_res,n_array_all_res,axis=1)
     ## CoM
-    # res_array = np.vstack((n_array[:,0]/0.3, n_array[:,1])).transpose()
-    legend = ["n front mid row", "n front all rows"]
-    n_hmap_subplots(t,ds, res_array=res_array, plotstyle="vline", legend=legend)
+    res_array = np.vstack((n_array[:,0], n_array[:,1])).transpose()
+    legend = ["CoM"]
+    n_hmap_subplots(t,ds, res_array = res_array, legend = legend, plotstyle = "scatter")
     # print(ds["x"].interp(x=n_array[:,0]).values)
 
 if __name__ == "__main__":
