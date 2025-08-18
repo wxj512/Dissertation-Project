@@ -1,45 +1,23 @@
 from git import Repo
 from tqdm import tqdm
-
+from xbout import open_boutdataset
+import numpy as np
 import test_blob2dgp.vel_out.v_data as v_data
-
-
-
-def git_push(repo_path):
-    try:
-        repo = Repo(repo_path)
-        repo.git.add(update=True)
-        repo.index.commit("COMMIT_MESSAGE")
-        origin = repo.remote(name = "main")
-        origin.push()
-    except:
-        print('Some error occured while pushing the code')    
 
 
 def main():
     data_path = v_data.data_import("")[3]
 
-    repo_path = data_path.joinpath("Input", "campaign_2")
+    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1")[0:2]
 
-    folder_list = [folder.name for folder in repo_path.glob("*/")]
-    folder_i = 0
-    batch = 0
+    ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
+    ds = ds.squeeze(drop=True)
 
-    repo = Repo(repo_path.parents[4])
-    [print(name) for name in repo.remotes]
-    main = repo.remote(name = "origin")
-    
-    for folder in tqdm(folder_list):
-        folder_i += 1
-        folder_path = r"Misc/Test/Data/Input/campaign_2/"
-        folder_path = folder_path + folder + "/."
-        repo.git.add(folder_path)
-        if folder_i % 5 == 0 or folder_i == 400:
-            batch += 1
-            repo.index.commit(f"Adding campaign_2 folder batch {batch}")
-            main.push()
-            print(f"Pushed batch {batch}")
+    dx = ds["dx"].isel(x=0).values
+    ds = ds.drop_vars("x")
+    ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
 
+    print(ds["t"].values)
     # git_push()
 
 if __name__ == "__main__":

@@ -155,14 +155,14 @@ def main():
 
             return max_peak, peak_2
 
-    BOUT_res, BOUT_settings = v_data.data_import(folder = "campaign_1/delta_1_B0_0.1_Te0_4.0")[0:2]
+    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
     dx = ds["dx"].isel(x=0).values
     ds = ds.drop_vars("x")
     ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
-    t = 39
+    t = 10
     ds_data = ds.isel(t=t)
 
     n0_scale = 1
@@ -213,11 +213,12 @@ def main():
 
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()
-    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(t*500))
+    ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(t*50))
     ax1.plot(n,linewidth=0.8, label="Density profile")
     ax1.plot(gauss_fit, linewidth=0.8, linestyle = "-.", label="Gaussian fit of last peak")
     ax1.scatter(max_peak_j,n[max_peak_j],marker="x", color="orange", label="Peak position")
     ax1.vlines(max_peak_j+(gauss_width/2), np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=0.5, color="black", label = "Position of \nright side of FWHM")
+    ax1.set_xlim(0,260)
     ax1.set_ylim(np.min(n)-0.05, np.max(n)+0.1)
     ax1.set_xlabel("x/$\\rho_s$")
     ax1.set_ylabel("Density/(n/$n_0$)")
