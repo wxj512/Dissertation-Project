@@ -22,4 +22,4 @@ For data:
 *.restart.*.nc
 *.dmp.*.nc
 *.inp
-*0.settings
+*.settings
