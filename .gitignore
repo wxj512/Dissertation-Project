@@ -20,3 +20,6 @@ For data:
 *.*.pid.*
 *.log.*
 *.restart.*.nc
+*.dmp.*.nc
+*.inp
+*0.settings
