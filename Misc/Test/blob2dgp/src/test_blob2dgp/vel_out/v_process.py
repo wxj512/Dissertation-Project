@@ -4,30 +4,35 @@ from xbout import open_boutdataset
 import pandas as pd
 import xarray as xr
 from natsort import natsorted
+import fnmatch
 # from tqdm import tqdm
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 import v_data
 
-def v_all_calc(campaign_no, param_var, data_path = ""):
-    if data_path == "":  
-        data_path = v_data.data_import("")[3]
+def v_all_calc(param_var, data_path = None, campaign_no = None, folder_list = None):
+    if data_path == None:  
+        data_path = v_data.data_import()[3]
         data_input_path = data_path.joinpath("Input")
-        if campaign_no != "":
+        if campaign_no != None:
             data_input_path = data_input_path.joinpath(f"campaign_{campaign_no}")
 
-    v_max_array = np.empty((0, 3))
-    v_avg_array = np.empty((0, 3))
+    n_calc_method_no = 3
+    v_max_array = np.empty((0, n_calc_method_no))
+    v_avg_array = np.empty((0, n_calc_method_no))
     parval_array = np.empty((0, len(param_var)))
     params = {}
-    total = len(list(data_input_path.glob("*/")))
-    folder_list = natsorted([folder.name for folder in data_input_path.glob("*/")])
+    
+    if folder_list == None:
+        folder_list = natsorted([folder.name for folder in data_input_path.glob("*/")])
+    
+    total = len(list(folder_list))
     
     for file_i, folder in enumerate(folder_list):
         print(f"Processing {file_i + 1} of {total}")
         print(f"Folder: {folder}")
 
-        if campaign_no != "":
+        if campaign_no != None:
             folder = f"campaign_{campaign_no}/" + folder
              
         BOUT_res, BOUT_settings = v_data.data_import(folder = folder)[0:2]
@@ -49,7 +54,7 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
         # ds.close()
 
         vx_CoM = v_data.vel_calc(ds, n_array_CoM)[2]
-        # dx_nf, dz_nf, vx_nf, vz_nf = v_data.vel_calc(n_array_nf)
+        # vx_nf = v_data.vel_calc(ds, n_array_nf)[2]
         vx_nf_all = v_data.vel_calc(ds, n_array_nf_all)[2]
         vx_FWHM_all = v_data.vel_calc(ds, n_array_FWHM_all)[2]
 
@@ -70,7 +75,7 @@ def v_all_calc(campaign_no, param_var, data_path = ""):
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, parval_array, params
 
-def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no):
+def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = None, output_folder = None):
     n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
 
     v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [len(n_calc_method)]
@@ -106,15 +111,19 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
         coords = v_all_coords
     )
 
-    output_folder = f"campaign_{campaign_no}"
-    output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
+    if campaign_no != None:
+        output_folder = f"campaign_{campaign_no}"
+    try:
+        output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
+    except:
+         "Check if campaign number specified or output_folder = None"
 
     if not(os.path.exists(output_path) and os.path.isdir(output_path)):
             os.mkdir(output_path)
 
     v_all_ds.to_netcdf(output_path.joinpath("v_all.nc"))
 
-def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no):
+def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = None, output_folder = None):
     n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
     vmax_df = pd.DataFrame(v_max_array, columns = n_calc_method)
     vavg_df = pd.DataFrame(v_avg_array, columns = n_calc_method)
@@ -123,8 +132,12 @@ def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, camp
     vmax_df = pd.concat((vmax_df, parval_df), axis = 1)
     vavg_df = pd.concat((vavg_df, parval_df), axis = 1)
 
-    output_folder = f"campaign_{campaign_no}"
-    output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
+    if campaign_no != None:
+        output_folder = f"campaign_{campaign_no}"
+    try:
+        output_path = data_path.joinpath("Output", "vel_max_avg", output_folder)
+    except:
+         "Check if campaign number specified or output_folder = None"
 
     if not(os.path.exists(output_path) and os.path.isdir(output_path)):
             os.mkdir(output_path)
@@ -134,14 +147,18 @@ def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, camp
 
 def main(): 
     data_path = v_data.data_import("")[3]
+    # data_input_path = data_path.joinpath("Input")
     
     param_var = ["B0", "Te0", "n0", "R_c"]   ## Check what parameters was changed for data to specify param_var
     # B0_data = np.round(np.linspace(0.1,1,10),2)
 
-    v_max_array, v_avg_array, parval_array, params = v_all_calc(2, param_var)
+    # folder_list = [folder.name for folder in data_input_path.glob("*/") if fnmatch.fnmatch(folder.name, "delta_1_B0_*") == True]
 
-    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, 2)
+    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 2)
 
+    # write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = 2)
+    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 2)
+    
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
     # ax1.set_title("Maximum velocity of blob for varying B0")

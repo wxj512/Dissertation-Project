@@ -28,7 +28,7 @@ param_val = vall_df[["B0", "Te0", "R_c"]]
 Z = vmax_data["CoM"].values.reshape(-1,1)
 X = param_val.values
 
-gprfunc, x_train, x_test, y_train, y_test = gpr.gp_reg(X, Z, len_scale_bnds = ((1e-20, 1e40),) * 3, noise_bnds = (1e-10, 1e10), restarts = 499,
+gprfunc, x_train, x_test, y_train, y_test = gpr.gp_reg(X, Z, len_scale_bnds = ((1e-10, 1e5),) * 3, noise_bnds = (1e-10, 1e5), restarts = 19,
                                 return_data = True)
 print(gprfunc.score(x_test, y_test))
 v_func = sb_func(gprfunc).v_func
@@ -42,7 +42,7 @@ sp = ProblemSpec({
     "outputs": ["Y"],
 })
 
-sp.sample_sobol(1024, calc_second_order=True)
+sp.sample_sobol(32768, calc_second_order=True)
 sp.evaluate(v_func)
 sp.analyze_sobol(print_to_console=True, calc_second_order=True)
 sp.plot()

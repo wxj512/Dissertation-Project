@@ -29,7 +29,7 @@ def main():
     ls = (1,) * 2
     bounds_l = ((1e-2,100.),) * 2
     kernel_CoM_1 = RBF(length_scale = ls, length_scale_bounds = bounds_l) + WhiteKernel(
-        noise_level = 1e-3, noise_level_bounds = (1e-5, 100.))
+        noise_level = 1e-3, noise_level_bounds = (1e-10, 100.))
     GP_CoM_1 = GaussianProcessRegressor(kernel = kernel_CoM_1, n_restarts_optimizer = 9)
     
     B0 = vall_ds["B0"].values
@@ -52,11 +52,11 @@ def main():
     
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.add_subplot(projection='3d')
-    surf = vmax_data.plot.surface(x="B0", y="Te0", cmap="plasma", add_colorbar=False, alpha=0.8, linewidth=0.3, 
+    surf = vmax_data.plot.surface(x="B0", y="Te0", cmap="plasma", add_colorbar=False, alpha=0.6, linewidth=0.3, 
                                   label=r"$v_{max}$ for CoM method")
     ax1.plot_wireframe(x1,x2,Zfit, label = "Mean prediction")
-    ax1.plot_surface(x1,x2,Zfit - 1.96 * Zstd, color="gray", alpha=0.4, label=f"95% confidence interval")
-    ax1.plot_surface(x1,x2,Zfit + 1.96 * Zstd, color="gray", alpha=0.4)
+    ax1.plot_surface(x1,x2,Zfit - 1.96 * Zstd, color="gray", alpha=0.2, label=f"95% confidence interval")
+    ax1.plot_surface(x1,x2,Zfit + 1.96 * Zstd, color="gray", alpha=0.2)
     ax1.scatter(X_train[0,0], X_train[0,1], Y_train[0], color="black", marker="x", label="Observations")
     [ax1.scatter(val[0],val[1],val[2], color="black", marker="x") for i,val in enumerate(zip(X_train[:,0], X_train[:,1], Y_train)) if i > 0]
     # print(list(zip(X_train[:,0], X_train[:,1], Y_train))[0])
@@ -66,6 +66,7 @@ def main():
     ax1.axes.set_zlabel(r"$v_{max}/c_s$")
     ax1.set_xlim(0,vmax_data["B0"].max())
     ax1.set_ylim(0,vmax_data["Te0"].max())
+    ax1.set_zlim(0,vmax_data.max() * 1.1)
     f1.legend(bbox_to_anchor = (1, 1), fontsize = "small")
     # ax1.set_zlim(0,np.ceil(vmax_data.values.max()))
 
@@ -89,20 +90,20 @@ def main():
     # samples_1 = [samples_1[:, i] for i in range(N)]
     # samples_1 = [samples_1[:, i] for i in range(N)]
     
-    K = GP_CoM_1.kernel_(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
-    D = GP_CoM_1.kernel_.diag(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
-    f2 = plt.figure(2, linewidth = 3, edgecolor = "#000000")
-    ax2 = f2.gca()
-    pcplot = ax2.imshow(np.diag(D**-0.5).dot(K).dot(np.diag(D**-0.5)), cmap="plasma")
+    # K = GP_CoM_1.kernel_(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
+    # D = GP_CoM_1.kernel_.diag(np.column_stack((np.unique(X[:,0]),np.unique(X[:,1]))))
+    # f2 = plt.figure(2, linewidth = 3, edgecolor = "#000000")
+    # ax2 = f2.gca()
+    # pcplot = ax2.imshow(np.diag(D**-0.5).dot(K).dot(np.diag(D**-0.5)), cmap="plasma")
     
-    f2.colorbar(pcplot)
-    ax2.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
-    ax2.set_title("Dimensions",fontsize=10)
-    ax2.set_xlabel(r"$\ell_{RBF}$= " + f"{GP_CoM_1.kernel_.get_params()["k1__length_scale"][0]:.2f}, {GP_CoM_1.kernel_.get_params()["k1__length_scale"][1]:.2f}, " + r"${\lambda^2}_{WN}$= " + f"{GP_CoM_1.kernel_.get_params()["k2__noise_level"]:.2f}")
-    ax2.set_ylabel("Dimensions")
-    ax2.set_aspect('equal')
-    ax2.set_xticks([])
-    ax2.set_yticks([])
+    # f2.colorbar(pcplot)
+    # ax2.tick_params(top=True, labeltop=True, bottom=False, labelbottom=False)
+    # ax2.set_title("Dimensions",fontsize=10)
+    # ax2.set_xlabel(r"$\ell_{RBF}$= " + f"{GP_CoM_1.kernel_.get_params()["k1__length_scale"][0]:.2f}, {GP_CoM_1.kernel_.get_params()["k1__length_scale"][1]:.2f}, " + r"${\lambda^2}_{WN}$= " + f"{GP_CoM_1.kernel_.get_params()["k2__noise_level"]:.2f}")
+    # ax2.set_ylabel("Dimensions")
+    # ax2.set_aspect('equal')
+    # ax2.set_xticks([])
+    # ax2.set_yticks([])
 
     plt.show()
 

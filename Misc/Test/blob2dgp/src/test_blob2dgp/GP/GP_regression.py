@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import test_blob2dgp.vel_out.v_data as v_data
 
-def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2, 1e5),),
+def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-5, 1e5),),
             noise = 1e-2, noise_bnds = (1e-10, 1e5), return_GP = False, return_data = False):
     ## Requires x_arr and y_arr in vertical stack
     cols = np.shape(x_arr)[1]
@@ -17,8 +17,8 @@ def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2
             len_scale = len_scale * cols
         if len_scale_bnds == ((1e-2, 1e5),):
             len_scale_bnds = len_scale_bnds * cols
-    kernel = RBF(length_scale = len_scale, length_scale_bounds = len_scale_bnds) + WhiteKernel(
-        noise_level = noise, noise_level_bounds = noise_bnds)
+    kernel = RBF(length_scale = len_scale, length_scale_bounds = len_scale_bnds) #+ WhiteKernel(
+        # noise_level = noise, noise_level_bounds = noise_bnds)
     GP = GaussianProcessRegressor(kernel = kernel, n_restarts_optimizer = restarts)
     x_train, x_test, y_train, y_test = train_test_split(x_arr, y_arr, test_size = 0.4)
     GP.fit(x_train, y_train)
@@ -28,7 +28,7 @@ def gp_reg(x_arr, y_arr, restarts = 9, len_scale = (1,), len_scale_bnds = ((1e-2
         return GP, x_train, x_test, y_train, y_test
     mean_prediction, stdev_prediction = GP.predict(x_arr, return_std = True)
     score = GP.score(x_arr, y_arr)
-    return mean_prediction, stdev_prediction, score
+    return mean_prediction, stdev_prediction, score, x_train, x_test, y_train, y_test
 
 def gp_plot_1d(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, n_method, fig_no, vel_type = "max"):
     fig_dict = {}
@@ -55,32 +55,37 @@ def gp_plot_1d(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, 
 
 def main():
     data_path = v_data.data_import("")[3]
-    data_input_path = data_path.joinpath("Output", "vel_max_avg", "campaign_2")
-    vmax_df = pd.read_csv(data_input_path.joinpath("v_max.csv"))
-    # vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
-    # vmax_data = vall_ds["v_max"].sel(n_method = "CoM")
-    
-    params = vmax_df[["B0", "Te0", "n0", "R_c"]].values
-    vmax_CoM = vmax_df["CoM"].values.reshape(-1,1)
+    data_input_path = data_path.joinpath("Output", "vel_max_avg", "B0_0.1_1.0")
+    # vmax_df = pd.read_csv(data_input_path.joinpath("v_max.csv"))
+    vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
+    vmax_data = vall_ds["v_max"].sel(n_method = "FWHM_all")
+    B0 = vmax_data["B0"].values.reshape(-1,1)
+    vmax = vmax_data.values.reshape(-1,1)
+    print(vmax)
+    # params = vmax_df[["B0", "Te0", "n0", "R_c"]].values
+    # vmax_CoM = vmax_df["CoM"].values.reshape(-1,1)
     # print(((1e-2, 1e5),) * 4)
+
+    mean_prediction, stdev_prediction, score, x_train, x_test, y_train, y_test = gp_reg(B0, vmax)
+    gp_plot_1d(B0, vmax, x_train, y_train, mean_prediction, stdev_prediction, "n front + FWHM", 0, vel_type = "max")
 
     # Z = np.empty(0)
     # Z = [np.append(Z,vmax_data.sel(B0=i, Te0=j)) for i,j in X]
     # Z = np.reshape(Z,(-1,1))
-    GP, x_train, x_test, y_train, y_test = gp_reg(params, vmax_CoM, len_scale_bnds = ((1e-20, 1e40),) * 4, noise_bnds = (1e-10, 1e10), restarts = 499,
-                                 return_data = True)
-    score = cross_val_score(GP, x_train, y_train, scoring = "r2")
-    r2 = GP.score(x_test, y_test)
-    print(score)
-    print(r2)
-    print(GP.kernel_.get_params()["k2__noise_level"])
+    # GP, x_train, x_test, y_train, y_test = gp_reg(params, vmax_CoM, len_scale_bnds = ((1e-20, 1e40),) * 4, noise_bnds = (1e-10, 1e10), restarts = 499,
+    #                              return_data = True)
+    # score = cross_val_score(GP, x_train, y_train, scoring = "r2")
+    # r2 = GP.score(x_test, y_test)
+    # print(score)
+    # print(r2)
+    # print(GP.kernel_.get_params()["k2__noise_level"])
 
     # gpfunc = gp_reg(X, Z, return_GP = True)
     # mean = gpfunc.predict(X)
     # print(X)
     # print(mean)    
 
-    # plt.show()
+    plt.show()
 
 if __name__  == "__main__":
     main()

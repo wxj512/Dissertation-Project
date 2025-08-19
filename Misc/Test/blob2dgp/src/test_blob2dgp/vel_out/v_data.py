@@ -9,8 +9,8 @@ from scipy.optimize import curve_fit
 from tqdm import tqdm
 
 
-def data_import(folder = ""):
-    if folder == "":
+def data_import(folder = None):
+    if folder == None:
         folder = "delta_1"
     else:
         folder = folder
