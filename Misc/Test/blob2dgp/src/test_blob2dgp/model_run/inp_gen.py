@@ -78,15 +78,15 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
                     inp_new.write(line)
 
 def main():
-    params = ["B0", "Te0", "n0", "R_c"]
-    min_max = np.array([[0.1, 3.2], [4, 40], [1e16, 2.8e20], [0.25, 0.9]])
+    params = ["B0", "Te0", "L_par", "R_c"]
+    min_max = np.array([[0.1, 3.2], [4, 40], [2.6e0, 1.3e2], [0.25, 0.9]])
     log = [False, False, True, False]
     # n_samples = [10, 10]
-    parameters = param_gen(params, min_max, log = log)
-    samples = 400
+    parameters = param_gen(params, min_max)
+    samples = 100
     grid_scan = epyscan.LatinHypercubeSampler(parameters).sample(samples)
     # [print(i) for i in grid_scan.sample(samples)]
-    mk_inp(grid_scan, params, 2)
+    mk_inp(grid_scan, params, 3)
 
 
 if __name__ == "__main__":
