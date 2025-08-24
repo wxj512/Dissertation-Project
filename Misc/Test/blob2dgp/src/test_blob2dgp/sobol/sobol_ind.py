@@ -40,12 +40,12 @@ def main():
     # x2v = x2.reshape(-1,1)
     vall_df = pd.read_csv(data_input_path.joinpath("v_max.csv"), index_col=0)
     vmax_data = vall_df[["CoM", "n_front_all", "FWHM_all"]]
-    param_val = vall_df[["B0", "Te0", "n0", "R_c"]]
+    param_val = vall_df[["B0", "Te0", "R_c"]]
     # X = np.column_stack((x1v.reshape(-1), x2v.reshape(-1)))
     Z = vmax_data["CoM"].values.reshape(-1,1)
     X = param_val.values
 
-    gprfunc, x_train, x_test, y_train, y_test = gpr.gp_reg(X, Z, len_scale_bnds = ((1e-20, 1e40),) * 4, noise_bnds = (1e-10, 1e10), restarts = 499,
+    gprfunc, x_train, x_test, y_train, y_test = gpr.gp_reg(X, Z, len_scale_bnds = ((1e-20, 1e40),) * 3, noise_bnds = (1e-10, 1e10), restarts = 9,
                                  return_data = True)
     print(gprfunc.score(x_test, y_test))
     v_func = sb_func(gprfunc).v_func
@@ -60,7 +60,7 @@ def main():
     sb_boot = sb_ind.bootstrap()
     # print(sb_boot.total_order.confidence_interval.low, sb_boot.total_order.confidence_interval.high)
 
-    params = [r"$B_0$", r"$T_{e,0}$", r"$n_0$", r"$R_c$"]
+    params = [r"$B_0$", r"$T_{e,0}$", r"$R_c$"]
     sb_dict = {
         "First Order": sb_ind.first_order,
         "Total Order": sb_ind.total_order
@@ -74,7 +74,7 @@ def main():
     x = np.arange(len(params))
     width = 0.1
     multiplier = 0
-
+    print(sb_err.items())
     
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()

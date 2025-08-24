@@ -233,19 +233,19 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array_nf_all = n_calc(ds, method="CoM", row_calc="all_row")
-    # n_array_nf = n_calc(ds, method = "n_max", row_calc = "mid_row")
+    n_array_nf_all = n_calc(ds, method="n_front_FWHM", row_calc="all_row")
+    n_array_nf = n_calc(ds, method = "n_front_FWHM", row_calc = "mid_row")
     
-    dist_x_all, dist_z, vx_all, vz = vel_calc(ds, n_array_nf_all)
-    # dist_x, dist_z_all, vx, vz_all = vel_calc(ds, n_array_nf)
+    dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(ds, n_array_nf_all)
+    dist_x, dist_z, vx, vz = vel_calc(ds, n_array_nf)
 
     # print(np.shape(n_array))
-    title = "for n max method"
-    dist_array = [dist_x_all]
-    vel_array = [vx_all]
-    # plot_label = ["for \nmid row", "for \nall row"]
+    title = "for n front + FWHM method"
+    dist_array = [dist_x, dist_x_all]
+    vel_array = [vx, vx_all]
+    plot_label = ["\n(mid row)", "\n(all row)"]
     # print(np.max(vx))
-    v_plot(ds["t"].values, dist_array, vel_array, title=title)#, plot_label = plot_label)
+    v_plot(ds["t"].values, dist_array, vel_array, title=title, plot_label = plot_label)
 
 if __name__ == "__main__":
     main()

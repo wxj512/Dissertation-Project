@@ -83,10 +83,10 @@ def main():
     log = [False, False, True, False]
     # n_samples = [10, 10]
     parameters = param_gen(params, min_max)
-    samples = 100
+    samples = 50
     grid_scan = epyscan.LatinHypercubeSampler(parameters).sample(samples)
     # [print(i) for i in grid_scan.sample(samples)]
-    mk_inp(grid_scan, params, 3)
+    mk_inp(grid_scan, params, 4)
 
 
 if __name__ == "__main__":

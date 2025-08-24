@@ -149,23 +149,25 @@ def main():
     data_path = v_data.data_import("")[3]
     # data_input_path = data_path.joinpath("Input")
     
-    param_var = ["B0", "Te0", "n0", "R_c"]   ## Check what parameters was changed for data to specify param_var
+    param_var = ["B0", "Te0", "L_par", "R_c"]   ## Check what parameters was changed for data to specify param_var
     # B0_data = np.round(np.linspace(0.1,1,10),2)
 
     # folder_list = [folder.name for folder in data_input_path.glob("*/") if fnmatch.fnmatch(folder.name, "delta_1_B0_*") == True]
 
-    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 2)
+
+    ## Specify at least folder_list or campaign_no
+    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 4)
 
     # write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = 2)
-    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 2)
+    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 4)
     
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
     # ax1.set_title("Maximum velocity of blob for varying B0")
     # ax1.plot(B0_data, v_max_array[:,0], label = "CoM method")
-    # ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor mid row")
-    # ax1.plot(B0_data, v_max_array[:,2], label = "n front method \nfor all row")
-    # ax1.plot(B0_data, v_max_array[:,3], label = "n front + FWHM \nmethod for all row")
+    # # ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor mid row")
+    # ax1.plot(B0_data, v_max_array[:,1], label = "n front method \nfor all row")
+    # ax1.plot(B0_data, v_max_array[:,2], label = "n front + FWHM \nmethod for all row")
     # ax1.set_xlabel("B0/T")
     # ax1.set_ylabel("$v_{max}$/$c_s$")
     # ax1.legend()
@@ -174,9 +176,9 @@ def main():
     # ax2 = f2.gca()
     # ax2.set_title("Average velocity of blob for varying B0")
     # ax2.plot(B0_data, v_avg_array[:,0], label = "CoM method")
-    # ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
-    # ax2.plot(B0_data, v_avg_array[:,2], label = "n front method \nfor all row")
-    # ax2.plot(B0_data, v_avg_array[:,3], label = "n front + FWHM \nmethod for all row")
+    # # ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor mid row")
+    # ax2.plot(B0_data, v_avg_array[:,1], label = "n front method \nfor all row")
+    # ax2.plot(B0_data, v_avg_array[:,2], label = "n front + FWHM \nmethod for all row")
     # ax2.set_xlabel("B0/T")
     # ax2.set_ylabel("$v_{avg}$/$c_s$")
     # ax2.legend()
