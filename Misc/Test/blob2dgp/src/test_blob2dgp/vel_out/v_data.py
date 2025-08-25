@@ -218,7 +218,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
 def main():
     
-    BOUT_res, BOUT_settings = data_import(folder = "delta_1")[0:2]
+    BOUT_res, BOUT_settings = data_import(folder = "campaign_0/delta_1_R_c_2.5E-01")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)
@@ -233,8 +233,8 @@ def main():
     # Gridsize = 0.3
     # ds_data = ds.isel(t=t)
     # n_point = np.array([ndimage.center_of_mass(ds_data["n"].values - n0_scale)]) * Gridsize
-    n_array_nf_all = n_calc(ds, method="n_front_FWHM", row_calc="all_row")
-    n_array_nf = n_calc(ds, method = "n_front_FWHM", row_calc = "mid_row")
+    n_array_nf_all = n_calc(ds, method="CoM", row_calc="all_row")
+    n_array_nf = n_calc(ds, method = "n_front", row_calc = "all_row")
     
     dist_x_all, dist_z_all, vx_all, vz_all = vel_calc(ds, n_array_nf_all)
     dist_x, dist_z, vx, vz = vel_calc(ds, n_array_nf)
@@ -243,7 +243,7 @@ def main():
     title = "for n front + FWHM method"
     dist_array = [dist_x, dist_x_all]
     vel_array = [vx, vx_all]
-    plot_label = ["\n(mid row)", "\n(all row)"]
+    plot_label = ["\nn front", "\nn front + FWHM"]
     # print(np.max(vx))
     v_plot(ds["t"].values, dist_array, vel_array, title=title, plot_label = plot_label)
 

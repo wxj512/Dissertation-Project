@@ -74,7 +74,7 @@ def n_hmap_subplots(t, ds, res_array = None, plotstyle = "line", legend = None):
 
 def main():
     
-    BOUT_res, BOUT_settings = v_data.data_import(folder = "delta_1")[0:2]
+    BOUT_res, BOUT_settings = v_data.data_import(folder = "campaign_0/delta_1_R_c_9.0E-01")[0:2]
 
     ds = open_boutdataset(BOUT_res, inputfilepath=BOUT_settings, info=False)
     ds = ds.squeeze(drop=True)

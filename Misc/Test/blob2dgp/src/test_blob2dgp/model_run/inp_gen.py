@@ -78,16 +78,24 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
                     inp_new.write(line)
 
 def main():
-    params = ["B0", "Te0", "L_par", "R_c"]
-    min_max = np.array([[0.1, 3.2], [4, 40], [2.6e0, 1.3e2], [0.25, 0.9]])
-    log = [False, False, True, False]
+    # params = ["B0", "Te0", "L_par", "R_c"]
+    # min_max = np.array([[0.1, 3.2], [4, 40], [2.6e0, 1.3e2], [0.25, 0.9]])
+    # log = [False, False, True, False]
+    ## Gridscan only
     # n_samples = [10, 10]
-    parameters = param_gen(params, min_max)
-    samples = 50
-    grid_scan = epyscan.LatinHypercubeSampler(parameters).sample(samples)
+    
+    ## 1d param scan for campaign 0
+    param_0 = ["R_c"]
+    min_max_0 = np.array([[0.25, 0.9]])
+    log_0 = [False]
+    n_samples_0 = [10]
+    parameters = param_gen(param_0, min_max_0, n_samples=n_samples_0, log=log_0)
+    ## LHS only
+    # samples = 50
+    # lhs_scan = epyscan.LatinHypercubeSampler(parameters).sample(samples)
+    grid_scan = epyscan.GridScan(parameters)
     # [print(i) for i in grid_scan.sample(samples)]
-    mk_inp(grid_scan, params, 4)
-
+    mk_inp(grid_scan, parameters, 0)
 
 if __name__ == "__main__":
     main()

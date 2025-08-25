@@ -156,10 +156,10 @@ def main():
 
 
     ## Specify at least folder_list or campaign_no
-    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 4)
+    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 0)
 
     # write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = 2)
-    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 4)
+    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 0)
     
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
