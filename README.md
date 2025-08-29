@@ -28,9 +28,10 @@ Repository to version control Dissertation Project progress
     - Figs (png for all figure used in project log)
     - References (BibLaTex file)
   - Literature review and lay summary (latex file, compiled with xelatex in Overleaf)
-    - Figs (png for all figure used in literature review and disertation)
+    - Figs (png for all figure used in literature review)
     - References (BibLaTex file)
   - Dissertation (latex file, compiled with xelatex in Overleaf)
+    - Figs (png for all figure used in dissertation)
     - References (BibLaTex file)
 - Miscellaneous files
   - Test/blob2dgp/src (wrapped as test_blob2dgp module)
