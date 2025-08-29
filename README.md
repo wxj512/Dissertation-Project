@@ -8,10 +8,19 @@ Repository to version control Dissertation Project progress
     - Input/
         - delta_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
         - delta_1_B0_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+        - campaign_0/delta_1_param_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
         - campaign_1/delta_1_B0_x_Te0_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
         - campaign_2/delta_1_B0_x_Te0_x_n0_x_R_c_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+        - campaign_3/delta_1_B0_x_Te0_x_L_par_x_R_c_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
+        - campaign_4/delta_1_B0_x_Te0_x_L_par_x_R_c_x/ (input files for v_data.py, contains BOUT.dmp.x.nc, .inp and .setting files)
     - Output/
-        - vel_max_avg/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc or v_max.csv and v_avg.csv  within corresponding folders for inp conditions) 
+        - vel_max_avg/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc or v_max.csv and v_avg.csv within corresponding folders for inp conditions)
+          - B0_0.1_1.0/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc, v_max.csv and v_avg.csv)
+          - campaign_0/ (output files from v_process.py and used as input for GP_regression.py, contains v_max.csv and v_avg.csv)
+          - campaign_1/ (output files from v_process.py and used as input for GP_regression.py, contains v_all.nc)
+          - campaign_2/ (output files from v_process.py and used as input for GP_regression.py, contains v_max.csv and v_avg.csv)
+          - campaign_3/ (output files from v_process.py and used as input for GP_regression.py, contains v_max.csv and v_avg.csv)
+          - campaign_4/ (output files from v_process.py and used as input for GP_regression.py, contains v_max.csv and v_avg.csv)
   - blob2d.cxx (source file for blob2d model)
 - Overleaf repository
   - (Token: olp_4s5GTBpsRzOXbp9YV6efZvKvASJ1dg3VNYs3)
