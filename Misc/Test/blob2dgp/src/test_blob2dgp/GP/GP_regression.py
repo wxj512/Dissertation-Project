@@ -55,7 +55,7 @@ def gp_plot_1d(ds_x, ds_y, x_train, y_train, mean_prediction, stdev_prediction, 
 
 def main():
     data_path = v_data.data_import("")[3]
-    campaign = 4
+    campaign = 4        
     data_input_path = data_path.joinpath("Output", "vel_max_avg", f"campaign_{campaign}")
     vmax_df = pd.read_csv(data_input_path.joinpath("v_max.csv"))
     # vall_ds = xr.open_dataset(data_input_path.joinpath("v_all.nc"))
@@ -63,12 +63,17 @@ def main():
     # B0 = vmax_data["B0"].values.reshape(-1,1)
     # vmax = vmax_data.values.reshape(-1,1)
     
-    params = vmax_df[["B0", "Te0", "L_par", "R_c"]].values
+    param_var = list(("B0", "Te0", "L_par","R_c"))
+    params = vmax_df[param_var].values
     vmax_CoM = vmax_df["CoM"].values.reshape(-1,1)
     
 
-    mean_prediction, stdev_prediction, score, x_train, x_test, y_train, y_test = gp_reg(params, vmax_CoM, len_scale_bnds = ((1e-10, 1e5),) * 4, noise_bnds = (1e-10, 1e5), restarts = 49)
-    print(score)
+    GP, x_train, x_test, y_train, y_test = gp_reg(params, vmax_CoM, len_scale_bnds = ((1e-10, 1e10),) * len(param_var),
+                                                   noise_bnds = (1e-10, 1e10), restarts = 49, return_data=True)
+    cv_score = cross_val_score(GP, x_train, y_train, cv=5)
+    print(cv_score, cv_score.mean())
+    print(GP.score(x_test, y_test))
+
     # gp_plot_1d(B0, vmax, x_train, y_train, mean_prediction, stdev_prediction, "n front + FWHM", 0, vel_type = "max")
 
     # Z = np.empty(0)

@@ -149,7 +149,7 @@ def n_calc_methods(ds_data, row_calc, n0_scale, Gridsize, method):
 def n_calc(ds, method = "CoM", t = "", row_calc = "mid_row"):
 # All n calculation methods:
 # CoM = Center of mass method
-# max_n = Maximum density method
+# n_max = Maximum density method
 # n_front = Density front method
 # n_front_FWHM = Density front with FWHM method
     n0_scale = consts(ds = ds).n0_scale

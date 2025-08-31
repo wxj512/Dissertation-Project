@@ -162,7 +162,7 @@ def main():
     dx = ds["dx"].isel(x=0).values
     ds = ds.drop_vars("x")
     ds = ds.assign_coords(x=np.arange(ds.sizes["x"])*dx)
-    t = 50
+    t = 5
     ds_data = ds.isel(t=t)
 
     n0_scale = 1
@@ -215,14 +215,19 @@ def main():
     ax1 = f1.gca()
     ax1.set_title("z/$\\rho_s$ = " + str(np.round(ds["z"].values[row_j],1)) + ", t/(1/$\\Omega_i$) = " + str(t*50))
     ax1.plot(ds_data["x"], n,linewidth=0.8, label="Density profile")
-    # ax1.plot(ds_data["x"],gauss_fit, linewidth=0.8, linestyle = "-.", label="Gaussian fit of last peak")
     # ax1.scatter(max_peak_j*0.3,n[max_peak_j],marker="x", color="orange", label="Peak position")
-    # ax1.vlines((max_peak_j+(gauss_width/2))*0.3, np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=0.5, color="black", label = "Position of \nright side of FWHM")
+    ax1.vlines(max_peak_j*0.3, np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=1, color="green", label="n front position")
+    nmax_pos = v_data.n_calc_methods(ds_data, row_calc="mid_row", n0_scale=n0_scale, Gridsize=0.3, method="n_max")
+    ax1.vlines(nmax_pos[0]*0.3, np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=1, color="magenta", label="n max position")
+    CoM_pos = v_data.n_calc_methods(ds_data, row_calc="mid_row", n0_scale=n0_scale, Gridsize=0.3, method="CoM")
+    ax1.vlines(CoM_pos[0], np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=1, color="blue", label="CoM position")
+    ax1.plot(ds_data["x"],gauss_fit, linewidth=0.8, linestyle = "-.", label="Gaussian fit of last peak")
+    ax1.vlines((max_peak_j+(gauss_width/2))*0.3, np.min(n)-0.05, np.max(n)+0.1, linestyle = "--", linewidth=1, color="black", label = "n front + FWHM \nposition")
     ax1.set_xlim(0,260*0.3)
     ax1.set_ylim(np.min(n)-0.05, np.max(n)+0.1)
     ax1.set_xlabel("x/$\\rho_s$")
     ax1.set_ylabel("Density/(n/$n_0$)")
-    ax1.legend(fontsize="small")
+    ax1.legend(fontsize="small", loc="best")
 
     # n_array = n_calc(ds)
     # n_array_all = n_calc(ds, row_calc = "all_row")
