@@ -4,20 +4,20 @@ from xbout import open_boutdataset
 import pandas as pd
 import xarray as xr
 from natsort import natsorted
-import fnmatch
+# import fnmatch
 # from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 import v_data
 
-def v_all_calc(param_var, data_path = None, campaign_no = None, folder_list = None):
+def v_all_calc(param_var, n_calc_method = ["CoM"], data_path = None, campaign_no = None, folder_list = None):
     if data_path == None:  
         data_path = v_data.data_import()[3]
         data_input_path = data_path.joinpath("Input")
         if campaign_no != None:
             data_input_path = data_input_path.joinpath(f"campaign_{campaign_no}")
 
-    n_calc_method_no = 3
+    n_calc_method_no = len(n_calc_method)
     v_max_array = np.empty((0, n_calc_method_no))
     v_avg_array = np.empty((0, n_calc_method_no))
     parval_array = np.empty((0, len(param_var)))
@@ -25,6 +25,8 @@ def v_all_calc(param_var, data_path = None, campaign_no = None, folder_list = No
     
     if folder_list == None:
         folder_list = natsorted([folder.name for folder in data_input_path.glob("*/")])
+    else:
+        folder_list = natsorted(folder_list)
     
     total = len(list(folder_list))
     
@@ -45,21 +47,29 @@ def v_all_calc(param_var, data_path = None, campaign_no = None, folder_list = No
             ds = ds.assign_coords(x = np.arange(ds.copy().sizes["x"]) * Gridsize)
 
             param_val = np.array([[ds.copy().attrs["options"]["model"][var]] for var in param_var]).transpose()
+            
+            n_vel_dict = {}
+            v_max = np.empty((1, 0))
+            v_avg = np.empty((1, 0))
 
-            n_array_CoM = v_data.n_calc(ds, method = "CoM")
+            for method in n_calc_method:
+                n_vel_dict.update({f"n_array_{method}": v_data.n_calc(ds, method = method, row_calc = "all_row")})
+                n_vel_dict.update({f"vx_{method}": v_data.vel_calc(ds, n_vel_dict[f"n_array_{method}"])[2]})
+                v_max = np.append(v_max, [[n_vel_dict[f"vx_{method}"].max()]], axis = 1)
+                v_avg = np.append(v_avg, [[n_vel_dict[f"vx_{method}"].mean()]], axis = 1)
+            # n_array_CoM = v_data.n_calc(ds, method = "CoM")
             # n_array_nf = v_data.n_calc(ds, method = "n_front")
-            n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
-            n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
+            # n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
+            # n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
-        # ds.close()
-
-        vx_CoM = v_data.vel_calc(ds, n_array_CoM)[2]
+        # vx_CoM = v_data.vel_calc(ds, n_array_CoM)[2]
         # vx_nf = v_data.vel_calc(ds, n_array_nf)[2]
-        vx_nf_all = v_data.vel_calc(ds, n_array_nf_all)[2]
-        vx_FWHM_all = v_data.vel_calc(ds, n_array_FWHM_all)[2]
+        # vx_nf_all = v_data.vel_calc(ds, n_array_nf_all)[2]
+        # vx_FWHM_all = v_data.vel_calc(ds, n_array_FWHM_all)[2]
 
-        v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
-        v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
+        # v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
+        # v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
+        # print(v_max, v_max_dict)
         v_max_array = np.append(v_max_array, v_max, axis = 0)
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
@@ -75,8 +85,8 @@ def v_all_calc(param_var, data_path = None, campaign_no = None, folder_list = No
     [params.update({f"{var}": parval_array[:, param_var.index(var)]}) for var in param_var]
     return v_max_array, v_avg_array, parval_array, params
 
-def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = None, output_folder = None):
-    n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
+def write_nc(v_max_array, v_avg_array, param_var, params, data_path, n_calc_method, campaign_no = None, output_folder = None):
+    ## Only usable in gridscan situations where data can be arranged into dimensions equally
 
     v_all_reshape = [np.unique(params[var]).size for var in param_var if np.unique(params[var]).size != 1] + [len(n_calc_method)]
     v_all_param = dict([(var, np.unique(params[var])) for var in param_var] + [("n_method", n_calc_method)])
@@ -123,8 +133,8 @@ def write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no
 
     v_all_ds.to_netcdf(output_path.joinpath("v_all.nc"))
 
-def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = None, output_folder = None):
-    n_calc_method = ["CoM", "n_front_all", "FWHM_all"]
+def write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, n_calc_method, campaign_no = None, output_folder = None):
+
     vmax_df = pd.DataFrame(v_max_array, columns = n_calc_method)
     vavg_df = pd.DataFrame(v_avg_array, columns = n_calc_method)
     parval_df = pd.DataFrame(parval_array, columns = param_var)
@@ -156,10 +166,11 @@ def main():
 
 
     ## Specify at least folder_list or campaign_no
-    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, campaign_no = 0)
+    n_calc_method = ["CoM", "n_front", "n_front_FWHM"]
+    v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, n_calc_method = n_calc_method, campaign_no = 0)
 
-    # write_nc(v_max_array, v_avg_array, param_var, params, data_path, campaign_no = 2)
-    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, campaign_no = 0)
+    # write_nc(v_max_array, v_avg_array, param_var, params, data_path, n_calc_method, campaign_no = 2)
+    write_csv(v_max_array, v_avg_array, param_var, parval_array, data_path, n_calc_method, campaign_no = 0)
     
     # f1 = plt.figure(linewidth = 3, edgecolor = "#000000")
     # ax1 = f1.gca()
