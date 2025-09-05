@@ -182,12 +182,12 @@ def vel_calc(ds, array):
     return dist_x, dist_z, vx, vz
 
 
-def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
+def v_plot(time_array, dist_array, vel_array, plot_label = None, title = None, show_plot = True):
 
     f1 = plt.figure(1, linewidth = 3, edgecolor = "#000000")
     ax1 = f1.gca()
     ax2 = ax1.twinx()
-    if not(title == ""):
+    if not(title == None):
         ax1.set_title("Distance and velocity of blob " + title)
     else:
         ax1.set_title("Distance and velocity of blob")
@@ -200,7 +200,7 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
 
     for no,val in enumerate(np.linspace(0, plots -1, plots)):
         
-        if not(plot_label == ""):
+        if not(plot_label == None):
             ax1.plot(time_array, dist_array[no], label = "Distance " + plot_label[no], color = cmap[2 * no])
             ax2.plot(time_array, vel_array[no], label = "Velocity " + plot_label[no], color = cmap[2 * no + 1])
         else:
@@ -211,7 +211,9 @@ def v_plot(time_array, dist_array, vel_array, plot_label = "", title = ""):
     ax1.set_ylabel("Distance/$\\rho_s$")
     ax2.set_ylabel("Velocity/$c_s$")
     f1.legend(bbox_to_anchor = (1, 0.9), fontsize = "small")
-    plt.show()
+
+    if show_plot == True:
+        plt.show()
 
     return f1
     
