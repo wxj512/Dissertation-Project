@@ -2,13 +2,13 @@ import subprocess
 import pathlib
 from tqdm.contrib.concurrent import thread_map
 
-def blob_run(campaign, path = ""):
+def blob_run(campaign, path = None):
     def sub_pro_run(folder):
         command = ["mpirun", "-n", "4", str(run_path) + "/blob2d", "-d", str(folder)]
         result = subprocess.run(command, stdout=subprocess.PIPE, text=True)
         return result
 
-    if not(path == ""):
+    if not(path == None):
         run_path = path
     else:
         build_path = pathlib.Path(__file__).parents[8]
