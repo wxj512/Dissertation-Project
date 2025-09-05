@@ -57,19 +57,7 @@ def v_all_calc(param_var, n_calc_method = ["CoM"], data_path = None, campaign_no
                 n_vel_dict.update({f"vx_{method}": v_data.vel_calc(ds, n_vel_dict[f"n_array_{method}"])[2]})
                 v_max = np.append(v_max, [[n_vel_dict[f"vx_{method}"].max()]], axis = 1)
                 v_avg = np.append(v_avg, [[n_vel_dict[f"vx_{method}"].mean()]], axis = 1)
-            # n_array_CoM = v_data.n_calc(ds, method = "CoM")
-            # n_array_nf = v_data.n_calc(ds, method = "n_front")
-            # n_array_nf_all = v_data.n_calc(ds, method = "n_front", row_calc = "all_row")
-            # n_array_FWHM_all = v_data.n_calc(ds, method = "n_front_FWHM", row_calc = "all_row")
 
-        # vx_CoM = v_data.vel_calc(ds, n_array_CoM)[2]
-        # vx_nf = v_data.vel_calc(ds, n_array_nf)[2]
-        # vx_nf_all = v_data.vel_calc(ds, n_array_nf_all)[2]
-        # vx_FWHM_all = v_data.vel_calc(ds, n_array_FWHM_all)[2]
-
-        # v_max = np.array([[np.max(vx_CoM)], [np.max(vx_nf_all)], [np.max(vx_FWHM_all)]]).transpose()
-        # v_avg = np.array([[np.mean(vx_CoM)], [np.mean(vx_nf_all)], [np.mean(vx_FWHM_all)]]).transpose()
-        # print(v_max, v_max_dict)
         v_max_array = np.append(v_max_array, v_max, axis = 0)
         v_avg_array = np.append(v_avg_array, v_avg, axis = 0)
         parval_array = np.append(parval_array, param_val, axis = 0)
@@ -160,13 +148,13 @@ def main():
     # data_input_path = data_path.joinpath("Input")
     
     param_var = ["B0", "Te0", "L_par", "R_c"]   ## Check what parameters was changed for data to specify param_var
+    n_calc_method = ["CoM", "n_front", "n_front_FWHM"]  ## Check what n_calc_methods to use
     # B0_data = np.round(np.linspace(0.1,1,10),2)
 
     # folder_list = [folder.name for folder in data_input_path.glob("*/") if fnmatch.fnmatch(folder.name, "delta_1_B0_*") == True]
 
 
     ## Specify at least folder_list or campaign_no
-    n_calc_method = ["CoM", "n_front", "n_front_FWHM"]
     v_max_array, v_avg_array, parval_array, params = v_all_calc(param_var, n_calc_method = n_calc_method, campaign_no = 0)
 
     # write_nc(v_max_array, v_avg_array, param_var, params, data_path, n_calc_method, campaign_no = 2)
