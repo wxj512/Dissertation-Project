@@ -7,9 +7,6 @@ from boututils import calculus as calc
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 
-import n_front
-import n_front_FWHM
-import max_n
 import v_data
 
 # Plot results on n heatmap for 6 subplots based on time, defined in t
