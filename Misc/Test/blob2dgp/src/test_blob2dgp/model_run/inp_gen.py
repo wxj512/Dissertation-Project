@@ -29,9 +29,9 @@ def param_gen(params: str, min_max, n_samples = None, log = None, endpoint = Non
             parameters[p_val].update({"endpoint": False})
     return parameters
 
-def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
+def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = None):
 
-    if not(path == ""):
+    if not(path == None):
         run_path = path
     else:
         build_path = pathlib.Path(__file__).parents[8]
@@ -47,7 +47,7 @@ def mk_inp(param_array, params, campaign_no, ref_folder = "delta_1", path = ""):
 
     for i, val in enumerate(tqdm(param_array)):
         
-        folder = "_".join(["delta_1"] + [f"{t[0]}_" + f"{t[1]:.1E}" for t in val.items()]) 
+        folder = "_".join([ref_folder] + [f"{t[0]}_" + f"{t[1]:.1E}" for t in val.items()]) 
         filepath = run_path.joinpath(campaign, folder)
         
         if not(os.path.exists(filepath.parent) and os.path.isdir(filepath.parent)):
